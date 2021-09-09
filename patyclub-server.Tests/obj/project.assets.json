@@ -5567,11 +5567,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "e:\\workspace\\sideProject\\patyclub-server\\patyclub-server.Tests\\patyclub-server.Tests.csproj",
+      "projectUniqueName": "E:\\workspace\\sideProject\\patyclub-server\\patyclub-server.Tests\\patyclub-server.Tests.csproj",
       "projectName": "patyclub-server.Tests",
-      "projectPath": "e:\\workspace\\sideProject\\patyclub-server\\patyclub-server.Tests\\patyclub-server.Tests.csproj",
+      "projectPath": "E:\\workspace\\sideProject\\patyclub-server\\patyclub-server.Tests\\patyclub-server.Tests.csproj",
       "packagesPath": "C:\\Users\\TC\\.nuget\\packages\\",
-      "outputPath": "e:\\workspace\\sideProject\\patyclub-server\\patyclub-server.Tests\\obj\\",
+      "outputPath": "E:\\workspace\\sideProject\\patyclub-server\\patyclub-server.Tests\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\TC\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -5585,8 +5585,8 @@
       "frameworks": {
         "netcoreapp3.1": {
           "projectReferences": {
-            "e:\\workspace\\sideProject\\patyclub-server\\patyclub-server\\patyclub-server.csproj": {
-              "projectPath": "e:\\workspace\\sideProject\\patyclub-server\\patyclub-server\\patyclub-server.csproj"
+            "E:\\workspace\\sideProject\\patyclub-server\\patyclub-server\\patyclub-server.csproj": {
+              "projectPath": "E:\\workspace\\sideProject\\patyclub-server\\patyclub-server\\patyclub-server.csproj"
             }
           }
         }
