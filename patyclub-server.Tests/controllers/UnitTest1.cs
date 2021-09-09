@@ -14,5 +14,11 @@ namespace patyclub_server.Tests
         {
             Assert.Pass();
         }
+
+        [Test]
+        public void Test2()
+        {
+            Assert.AreEqual(2, 1);
+        }
     }
 }
