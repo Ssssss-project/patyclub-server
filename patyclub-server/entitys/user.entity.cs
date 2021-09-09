@@ -18,6 +18,9 @@ namespace patyclub_server.Entities
     [Column("phone")]
     public string phone { get; set; }
 
+    [Column("status")]
+    public string status { get; set; }
+
     [Column("remark")]
     public string remark { get; set; }
   }
