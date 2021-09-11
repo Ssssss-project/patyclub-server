@@ -28,11 +28,21 @@ namespace patyclub_server
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddCors(options =>
+            {
+                // CorsPolicy 是自訂的 Policy 名稱
+                options.AddPolicy("CorsPolicy", policy =>
+                {
+                    policy.AllowAnyOrigin()
+                          .AllowAnyHeader()
+                          .AllowAnyMethod();
+                });
+            });
             var connectionString = Configuration.GetConnectionString("PatyclubContext");
             services.AddEntityFrameworkNpgsql().AddDbContext<DBContext>(options => options.UseNpgsql(connectionString));
 
-        // Register the Swagger generator, defining 1 or more Swagger documents
-        services.AddSwaggerGen();
+            // Register the Swagger generator, defining 1 or more Swagger documents
+            services.AddSwaggerGen();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -42,6 +52,8 @@ namespace patyclub_server
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseCors("CorsPolicy");
 
             app.UseHttpsRedirection();
 
