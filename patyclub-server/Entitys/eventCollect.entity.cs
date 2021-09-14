@@ -4,8 +4,8 @@ using System.Linq;
 
 namespace patyclub_server.Entities
 {
-  [Table("User")]
-  public class User
+  [Table("EVENT_COLLECT")]
+  public class EventCollect
   {
     [Column("id")]
     public int id { get; set; }
@@ -23,17 +23,17 @@ namespace patyclub_server.Entities
     public string remark { get; set; }
   }
 
-  public class UserService
+  public class EventCollectService
   {
     public DBContext _context;
 
-    public UserService(DBContext context)
+    public EventCollectService(DBContext context)
     {
       _context = context;
     }
 
-    public IEnumerable<User> GetUsers() {
-      return _context.user.ToList();
+    public IEnumerable<EventCollect> GetEventCollects() {
+      return _context.eventCollect.ToList();
     }
   }
 }
