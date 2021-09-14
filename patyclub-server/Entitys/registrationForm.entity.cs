@@ -7,20 +7,18 @@ namespace patyclub_server.Entities
   [Table("REGISTRATION_FORM")]
   public class RegistrationForm
   {
-    [Column("id")]
-    public int id { get; set; }
+    [Column("userAccount")] //使用者帳號
+    public string userAccount { get; set; }
 
-    [Column("name")]
-    public string name { get; set; }
+    [Column("eventMstId")] //活動ID
+    public int eventMstId { get; set; }
 
-    [Column("phone")]
-    public string phone { get; set; }
+    [Column("questionId")] //問題ID
+    public int questionId { get; set; }
 
-    [Column("status")]
-    public string status { get; set; }
+    [Column("content")] //填寫內容
+    public string content { get; set; }
 
-    [Column("remark")]
-    public string remark { get; set; }
   }
 
   public class RegistrationFormService

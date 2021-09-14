@@ -7,20 +7,15 @@ namespace patyclub_server.Entities
   [Table("ACHIEVEMENT")]
   public class Achievement
   {
-    [Column("id")]
+    [Column("id")] //成就ID
     public int id { get; set; }
 
-    [Column("name")]
-    public string name { get; set; }
+    [Column("describe")] //成就描述
+    public string describe { get; set; }
 
-    [Column("phone")]
-    public string phone { get; set; }
+    [Column("goal")] //成就目標
+    public int goal { get; set; }
 
-    [Column("status")]
-    public string status { get; set; }
-
-    [Column("remark")]
-    public string remark { get; set; }
   }
 
   public class AchievementService

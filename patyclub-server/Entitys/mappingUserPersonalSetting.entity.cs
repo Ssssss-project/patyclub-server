@@ -7,20 +7,15 @@ namespace patyclub_server.Entities
   [Table("MAPPING_USER_PERSONAL_SETTING")]
   public class MappingUserPersonalSetting
   {
-    [Column("id")]
-    public int id { get; set; }
+    [Column("userAccount")] //使用者帳戶
+    public string userAccount { get; set; }
 
-    [Column("name")]
-    public string name { get; set; }
+    [Column("personalSettingId")] //個人化設定ID
+    public int personalSettingId { get; set; }
 
-    [Column("phone")]
-    public string phone { get; set; }
+    [Column("settingValue")] //設定值
+    public string settingValue { get; set; }
 
-    [Column("status")]
-    public string status { get; set; }
-
-    [Column("remark")]
-    public string remark { get; set; }
   }
 
   public class MappingUserPersonalSettingService

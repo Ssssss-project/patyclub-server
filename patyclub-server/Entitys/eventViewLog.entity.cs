@@ -7,20 +7,17 @@ namespace patyclub_server.Entities
   [Table("EVENT_VIEW_LOG")]
   public class EventViewLog
   {
-    [Column("id")]
-    public int id { get; set; }
+    [Column("userAccount")] //使用者帳號
+    public string userAccount { get; set; }
 
-    [Column("name")]
-    public string name { get; set; }
+    [Column("eventId")] //活動ID
+    public int eventId { get; set; }
 
-    [Column("phone")]
-    public string phone { get; set; }
+    [Column("viewSeq")] //檢視序號
+    public int viewSeq { get; set; }
 
-    [Column("status")]
-    public string status { get; set; }
-
-    [Column("remark")]
-    public string remark { get; set; }
+    [Column("viewDate")] //檢視日期
+    public string viewDate { get; set; }
   }
 
   public class EventViewLogService

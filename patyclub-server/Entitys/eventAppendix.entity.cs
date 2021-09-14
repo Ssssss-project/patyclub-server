@@ -7,20 +7,18 @@ namespace patyclub_server.Entities
   [Table("EVENT_APPENDIX")]
   public class EventAppendix
   {
-    [Column("id")]
+    [Column("id")] //附件ID
     public int id { get; set; }
 
-    [Column("name")]
-    public string name { get; set; }
+    [Column("eventMstId")] //活動ID
+    public int eventMstId { get; set; }
 
-    [Column("phone")]
-    public string phone { get; set; }
+    [Column("category")] //附件類別
+    public int category { get; set; }
 
-    [Column("status")]
-    public string status { get; set; }
+    [Column("appendixPath")] //附件路徑
+    public int appendixPath { get; set; }
 
-    [Column("remark")]
-    public string remark { get; set; }
   }
 
   public class EventAppendixService

@@ -7,20 +7,15 @@ namespace patyclub_server.Entities
   [Table("PERMISSION")]
   public class Permission
   {
-    [Column("id")]
+    [Column("id")] //權限ID
     public int id { get; set; }
 
-    [Column("name")]
-    public string name { get; set; }
+    [Column("functionName")] //功能名稱
+    public string functionName { get; set; }
 
-    [Column("phone")]
-    public string phone { get; set; }
+    [Column("actionCategory")] //操作類別
+    public string actionCategory { get; set; }
 
-    [Column("status")]
-    public string status { get; set; }
-
-    [Column("remark")]
-    public string remark { get; set; }
   }
 
   public class PermissionService
