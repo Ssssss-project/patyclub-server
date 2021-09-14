@@ -29,7 +29,7 @@ namespace patyclub_server
         {
             services.AddControllers();
             var connectionString = Configuration.GetConnectionString("PatyclubContext");
-            services.AddEntityFrameworkNpgsql().AddDbContext<DBContext>(options => options.UseNpgsql(connectionString));
+            services.AddDbContext<DBContext>(options => options.UseNpgsql(connectionString));
 
         // Register the Swagger generator, defining 1 or more Swagger documents
         services.AddSwaggerGen();
