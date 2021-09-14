@@ -7,21 +7,14 @@ namespace patyclub_server.Entities
   [Table("SYS_CODE_MST")]
   public class SysCodeMst
   {
-    [Column("id")]
+    [Column("id")] //參數ID
     public int id { get; set; }
 
-    [Column("name")]
+    [Column("name")] //參數類別
     public string name { get; set; }
 
-    [Column("phone")]
-    public string phone { get; set; }
-
-    [Column("status")]
-    public string status { get; set; }
-
-    [Column("remark")]
-    public string remark { get; set; }
-  }
+    [Column("remark")] //備註
+    public string remark { get; set; }  }
 
   public class SysCodeMstService
   {

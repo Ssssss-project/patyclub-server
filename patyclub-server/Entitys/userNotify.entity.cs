@@ -7,20 +7,20 @@ namespace patyclub_server.Entities
   [Table("USER_NOTIFY")]
   public class UserNotify
   {
-    [Column("id")]
+    [Column("userAccount")] //使用者帳號
+    public string userAccount { get; set; }
+
+    [Column("id")] //通知ID
     public int id { get; set; }
 
-    [Column("name")]
-    public string name { get; set; }
+    [Column("category")] //通知類別
+    public string category { get; set; }
 
-    [Column("phone")]
-    public string phone { get; set; }
+    [Column("content")] //通知內容
+    public string content { get; set; }
 
-    [Column("status")]
+    [Column("status")] //通知狀態
     public string status { get; set; }
-
-    [Column("remark")]
-    public string remark { get; set; }
   }
 
   public class UserNotifyService

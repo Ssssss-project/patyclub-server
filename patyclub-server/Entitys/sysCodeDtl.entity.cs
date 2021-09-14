@@ -7,20 +7,15 @@ namespace patyclub_server.Entities
   [Table("SYS_CODE_DTL")]
   public class SysCodeDtl
   {
-    [Column("id")]
+    [Column("id")] //參數ID
     public int id { get; set; }
 
-    [Column("name")]
-    public string name { get; set; }
+    [Column("sysCodeMstId")] //參數類別ID
+    public int sysCodeMstId { get; set; }
 
-    [Column("phone")]
-    public string phone { get; set; }
+    [Column("content")] //參數內容
+    public string content { get; set; }
 
-    [Column("status")]
-    public string status { get; set; }
-
-    [Column("remark")]
-    public string remark { get; set; }
   }
 
   public class SysCodeDtlService

@@ -7,20 +7,11 @@ namespace patyclub_server.Entities
   [Table("ROLE")]
   public class Role
   {
-    [Column("id")]
+    [Column("id")] //角色ID
     public int id { get; set; }
 
-    [Column("name")]
+    [Column("name")] //角色名稱
     public string name { get; set; }
-
-    [Column("phone")]
-    public string phone { get; set; }
-
-    [Column("status")]
-    public string status { get; set; }
-
-    [Column("remark")]
-    public string remark { get; set; }
   }
 
   public class RoleService

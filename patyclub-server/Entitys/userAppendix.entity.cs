@@ -7,20 +7,14 @@ namespace patyclub_server.Entities
   [Table("USER_APPENDIX")]
   public class UserAppendix
   {
-    [Column("id")]
+    [Column("userAccount")] //使用者帳號
+    public string userAccount { get; set; }
+
+    [Column("id")] //附件ID
     public int id { get; set; }
 
-    [Column("name")]
-    public string name { get; set; }
-
-    [Column("phone")]
-    public string phone { get; set; }
-
-    [Column("status")]
-    public string status { get; set; }
-
-    [Column("remark")]
-    public string remark { get; set; }
+    [Column("appendixPath")] //附件路徑
+    public string appendixPath { get; set; }
   }
 
   public class UserAppendixService
