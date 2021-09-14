@@ -60,6 +60,104 @@ namespace patyclub_server.Entities
                 .HasKey(table => new {table.userAccount, table.id});
             modelBuilder.Entity<UserNotify>()
                 .HasKey(table => new {table.userAccount, table.id});
+
+            
+
+            modelBuilder.Entity<Achievement>()
+                .HasData(
+                    new Achievement {id = 1, describe = "連續登入10天", goal = 10}
+                );
+            modelBuilder.Entity<AutoCompleteList>()
+                .HasData(
+                    new AutoCompleteList {id = 1, content = "patyclub", category = "常用搜尋詞"}
+                );
+            // modelBuilder.Entity<EventMst>()
+            //     .HasData(
+            //         new EventMst {}
+            //     );
+            // modelBuilder.Entity<EventAppendix>()
+            //     .HasData(
+            //         new EventAppendix {}
+            //     );
+            // modelBuilder.Entity<EventCategory>()
+            //     .HasData(
+            //         new EventCategory {}
+            //     );
+            // modelBuilder.Entity<EventCollect>()
+            //     .HasData(
+            //         new EventCollect {}
+            //     );
+            // modelBuilder.Entity<EventPersonnel>()
+            //     .HasData(
+            //         new EventPersonnel {}
+            //     );
+            // modelBuilder.Entity<EventViewLog>()
+            //     .HasData(
+            //         new EventViewLog {}
+            //     );
+            // modelBuilder.Entity<MappingPermissionRole>()
+            //     .HasData(
+            //         new MappingPermissionRole {}
+            //     );
+            // modelBuilder.Entity<MappingUserAchievement>()
+            //     .HasData(
+            //         new MappingUserAchievement {}
+            //     );
+            // modelBuilder.Entity<MappingUserPersonalSetting>()
+            //     .HasData(
+            //         new MappingUserPersonalSetting {}
+            //     );
+            // modelBuilder.Entity<MappingUserRole>()
+            //     .HasData(
+            //         new MappingUserRole {}
+            //     );
+            // modelBuilder.Entity<Permission>()
+            //     .HasData(
+            //         new Permission {}
+            //     );
+            // modelBuilder.Entity<PersonalSetting>()
+            //     .HasData(
+            //         new PersonalSetting {}
+            //     );
+            // modelBuilder.Entity<RegistrationForm>()
+            //     .HasData(
+            //         new RegistrationForm {}
+            //     );
+            // modelBuilder.Entity<RegistrationFormQuestion>()
+            //     .HasData(
+            //         new RegistrationFormQuestion {}
+            //     );
+            // modelBuilder.Entity<RegistrationFormQuestionOption>()
+            //     .HasData(
+            //         new RegistrationFormQuestionOption {}
+            //     );
+            modelBuilder.Entity<Role>()
+                .HasData(
+                    new Role {id = 1, name = "系統管理員"},
+                    new Role {id = 2, name = "一般使用者"}
+                );
+            // modelBuilder.Entity<SysCodeDtl>()
+            //     .HasData(
+            //         new SysCodeDtl {}
+            //     );
+            // modelBuilder.Entity<SysCodeMst>()
+            //     .HasData(
+            //         new SysCodeMst {}
+            //     );
+            modelBuilder.Entity<User>()
+                .HasData(
+                    // new User {account = "adda", password = "adda", name = "阿達", accountStatus = "Active"},
+                    new User {account = "admin", password = "admin", name = "阿管", accountStatus = "Active"}
+                );
+            // modelBuilder.Entity<UserAppendix>()
+            //     .HasData(
+            //         new UserAppendix {}
+            //     );
+            // modelBuilder.Entity<UserNotify>()
+            //     .HasData(
+            //         new UserNotify {}
+            //     );
+
         }
         #endregion
 
