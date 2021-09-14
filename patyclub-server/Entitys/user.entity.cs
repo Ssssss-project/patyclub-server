@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace patyclub_server.Entities
 {
-  [Table("User")]
+  [Table("USER")]
   public class User
   {
     [Column("account")] //帳號

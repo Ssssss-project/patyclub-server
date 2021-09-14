@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace patyclub_server.Entities
 {
-  [Table("REGISTRATION_FORM_QUESTION")]
+  [Table("REGISTRATION_FORM_QUESTION_OPTION")]
   public class RegistrationFormQuestionOption
   {
     [Column("id")] //選項ID

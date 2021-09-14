@@ -10,8 +10,8 @@ namespace patyclub_server.Entities
     [Column("userAccount")] //使用者帳號
     public string userAccount { get; set; }
 
-    [Column("eventId")] //活動ID
-    public int eventId { get; set; }
+    [Column("eventMstId")] //活動ID
+    public int eventMstId { get; set; }
 
     [Column("permission")] //權限類別
     public string permission { get; set; }

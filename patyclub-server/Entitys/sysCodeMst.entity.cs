@@ -7,7 +7,7 @@ namespace patyclub_server.Entities
   [Table("SYS_CODE_MST")]
   public class SysCodeMst
   {
-    [Column("id")] //參數ID
+    [Column("id")] //參數類別ID
     public int id { get; set; }
 
     [Column("name")] //參數類別

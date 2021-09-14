@@ -31,7 +31,37 @@ namespace patyclub_server.Entities
         public DbSet<UserAppendix> userAppendix { get; set; }
         public DbSet<UserNotify> userNotify { get; set; }
 
-        
+        #region Required
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<EventCollect>()
+                .HasKey(table => new {table.userAccount, table.eventMstId});
+            modelBuilder.Entity<EventPersonnel>()
+                .HasKey(table => new {table.userAccount, table.eventMstId});
+            modelBuilder.Entity<EventViewLog>()
+                .HasKey(table => new {table.userAccount, table.eventMstId});
+            modelBuilder.Entity<MappingPermissionRole>()
+                .HasKey(table => new {table.permissionId, table.roleId});
+            modelBuilder.Entity<MappingUserAchievement>()
+                .HasKey(table => new {table.userAccount, table.achievementId});
+            modelBuilder.Entity<MappingUserPersonalSetting>()
+                .HasKey(table => new {table.userAccount, table.personalSettingId});
+            modelBuilder.Entity<MappingUserRole>()
+                .HasKey(table => new {table.userAccount, table.roleId});
+            modelBuilder.Entity<RegistrationForm>()
+                .HasKey(table => new {table.userAccount, table.eventMstId, table.questionId});
+            modelBuilder.Entity<RegistrationFormQuestionOption>()
+                .HasKey(table => new {table.questionId, table.id});
+            modelBuilder.Entity<SysCodeDtl>()
+                .HasKey(table => new {table.sysCodeMstId, table.id});
+            modelBuilder.Entity<User>()
+                .HasKey(table => new {table.account});
+            modelBuilder.Entity<UserAppendix>()
+                .HasKey(table => new {table.userAccount, table.id});
+            modelBuilder.Entity<UserNotify>()
+                .HasKey(table => new {table.userAccount, table.id});
+        }
+        #endregion
 
     }
 }
