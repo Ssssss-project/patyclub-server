@@ -1,13 +1,14 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using patyclub_server.Entities;
+using System.Collections.Generic;
 
 
 namespace patyclub_server.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class LoginController : ControllerBase
+    public class LoginController : BaseController
     {
         private DBContext _context;
 
@@ -27,28 +28,26 @@ namespace patyclub_server.Controllers
         // }
 
         [HttpGet]
-        public Response Get(string account, string pwd)
+        public ActionResult Get(string account, string pwd)
         {
-            User loginUser = _context.user.Find(account);
-            if(loginUser.password == pwd) return new Response("Success", "Account Pass", null);
-            return new Response("Success", "Account Denied", null);
+            Response response = new Response {isSuccess = true, message = "Account Pass", data = null};
+            try
+            {
+                User loginUser = _context.user.Find(account);
+                if(loginUser.password == pwd) return Ok(new Response {isSuccess = true, message = "Account pass", data = null});
+                return Ok(new Response {isSuccess = false, message = "Account pass denied", data = null});
+            }
+            catch (System.Exception)
+            {
+                return NotFound(new Response {isSuccess = false, message = "Account not found", data = null});
+                throw;
+            }
+
+
         }
 
     }
 
-    public class Response
-    {
-        public Response()
-        {
+    
 
-        }
-        public Response(string _status, string _message, object _data){
-            status = _status;
-            message = _message;
-            data = _data;
-        }
-        string status; // 回傳狀態
-        string message; // 回傳訊息
-        object data; // 回傳資料
-    }
 }
