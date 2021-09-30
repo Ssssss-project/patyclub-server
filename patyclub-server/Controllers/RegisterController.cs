@@ -24,6 +24,8 @@ namespace patyclub_server.Controllers
         public ActionResult post(User user)
         {
             User resultUser = _context.user.Find(user.account);
+            
+            // 帳號已存在
             if(resultUser != null) return StatusCode(409, new Response {message = "Account is already exist! Please try another account."});
             _context.user.Add(user);
             _context.SaveChanges();

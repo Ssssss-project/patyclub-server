@@ -1,0 +1,46 @@
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using patyclub_server.Entities;
+using patyclub_server.ResponseService;
+using System.Linq;
+using System.Collections.Generic;
+
+
+namespace patyclub_server.Controllers
+{
+    [ApiController]
+    [Route("api/[controller]")]
+    public class GetEntityListController : ControllerBase
+    {
+        private DBContext _context;
+
+        private readonly ILogger<GetEntityListController> _logger;
+
+        public GetEntityListController(ILogger<GetEntityListController> logger, DBContext context)
+        {
+            _logger = logger;
+            _context = context;
+        }
+
+        [HttpGet("getAllUser")]
+        public ActionResult getAllUser()
+        {
+            List<User> resultUserList = _context.user.ToList();
+            return Ok(new Response {data = resultUserList});
+        }
+
+        [HttpGet("getActiveUser")]
+        public ActionResult getActiveUser()
+        {
+            List<User> resultUserList = _context.user
+                                            .Where(b => b.accountStatus.Equals("Active"))
+                                            .ToList();
+            return Ok(new Response {data = resultUserList});
+        }
+
+
+    }
+
+    
+
+}
