@@ -30,16 +30,16 @@ namespace patyclub_server.Controllers
         [HttpGet]
         public ActionResult Get(string account, string pwd)
         {
-            Response response = new Response {isSuccess = true, message = "Account Pass", data = null};
+            Response response = new Response {message = "Account Pass"};
             try
             {
                 User loginUser = _context.user.Find(account);
-                if(loginUser.password == pwd) return Ok(new Response {isSuccess = true, message = "Account pass", data = null});
-                return Ok(new Response {isSuccess = false, message = "Account pass denied", data = null});
+                if(loginUser.password == pwd) return Ok(new Response {message = "Account pass"});
+                return StatusCode(401, new Response {message = "Account pass denied"});
             }
             catch (System.Exception)
             {
-                // return NotFound(new Response {isSuccess = false, message = "Account not found", data = null});
+                // return NotFound(new Response {message = "Account not found", data = null});
                 // throw;
                 return StatusCode(100, "RRRRR");
             }

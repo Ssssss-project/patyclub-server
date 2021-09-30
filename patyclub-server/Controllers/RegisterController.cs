@@ -23,9 +23,11 @@ namespace patyclub_server.Controllers
         [HttpPost]
         public ActionResult post(User user)
         {
-            _context.Add(user);
+            User resultUser = _context.user.Find(user.account);
+            if(resultUser != null) return StatusCode(409, new Response {message = "Account is already exist! Please try another account."});
+            _context.user.Add(user);
             _context.SaveChanges();
-            return Ok();
+            return Ok(new Response {message = "Account create complete."});
         }
     }
 }
