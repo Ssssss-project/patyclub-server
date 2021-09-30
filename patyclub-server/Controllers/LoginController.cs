@@ -1,14 +1,14 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using patyclub_server.Entities;
-using System.Collections.Generic;
+using patyclub_server.ResponseService;
 
 
 namespace patyclub_server.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class LoginController : BaseController
+    public class LoginController : ControllerBase
     {
         private DBContext _context;
 
@@ -39,8 +39,9 @@ namespace patyclub_server.Controllers
             }
             catch (System.Exception)
             {
-                return NotFound(new Response {isSuccess = false, message = "Account not found", data = null});
-                throw;
+                // return NotFound(new Response {isSuccess = false, message = "Account not found", data = null});
+                // throw;
+                return StatusCode(100, "RRRRR");
             }
 
 
