@@ -13,6 +13,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 using Npgsql.EntityFrameworkCore.PostgreSQL;
 using patyclub_server.Entities;
+using patyclub_server.Core;
 namespace patyclub_server
 {
     public class Startup
@@ -43,6 +44,7 @@ namespace patyclub_server
 
             // Register the Swagger generator, defining 1 or more Swagger documents
             services.AddSwaggerGen();
+            services.AddSingleton<JwtHelpers>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
