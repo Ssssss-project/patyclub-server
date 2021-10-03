@@ -21,14 +21,14 @@ namespace patyclub_server.Controllers
         }
 
         [HttpGet]
-        public ActionResult Get(string account, string pwd)
+        public ActionResult Get(string account, string password)
         {
             User loginUser = _context.user.Find(account);
 
             // 帳號不存在
             if(loginUser == null) return StatusCode(401, new Response {message = "Account is not exist."});
             // 密碼錯誤
-            if(loginUser.password != pwd) return StatusCode(401, new Response {message = "Account pass denied"});
+            if(loginUser.password != password) return StatusCode(401, new Response {message = "Account pass denied"});
             return Ok(new Response {message = "Account pass"});
         }
 
