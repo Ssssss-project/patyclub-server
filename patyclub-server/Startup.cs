@@ -13,6 +13,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 using Npgsql.EntityFrameworkCore.PostgreSQL;
 using patyclub_server.Entities;
+using SignalRTest.Hubs;
+
 namespace patyclub_server
 {
     public class Startup
@@ -28,14 +30,18 @@ namespace patyclub_server
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddSignalR();
             services.AddCors(options =>
             {
                 // CorsPolicy 是自訂的 Policy 名稱
                 options.AddPolicy("CorsPolicy", policy =>
                 {
-                    policy.AllowAnyOrigin()
-                          .AllowAnyHeader()
-                          .AllowAnyMethod();
+                    policy.SetIsOriginAllowed((host) => true)
+                            // .AllowAnyOrigin()
+                            .AllowAnyHeader()
+                            .AllowAnyMethod()
+                            .AllowCredentials()
+                          ;
                 });
             });
             var connectionString = Configuration.GetConnectionString("PatyclubContext");
@@ -64,11 +70,12 @@ namespace patyclub_server
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHub<TestHub>("/hub/test");
             });
 
             // Enable middleware to serve generated Swagger as a JSON endpoint.
             app.UseSwagger();
-
+            // app.UseSignalR((routes=>{routes.MapHub<TestHub>("/hub/test");}));
             // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
             // specifying the Swagger JSON endpoint.
             app.UseSwaggerUI(c =>
