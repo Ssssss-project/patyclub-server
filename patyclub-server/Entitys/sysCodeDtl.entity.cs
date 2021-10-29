@@ -12,9 +12,12 @@ namespace patyclub_server.Entities
 
     [Column("sysCodeMstId")] //參數類別ID
     public int sysCodeMstId { get; set; }
+    
+    [Column("codeName")] //參數名稱
+    public string codeName { get; set; }
 
-    [Column("content")] //參數內容
-    public string content { get; set; }
+    [Column("codeDesc")] //參數內容
+    public string codeDesc { get; set; }
 
   }
 

@@ -15,6 +15,9 @@ namespace patyclub_server.Entities
 
     [Column("parentId")] //父類別ID
     public int parentId { get; set; }
+
+    [Column("enable")] //是否啟用
+    public string enable {get; set;}
   }
 
   public class EventCategoryService

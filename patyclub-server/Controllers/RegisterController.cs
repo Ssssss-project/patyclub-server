@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using patyclub_server.Entities;
-using patyclub_server.ResponseService;
+using patyclub_server.Service;
 
 namespace patyclub_server.Controllers
 {

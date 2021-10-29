@@ -13,6 +13,9 @@ namespace patyclub_server.Entities
     [Column("categoryId")] //類別ID
     public int categoryId { get; set; }
 
+    [Column("eventTitle")] //活動標題
+    public string eventTitle { get; set; }
+
     [Column("status")] //活動狀態
     public string status { get; set; }
 

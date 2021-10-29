@@ -71,18 +71,33 @@ namespace patyclub_server.Entities
                 .HasData(
                     new AutoCompleteList {id = 1, content = "patyclub", category = "常用搜尋詞"}
                 );
-            // modelBuilder.Entity<EventMst>()
-            //     .HasData(
-            //         new EventMst {}
-            //     );
+            modelBuilder.Entity<EventMst>()
+                .HasData(
+                    new EventMst {id = 1, categoryId = 3, eventTitle = "爬爬爬爬爬山趣", status = "T", cost = "1000", tag = "H"},
+                    new EventMst {id = 2, categoryId = 3, eventTitle = "颱風天要幹嘛? 當然是去泛舟R!", status = "T", cost = "1000", tag = "G"},
+                    new EventMst {id = 3, categoryId = 2, eventTitle = "SideProject Coding...", status = "T", cost = "1000", tag = "G"},
+                    new EventMst {id = 4, categoryId = 1, eventTitle = "一日雙塔，騎起來~", status = "T", cost = "1000", tag = "G"},
+                    new EventMst {id = 5, categoryId = 4, eventTitle = "JustDance跳跳跳!", status = "T", cost = "1000", tag = "H"},
+                    new EventMst {id = 6, categoryId = 4, eventTitle = "不想想活動名-A1", status = "T", cost = "1000", tag = ""},
+                    new EventMst {id = 7, categoryId = 4, eventTitle = "不想想活動名-A2", status = "T", cost = "1000", tag = ""},
+                    new EventMst {id = 8, categoryId = 4, eventTitle = "不想想活動名-A3", status = "T", cost = "1000", tag = ""},
+                    new EventMst {id = 9, categoryId = 4, eventTitle = "不想想活動名-A4", status = "T", cost = "1000", tag = ""},
+                    new EventMst {id = 10, categoryId = 4, eventTitle = "不想想活動名-A5", status = "T", cost = "1000", tag = ""},
+                    new EventMst {id = 11, categoryId = 4, eventTitle = "不想想活動名-A6", status = "T", cost = "1000", tag = ""},
+                    new EventMst {id = 12, categoryId = 4, eventTitle = "不想想活動名-A7", status = "T", cost = "1000", tag = ""}
+                );
             // modelBuilder.Entity<EventAppendix>()
             //     .HasData(
             //         new EventAppendix {}
             //     );
-            // modelBuilder.Entity<EventCategory>()
-            //     .HasData(
-            //         new EventCategory {}
-            //     );
+            modelBuilder.Entity<EventCategory>()
+                .HasData(
+                    new EventCategory {id = 1, categoryName = "測試活動A", parentId = 0, enable = "Y"},
+                    new EventCategory {id = 2, categoryName = "測試活動B", parentId = 0, enable = "Y"},
+                    new EventCategory {id = 3, categoryName = "測試活動A-1", parentId = 1, enable = "Y"},
+                    new EventCategory {id = 4, categoryName = "測試活動A-2", parentId = 1, enable = "Y"},
+                    new EventCategory {id = 5, categoryName = "測試活動A-3", parentId = 1, enable = "N"}
+                );
             // modelBuilder.Entity<EventCollect>()
             //     .HasData(
             //         new EventCollect {}
@@ -136,17 +151,22 @@ namespace patyclub_server.Entities
                     new Role {id = 1, name = "系統管理員"},
                     new Role {id = 2, name = "一般使用者"}
                 );
-            // modelBuilder.Entity<SysCodeDtl>()
-            //     .HasData(
-            //         new SysCodeDtl {}
-            //     );
-            // modelBuilder.Entity<SysCodeMst>()
-            //     .HasData(
-            //         new SysCodeMst {}
-            //     );
+            modelBuilder.Entity<SysCodeDtl>()
+                .HasData(
+                    new SysCodeDtl {id = 1, sysCodeMstId = 1, codeName = "H", codeDesc = "熱門活動"},
+                    new SysCodeDtl {id = 2, sysCodeMstId = 1, codeName = "G", codeDesc = "精選活動"},
+                    new SysCodeDtl {id = 3, sysCodeMstId = 2, codeName = "T", codeDesc = "暫存中"},
+                    new SysCodeDtl {id = 4, sysCodeMstId = 2, codeName = "C", codeDesc = "已取消"},
+                    new SysCodeDtl {id = 5, sysCodeMstId = 2, codeName = "D", codeDesc = "已刪除"}
+                );
+            modelBuilder.Entity<SysCodeMst>()
+                .HasData(
+                    new SysCodeMst {id = 1, name = "TAG", remark = "活動標記代碼"},
+                    new SysCodeMst {id = 2, name = "eventStatus", remark = "活動狀態代碼"}
+                );
             modelBuilder.Entity<User>()
                 .HasData(
-                    // new User {account = "adda", password = "adda", name = "阿達", accountStatus = "Active"},
+                    new User {account = "adda", password = "adda", name = "阿達", accountStatus = "Active"},
                     new User {account = "admin", password = "admin", name = "阿管", accountStatus = "Active"}
                 );
             // modelBuilder.Entity<UserAppendix>()

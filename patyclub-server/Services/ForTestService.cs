@@ -1,4 +1,4 @@
-namespace patyclub_server.ForTestService
+namespace patyclub_server.Service
 {
     public class TestService
     {
