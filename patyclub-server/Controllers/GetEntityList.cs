@@ -23,6 +23,9 @@ namespace patyclub_server.Controllers
             _context = context;
         }
 
+        /*
+            取得所有使用者
+        */
         [HttpGet("getAllUser")]
         public ActionResult getAllUser()
         {
@@ -30,6 +33,9 @@ namespace patyclub_server.Controllers
             return Ok(new Response {data = resultUserList});
         }
 
+        /*
+            取得活動中使用者
+        */
         [HttpGet("getActiveUser")]
         public ActionResult getActiveUser()
         {
@@ -40,18 +46,31 @@ namespace patyclub_server.Controllers
         }
 
 
-
+        /*
+            取得樹狀活動分類
+        */
         [HttpGet("getEventCategory")]
         public ActionResult getEventCategory()
         {
 
             List<EventCategory> resultEventCategoryList = _context.eventCategory
-                                            // .Where(b => b.enable.Equals("Y"))
+                                            .Where(b => b.enable.Equals("Y"))
                                             .ToList();
             EventService eventService = new EventService();
             CateNode result = eventService.getCateTree(resultEventCategoryList, new EventCategory {id = 0, categoryName = "ROOT"});
             return Ok(new Response {data = result});
-            // return Ok(new Response {data = new CateNode {cateId = 0, cateName = "ROOT"}});
+        }
+
+        /*
+            取得精選活動清單
+        */
+        [HttpGet("getSpecialEvent")]
+        public ActionResult getSpecialEvent()
+        {
+            List<EventMst> resultEventMstList = _context.eventMst
+                                            .Where(b => b.tag.Equals("S"))
+                                            .ToList();
+            return Ok(new Response {message = "", data = resultEventMstList});
         }
 
 

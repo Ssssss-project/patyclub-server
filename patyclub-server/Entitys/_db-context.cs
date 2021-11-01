@@ -74,16 +74,16 @@ namespace patyclub_server.Entities
             modelBuilder.Entity<EventMst>()
                 .HasData(
                     new EventMst {id = 1, categoryId = 3, eventTitle = "爬爬爬爬爬山趣", status = "T", cost = "1000", tag = "H"},
-                    new EventMst {id = 2, categoryId = 3, eventTitle = "颱風天要幹嘛? 當然是去泛舟R!", status = "T", cost = "1000", tag = "G"},
-                    new EventMst {id = 3, categoryId = 2, eventTitle = "SideProject Coding...", status = "T", cost = "1000", tag = "G"},
-                    new EventMst {id = 4, categoryId = 1, eventTitle = "一日雙塔，騎起來~", status = "T", cost = "1000", tag = "G"},
+                    new EventMst {id = 2, categoryId = 3, eventTitle = "颱風天要幹嘛? 當然是去泛舟R!", status = "T", cost = "1000", tag = "S"},
+                    new EventMst {id = 3, categoryId = 2, eventTitle = "SideProject Coding...", status = "T", cost = "1000", tag = "S"},
+                    new EventMst {id = 4, categoryId = 1, eventTitle = "一日雙塔，騎起來~", status = "T", cost = "1000", tag = "S"},
                     new EventMst {id = 5, categoryId = 4, eventTitle = "JustDance跳跳跳!", status = "T", cost = "1000", tag = "H"},
                     new EventMst {id = 6, categoryId = 4, eventTitle = "不想想活動名-A1", status = "T", cost = "1000", tag = ""},
                     new EventMst {id = 7, categoryId = 4, eventTitle = "不想想活動名-A2", status = "T", cost = "1000", tag = ""},
-                    new EventMst {id = 8, categoryId = 4, eventTitle = "不想想活動名-A3", status = "T", cost = "1000", tag = ""},
+                    new EventMst {id = 8, categoryId = 4, eventTitle = "不想想活動名-A3", status = "T", cost = "1000", tag = "S"},
                     new EventMst {id = 9, categoryId = 4, eventTitle = "不想想活動名-A4", status = "T", cost = "1000", tag = ""},
                     new EventMst {id = 10, categoryId = 4, eventTitle = "不想想活動名-A5", status = "T", cost = "1000", tag = ""},
-                    new EventMst {id = 11, categoryId = 4, eventTitle = "不想想活動名-A6", status = "T", cost = "1000", tag = ""},
+                    new EventMst {id = 11, categoryId = 4, eventTitle = "不想想活動名-A6", status = "T", cost = "1000", tag = "S"},
                     new EventMst {id = 12, categoryId = 4, eventTitle = "不想想活動名-A7", status = "T", cost = "1000", tag = ""}
                 );
             // modelBuilder.Entity<EventAppendix>()
@@ -154,7 +154,7 @@ namespace patyclub_server.Entities
             modelBuilder.Entity<SysCodeDtl>()
                 .HasData(
                     new SysCodeDtl {id = 1, sysCodeMstId = 1, codeName = "H", codeDesc = "熱門活動"},
-                    new SysCodeDtl {id = 2, sysCodeMstId = 1, codeName = "G", codeDesc = "精選活動"},
+                    new SysCodeDtl {id = 2, sysCodeMstId = 1, codeName = "S", codeDesc = "精選活動"},
                     new SysCodeDtl {id = 3, sysCodeMstId = 2, codeName = "T", codeDesc = "暫存中"},
                     new SysCodeDtl {id = 4, sysCodeMstId = 2, codeName = "C", codeDesc = "已取消"},
                     new SysCodeDtl {id = 5, sysCodeMstId = 2, codeName = "D", codeDesc = "已刪除"}
