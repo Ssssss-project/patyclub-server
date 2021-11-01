@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using patyclub_server.Entities;
 using patyclub_server.Service;
 using System.Linq;
+using System;
 using System.Collections.Generic;
 
 
@@ -45,11 +46,12 @@ namespace patyclub_server.Controllers
         {
 
             List<EventCategory> resultEventCategoryList = _context.eventCategory
-                                            .Where(b => b.enable.Equals("Y"))
+                                            // .Where(b => b.enable.Equals("Y"))
                                             .ToList();
             EventService eventService = new EventService();
-            EventService.CateNode result = eventService.getCateTree(resultEventCategoryList, new EventCategory {id = 0, categoryName = "ROOT"});
+            CateNode result = eventService.getCateTree(resultEventCategoryList, new EventCategory {id = 0, categoryName = "ROOT"});
             return Ok(new Response {data = result});
+            // return Ok(new Response {data = new CateNode {cateId = 0, cateName = "ROOT"}});
         }
 
 
