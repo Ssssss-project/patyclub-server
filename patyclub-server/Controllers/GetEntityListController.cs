@@ -23,9 +23,9 @@ namespace patyclub_server.Controllers
             _context = context;
         }
 
-        /*
-            取得所有使用者
-        */
+        /// <summary>
+        /// 取得所有使用者
+        /// </summary>
         [HttpGet("getAllUser")]
         public ActionResult getAllUser()
         {
@@ -33,9 +33,9 @@ namespace patyclub_server.Controllers
             return Ok(new Response {data = resultUserList});
         }
 
-        /*
-            取得活動中使用者
-        */
+        /// <summary>
+        ///     取得活動中使用者
+        /// </summary>
         [HttpGet("getActiveUser")]
         public ActionResult getActiveUser()
         {
@@ -46,9 +46,9 @@ namespace patyclub_server.Controllers
         }
 
 
-        /*
-            取得樹狀活動分類
-        */
+        /// <summary>
+        /// 取得樹狀活動分類
+        /// </summary>
         [HttpGet("getEventCategory")]
         public ActionResult getEventCategory()
         {
@@ -61,9 +61,9 @@ namespace patyclub_server.Controllers
             return Ok(new Response {data = result});
         }
 
-        /*
-            取得精選活動清單
-        */
+        /// <summary>
+        /// 取得精選活動清單
+        /// </summary>
         [HttpGet("getSpecialEvent")]
         public ActionResult getSpecialEvent()
         {
