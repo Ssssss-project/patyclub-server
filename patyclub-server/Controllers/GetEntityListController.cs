@@ -23,28 +23,6 @@ namespace patyclub_server.Controllers
             _context = context;
         }
 
-        /// <summary>
-        /// 取得所有使用者
-        /// </summary>
-        [HttpGet("getAllUser")]
-        public ActionResult getAllUser()
-        {
-            List<User> resultUserList = _context.user.ToList();
-            return Ok(new Response {data = resultUserList});
-        }
-
-        /// <summary>
-        ///     取得活動中使用者
-        /// </summary>
-        [HttpGet("getActiveUser")]
-        public ActionResult getActiveUser()
-        {
-            List<User> resultUserList = _context.user
-                                            .Where(b => b.accountStatus.Equals("Active"))
-                                            .ToList();
-            return Ok(new Response {data = resultUserList});
-        }
-
 
         /// <summary>
         /// 取得樹狀活動分類
@@ -61,17 +39,7 @@ namespace patyclub_server.Controllers
             return Ok(new Response {data = result});
         }
 
-        /// <summary>
-        /// 取得精選活動清單
-        /// </summary>
-        [HttpGet("getSpecialEvent")]
-        public ActionResult getSpecialEvent()
-        {
-            List<EventMst> resultEventMstList = _context.eventMst
-                                            .Where(b => b.tag.Equals("S"))
-                                            .ToList();
-            return Ok(new Response {message = "", data = resultEventMstList});
-        }
+
 
 
     }

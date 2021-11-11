@@ -167,7 +167,9 @@ namespace patyclub_server.Entities
             modelBuilder.Entity<User>()
                 .HasData(
                     new User {account = "adda", password = "adda", name = "阿達", accountStatus = "Active"},
-                    new User {account = "admin", password = "admin", name = "阿管", accountStatus = "Active"}
+                    new User {account = "admin", password = "admin", name = "阿管", email = "patyclub9453@gmail.com", accountStatus = "Active"},
+                    new User {account = "yiyuan", password = "yiyuan", name = "阿摳", email = "charles01270@gmail.com", accountStatus = "Active"},
+                    new User {account = "pang", password = "pang", name = "阿彭", email = "cxz0917001997@gmail.com", accountStatus = "Active"}
                 );
             // modelBuilder.Entity<UserAppendix>()
             //     .HasData(
