@@ -29,7 +29,6 @@ namespace patyclub_server.Test
         {
             List<MailUser> userList = new List<MailUser>();
             userList.Add(new MailUser("AA", "charles01270@gmail.com"));
-            userList.Add(new MailUser("BB", "smile022592@gmail.com"));
             _mailService.sendMail(
                 _mailService.Mail(
                     userList,
@@ -47,7 +46,6 @@ namespace patyclub_server.Test
         {
             List<MailUser> userList = new List<MailUser>();
             userList.Add(new MailUser("AA", "charles01270@gmail.com"));
-            userList.Add(new MailUser("BB", "smile022592@gmail.com"));
 
             List<MimeMessage> messageList = new List<MimeMessage>();
             messageList.Add(
