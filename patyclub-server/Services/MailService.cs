@@ -35,6 +35,27 @@ namespace patyclub_server.Service
             return message;
         }
 
+        public MimeMessage HTMLMail(List<MailUser> ToList, string mailTitle, string body)
+        {
+            var builder = new BodyBuilder();
+            var message = new MimeMessage();
+
+            message.From.Add(new MailboxAddress("PATYCLUB", "patyclub9453@gmail.com"));
+            foreach (var To in ToList)
+            {
+                message.To.Add(new MailboxAddress(To.userName, To.mailAddress));
+            }
+            
+
+            message.Subject = mailTitle;
+            builder.HtmlBody = body;
+
+            message.Body = builder.ToMessageBody();
+
+            return message;
+        }
+
+
         public void sendMail(MimeMessage message){
 			using (var client = new SmtpClient ()) {
 				client.Connect ("smtp.gmail.com", 465, true);

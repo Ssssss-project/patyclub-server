@@ -72,5 +72,27 @@ namespace patyclub_server.Test
             // _mailService.sendMail2();
             Assert.Pass();
         }
+
+
+        [Test]
+        public void sendOneHTMLMailTest()
+        {
+            List<MailUser> userList = new List<MailUser>();
+            userList.Add(new MailUser("AA", "charles01270@gmail.com"));
+            _mailService.sendMail(
+                _mailService.HTMLMail(
+                    userList,
+                    "TEST1",
+                    @"<h1>HI HEAD</h1>
+                    <p>HI SECOND LINE</p>
+                    <ol>
+                        <li>AAAA</li>
+                        <li>BBBB</li>
+                        <li>CCCC</li>
+                    </ol>
+                    ~~")
+            );
+            Assert.Pass();
+        }
     }
 }
