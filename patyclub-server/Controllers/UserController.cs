@@ -79,26 +79,31 @@ namespace patyclub_server.Controllers
 
                 string mailTitle = "PATYCLUB 忘記密碼";
                 string mailBody = String.Format(
-@"HI {0}
-    我知道你忘記密碼了
-    別怕
-    我給你一個網址
-    去那裏吧!
-    去那裏修改你的密碼
-    別再忘了喔!
-    {1}
-    測試SHA256
-    {2}
-"
-, user.name
-,"https://www.google.com/"
-,BitConverter.ToString(securityService.string2SHA256(user.account))
-);
+                    @"
+                        <h1 style=""text-align: center;"">HI~ {0}</h1>
+                        <p style=""text-align: center;""><strong><em>忘記密碼了，很苦惱嗎?</em></strong></p>
+                        <div style=""padding-left: 40px;"">
+                        <p style=""padding-left: 40px;"">別怕</p>
+                        <p style=""padding-left: 40px;"">我給你一個網址</p>
+                        <p style=""padding-left: 40px;"">去那裏吧!</p>
+                        <p style=""padding-left: 40px;"">去那裏修改你的密碼!</p>
+                        <p style=""padding-left: 40px;"">別再忘了喔!</p>
+                        <p style=""padding-left: 40px;"">{1}</p>
+                        <p style=""padding-left: 40px;"">測試SHA256</p>
+                        <p style=""padding-left: 40px;"">{2}</p>
+                        <p>&nbsp;</p>
+                        <p style=""text-align: right;"">PATYCLUB 小天使</p>
+                        </div>
+                    "
+                    , user.name
+                    ,"https://www.google.com/"
+                    ,BitConverter.ToString(securityService.string2SHA256(user.account)).Replace("-", "")
+                    );
 
                 // Console.WriteLine(mailBody);
 
                 mailService.sendMail(
-                    mailService.Mail(
+                    mailService.HTMLMail(
                         mailUserList,
                         mailTitle,
                         mailBody
