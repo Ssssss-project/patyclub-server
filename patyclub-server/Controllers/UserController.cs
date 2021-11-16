@@ -66,6 +66,10 @@ namespace patyclub_server.Controllers
             {
                 return StatusCode(409, new Response{message = "There are more than on account that Email Match."});
             }
+            else if(resultUserList.Count == 0)
+            {
+                return StatusCode(404, new Response{message = "There didn't have account that Email Match."});
+            }
 
             User user = resultUserList[0];
 
