@@ -51,6 +51,12 @@ namespace patyclub_server.Entities
 
     [Column("accountStatus")] //帳號狀態
     public string accountStatus { get; set; }
+
+    [Column("forgetPwdToken")] //忘記密碼Token
+    public string forgetPwdToken {get; set;}
+
+    [Column("forgetPwdTokenCreatedDate")] //忘記密碼Token
+    public string forgetPwdTokenCreatedDate {get; set;}
   }
 
   public class UserService

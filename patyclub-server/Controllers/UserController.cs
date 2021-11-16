@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Configuration;
 using patyclub_server.Entities;
 using patyclub_server.Service;
 using System.Linq;
@@ -15,11 +16,15 @@ namespace patyclub_server.Controllers
         private DBContext _context;
 
         private readonly ILogger<UserController> _logger;
+        private IConfiguration _configuration;
+        private Random _random;
 
-        public UserController(ILogger<UserController> logger, DBContext context)
+        public UserController(ILogger<UserController> logger, DBContext context, IConfiguration configuration)
         {
             _logger = logger;
             _context = context;
+            _configuration = configuration;
+            _random = new Random();
         }
 
         ///<summary>
@@ -79,8 +84,8 @@ namespace patyclub_server.Controllers
                 MailService mailService = new MailService();
                 SecurityService securityService = new SecurityService();
                 List<MailUser> mailUserList = new List<MailUser>();
+                string token = BitConverter.ToString(securityService.string2SHA256(_random.NextDouble().ToString())).Replace("-", "");
                 mailUserList.Add(new MailUser(user.name, user.email));
-
                 string mailTitle = "PATYCLUB 忘記密碼";
                 string mailBody = String.Format(
                     @"
@@ -93,18 +98,15 @@ namespace patyclub_server.Controllers
                         <p style=""padding-left: 40px;"">去那裏修改你的密碼!</p>
                         <p style=""padding-left: 40px;"">別再忘了喔!</p>
                         <p style=""padding-left: 40px;"">{1}</p>
-                        <p style=""padding-left: 40px;"">測試SHA256</p>
-                        <p style=""padding-left: 40px;"">{2}</p>
                         <p>&nbsp;</p>
                         <p style=""text-align: right;"">PATYCLUB 小天使</p>
                         </div>
                     "
                     , user.name
-                    ,"https://www.google.com/"
-                    ,BitConverter.ToString(securityService.string2SHA256(user.account)).Replace("-", "")
+                    ,_configuration["ClientAddress"] + "/user/resetPassword/" + token
                     );
 
-                // Console.WriteLine(mailBody);
+
 
                 mailService.sendMail(
                     mailService.HTMLMail(
@@ -113,14 +115,43 @@ namespace patyclub_server.Controllers
                         mailBody
                 ));
 
+                // 儲存Token
+                user.forgetPwdToken = token;
+                user.forgetPwdTokenCreatedDate = DateTime.Now.ToString();
+
+                _context.SaveChanges();
+
+
                 return Ok(new Response{message = "Send Mail Success."});
             }
-            catch (System.Exception)
+            catch (System.Exception e)
             {
-                return StatusCode(500, new Response{message = "Something wrong.. Send Mail Failed."});
+                return StatusCode(500, new Response{message = "Something wrong.. Send Mail Failed.", sysErrMsg = e.ToString()});
                 throw;
             }
 
+        }
+
+        [HttpPut("changePwdWithToken")]
+        public ActionResult changePwdWithToken(string token, string newPwd)
+        {
+            List<User> userList = _context.user
+                            .Where(u => u.forgetPwdToken == token && DateTime.Now.AddMinutes(-5) > DateTime.Parse(u.forgetPwdTokenCreatedDate))
+                            .ToList();
+
+            if(userList.Count == 0)
+            {
+                return StatusCode(404, new Response{message = "Token not found or Token is overdue"});
+            }
+            else if(userList.Count > 1)
+            {
+                return StatusCode(500, new Response{message = "Something wrong! that is almost impossible for appear same token as the same time."});
+            }
+
+            userList[0].password = newPwd;
+            _context.SaveChanges();
+            
+            return Ok(new Response{message = "change Success"});
         }
 
         /// <summary>
