@@ -117,7 +117,7 @@ namespace patyclub_server.Controllers
 
                 // 儲存Token
                 user.forgetPwdToken = token;
-                user.forgetPwdTokenCreatedDate = DateTime.Now.ToString();
+                user.forgetPwdTokenCreatedDate = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
 
                 _context.SaveChanges();
 
@@ -135,8 +135,10 @@ namespace patyclub_server.Controllers
         [HttpPut("changePwdWithToken")]
         public ActionResult changePwdWithToken(string token, string newPwd)
         {
+            String dueTime = DateTime.Now.AddMinutes(-10).ToString("yyyy-MM-dd HH:mm:ss");
             List<User> userList = _context.user
-                            .Where(u => u.forgetPwdToken == token && DateTime.Now.AddMinutes(-5) > DateTime.Parse(u.forgetPwdTokenCreatedDate))
+                            .Where(u => u.forgetPwdToken == token)
+                            .Where(u => u.forgetPwdTokenCreatedDate != null && dueTime.CompareTo(u.forgetPwdTokenCreatedDate) < 0)
                             .ToList();
 
             if(userList.Count == 0)
@@ -149,6 +151,8 @@ namespace patyclub_server.Controllers
             }
 
             userList[0].password = newPwd;
+            userList[0].forgetPwdToken = null;
+            userList[0].forgetPwdTokenCreatedDate = null;
             _context.SaveChanges();
             
             return Ok(new Response{message = "change Success"});
