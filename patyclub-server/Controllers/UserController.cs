@@ -14,7 +14,6 @@ namespace patyclub_server.Controllers
     public class UserController : ControllerBase
     {
         private DBContext _context;
-
         private readonly ILogger<UserController> _logger;
         private IConfiguration _configuration;
         private Random _random;
@@ -57,14 +56,17 @@ namespace patyclub_server.Controllers
             return Ok(new Response {message = "Account pass"});
         }
 
+        public class forgetPwdArgs{
+            public string userEmail{get; set;}
+        }
         ///<summary>
         ///忘記密碼
         ///</summary>
         [HttpPost("forgetPwd")]
-        public ActionResult forgetPwd(string userEmail = "patyclub9453@gmail.com")
+        public ActionResult forgetPwd(forgetPwdArgs args)
         {
             List<User> resultUserList = _context.user
-                                            .Where(b => b.email.Equals(userEmail))
+                                            .Where(b => b.email.Equals(args.userEmail))
                                             .ToList();
             
             if (resultUserList.Count > 1)
@@ -132,12 +134,16 @@ namespace patyclub_server.Controllers
 
         }
 
+        public class changePwdWithTokenArgs{
+            public string token{get; set;}
+            public string newPwd{get; set;}
+        }
         [HttpPut("changePwdWithToken")]
-        public ActionResult changePwdWithToken(string token, string newPwd)
+        public ActionResult changePwdWithToken(changePwdWithTokenArgs args)
         {
             String dueTime = DateTime.Now.AddMinutes(-10).ToString("yyyy-MM-dd HH:mm:ss");
             List<User> userList = _context.user
-                            .Where(u => u.forgetPwdToken == token)
+                            .Where(u => u.forgetPwdToken == args.token)
                             .Where(u => u.forgetPwdTokenCreatedDate != null && dueTime.CompareTo(u.forgetPwdTokenCreatedDate) < 0)
                             .ToList();
 
@@ -150,7 +156,7 @@ namespace patyclub_server.Controllers
                 return StatusCode(500, new Response{message = "Something wrong! that is almost impossible for appear same token as the same time."});
             }
 
-            userList[0].password = newPwd;
+            userList[0].password = args.newPwd;
             userList[0].forgetPwdToken = null;
             userList[0].forgetPwdTokenCreatedDate = null;
             _context.SaveChanges();
