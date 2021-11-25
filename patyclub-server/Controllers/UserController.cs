@@ -41,18 +41,23 @@ namespace patyclub_server.Controllers
             return Ok(new Response {message = "Account create complete."});
         }
 
+
+        public class loginArgs{
+            public string account {get; set;}
+            public string password {get; set;}
+        }
         ///<summary>
         ///登入密碼驗證
         ///</summary>
         [HttpPost("login")]
-        public ActionResult login(string account, string password)
+        public ActionResult login(loginArgs args)
         {
-            User loginUser = _context.user.Find(account);
+            User loginUser = _context.user.Find(args.account);
 
             // 帳號不存在
             if(loginUser == null) return StatusCode(401, new Response {message = "Account is not exist."});
             // 密碼錯誤
-            if(loginUser.password != password) return StatusCode(401, new Response {message = "Account pass denied"});
+            if(loginUser.password != args.password) return StatusCode(401, new Response {message = "Account pass denied"});
             return Ok(new Response {message = "Account pass"});
         }
 
