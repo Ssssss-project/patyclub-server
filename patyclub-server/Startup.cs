@@ -10,12 +10,14 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.EntityFrameworkCore;
 using Npgsql.EntityFrameworkCore.PostgreSQL;
 using patyclub_server.Entities;
 using SignalRTest.Hubs;
 using System.Reflection;
 using System.IO;
+
 
 namespace patyclub_server
 {
@@ -69,6 +71,13 @@ namespace patyclub_server
             app.UseCors("CorsPolicy");
 
             app.UseHttpsRedirection();
+
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(
+                    Path.Combine(env.ContentRootPath, "Data")),
+                RequestPath = "/Data"
+            });
 
             app.UseRouting();
 
