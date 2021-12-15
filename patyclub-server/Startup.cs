@@ -14,10 +14,10 @@ using Microsoft.Extensions.FileProviders;
 using Microsoft.EntityFrameworkCore;
 using Npgsql.EntityFrameworkCore.PostgreSQL;
 using patyclub_server.Entities;
+using patyclub_server.Core;
 using SignalRTest.Hubs;
 using System.Reflection;
 using System.IO;
-
 
 namespace patyclub_server
 {
@@ -58,6 +58,8 @@ namespace patyclub_server
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 c.IncludeXmlComments(xmlPath);
             });
+
+            services.AddSingleton<JwtHelpers>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
