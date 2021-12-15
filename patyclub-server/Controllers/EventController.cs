@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Authorization;
 using patyclub_server.Entities;
 using patyclub_server.Service;
 using System.Collections.Generic;
@@ -25,10 +26,12 @@ namespace patyclub_server.Controllers
         ///<summary>
         ///新建活動
         ///</summary>
+        [Authorize]
         [HttpPost("createEvent")]
         public ActionResult createEvent(EventMst eventMst)
         {
             _context.eventMst.Add(eventMst);
+            _context.SaveChanges();
             return Ok();
         }
 
