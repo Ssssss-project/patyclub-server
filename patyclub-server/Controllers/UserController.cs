@@ -1,8 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Authorization;
 using patyclub_server.Entities;
 using patyclub_server.Service;
+using patyclub_server.Core;
 using System.Linq;
 using System;
 using System.Collections.Generic;
@@ -53,12 +55,15 @@ namespace patyclub_server.Controllers
         public ActionResult login(loginArgs args)
         {
             User loginUser = _context.user.Find(args.account);
+            JwtHelpers jwtHelpers = new JwtHelpers(_configuration);
 
             // 帳號不存在
             if(loginUser == null) return StatusCode(401, new Response {message = "Account is not exist."});
             // 密碼錯誤
             if(loginUser.password != args.password) return StatusCode(401, new Response {message = "Account pass denied"});
-            return Ok(new Response {message = "Account pass"});
+
+            string token = jwtHelpers.GenerateToken(loginUser.name, "ADMIN");
+            return Ok(new Response {message = "Account pass", data = token});
         }
 
         public class forgetPwdArgs{
@@ -182,6 +187,7 @@ namespace patyclub_server.Controllers
         /// <summary>
         ///     取得活動中使用者
         /// </summary>
+        [Authorize]
         [HttpGet("getActiveUser")]
         public ActionResult getActiveUser()
         {

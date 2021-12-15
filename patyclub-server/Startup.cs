@@ -18,6 +18,7 @@ using patyclub_server.Core;
 using SignalRTest.Hubs;
 using System.Reflection;
 using System.IO;
+using Microsoft.OpenApi.Models;
 
 namespace patyclub_server
 {
@@ -57,6 +58,29 @@ namespace patyclub_server
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 c.IncludeXmlComments(xmlPath);
+                c.AddSecurityDefinition("bearerAuth", new OpenApiSecurityScheme
+                {
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.Http,
+                    Scheme = "bearer",
+                    BearerFormat = "JWT",
+                    In = ParameterLocation.Header,
+                    Description = "JWT Authorization header using the Bearer scheme."
+                });
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                          new OpenApiSecurityScheme
+                            {
+                                Reference = new OpenApiReference 
+                                { 
+                                    Type = ReferenceType.SecurityScheme, 
+                                    Id = "bearerAuth" 
+                                }
+                            },
+                            new string[] {}
+                    }
+                });
             });
 
             services.AddSingleton<JwtHelpers>();

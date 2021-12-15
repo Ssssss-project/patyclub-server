@@ -19,7 +19,7 @@ namespace patyclub_server.Core
         {
             this.Configuration = configuration;
         }
-        public string GenerateToken(string userName, int expireMinutes = 30)
+        public string GenerateToken(string userName, string authLevel, int expireMinutes = 30)
         {
             var issuer = Configuration.GetValue<string>("JwtSettings:Issuer");
             var signKey = Configuration.GetValue<string>("JwtSettings:SignKey");
@@ -27,6 +27,7 @@ namespace patyclub_server.Core
             // 要回傳的資料包在這兒
             var claims = new List<Claim>();
             claims.Add(new Claim("userName", userName)); // User.Identity.Name
+            claims.Add(new Claim("authLevel", authLevel)); // 權限級別
 
             var userClaimsIdentity = new ClaimsIdentity(claims);
 
