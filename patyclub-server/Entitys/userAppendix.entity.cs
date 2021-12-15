@@ -13,6 +13,9 @@ namespace patyclub_server.Entities
     [Column("id")] //附件ID
     public int id { get; set; }
 
+    [Column("category")] //附件類別
+    public string category { get; set; }
+
     [Column("appendixPath")] //附件路徑
     public string appendixPath { get; set; }
   }

@@ -74,7 +74,19 @@ namespace patyclub_server.Entities
                 );
             modelBuilder.Entity<AutoCompleteList>()
                 .HasData(
-                    new AutoCompleteList {id = 1, content = "patyclub", category = "常用搜尋詞"}
+                    new AutoCompleteList {id = 1, content = "patyclub", category = "K"},
+                    new AutoCompleteList {id = 2, content = "鳶嘴山", category = "K"},
+                    new AutoCompleteList {id = 3, content = "岩場", category = "K"},
+                    new AutoCompleteList {id = 4, content = "岩石", category = "K"},
+                    new AutoCompleteList {id = 5, content = "岩場地形", category = "K"},
+                    new AutoCompleteList {id = 6, content = "爬分", category = "K"},
+                    new AutoCompleteList {id = 7, content = "#ForFun", category = "H"},
+                    new AutoCompleteList {id = 8, content = "#積分", category = "H"},
+                    new AutoCompleteList {id = 9, content = "#中級山", category = "H"},
+                    new AutoCompleteList {id = 10, content = "#百岳", category = "H"},
+                    new AutoCompleteList {id = 11, content = "#遠足", category = "H"},
+                    new AutoCompleteList {id = 12, content = "#上山", category = "H"},
+                    new AutoCompleteList {id = 13, content = "#下海", category = "H"}
                 );
             modelBuilder.Entity<EventMst>()
                 .HasData(
@@ -140,10 +152,13 @@ new EventMst {id = 11, categoryId = 4, status = "T", cost = "1000", eventStDate 
 new EventMst {id = 12, categoryId = 4, status = "T", cost = "1000", eventStDate = "2021/12/8", eventEdDate = "2021/12/8", eventCreateDate = "2021/12/02", examinationPassedDate = "", eventIntroduction = @"", eventDetail = @"", eventAttantion = @"", tag = "", eventTitle = "不想想活動名-A7"}
 
                 );
-            // modelBuilder.Entity<EventAppendix>()
-            //     .HasData(
-            //         new EventAppendix {}
-            //     );
+            modelBuilder.Entity<EventAppendix>()
+                .HasData(
+                    new EventAppendix {id = 1, eventMstId = 1, category = "P", appendixPath = "/Data/鳶嘴山.jpg"},
+                    new EventAppendix {id = 2, eventMstId = 6, category = "P", appendixPath = "/Data/APEX.jpg"},
+                    new EventAppendix {id = 3, eventMstId = 7, category = "P", appendixPath = "/Data/LOL.jpg"},
+                    new EventAppendix {id = 4, eventMstId = 8, category = "P", appendixPath = @"/Data/嘉義｜阿里山生態文化之旅.jpg"}
+                );
             modelBuilder.Entity<EventCategory>()
                 .HasData(
                     new EventCategory {id = 1, categoryName = "測試活動A", parentId = 0, enable = "Y"},
@@ -164,10 +179,13 @@ new EventMst {id = 12, categoryId = 4, status = "T", cost = "1000", eventStDate 
             //     .HasData(
             //         new EventViewLog {}
             //     );
-            // modelBuilder.Entity<MappingPermissionRole>()
-            //     .HasData(
-            //         new MappingPermissionRole {}
-            //     );
+            modelBuilder.Entity<MappingPermissionRole>()
+                .HasData(
+                    new MappingPermissionRole {roleId = 1, permissionId = 1},
+                    new MappingPermissionRole {roleId = 2, permissionId = 2},
+                    new MappingPermissionRole {roleId = 2, permissionId = 3},
+                    new MappingPermissionRole {roleId = 2, permissionId = 4}
+                );
             // modelBuilder.Entity<MappingUserAchievement>()
             //     .HasData(
             //         new MappingUserAchievement {}
@@ -176,14 +194,20 @@ new EventMst {id = 12, categoryId = 4, status = "T", cost = "1000", eventStDate 
             //     .HasData(
             //         new MappingUserPersonalSetting {}
             //     );
-            // modelBuilder.Entity<MappingUserRole>()
-            //     .HasData(
-            //         new MappingUserRole {}
-            //     );
-            // modelBuilder.Entity<Permission>()
-            //     .HasData(
-            //         new Permission {}
-            //     );
+            modelBuilder.Entity<MappingUserRole>()
+                .HasData(
+                    new MappingUserRole {userAccount = "adda", roleId = 1},
+                    new MappingUserRole {userAccount = "admin", roleId = 1},
+                    new MappingUserRole {userAccount = "yiyuan", roleId = 2},
+                    new MappingUserRole {userAccount = "pang", roleId = 2}
+                );
+            modelBuilder.Entity<Permission>()
+                .HasData(
+                    new Permission {id = 1, functionName = "總管理", actionCategory = "所有的權限"},
+                    new Permission {id = 2, functionName = "活動管理", actionCategory = "新增"},
+                    new Permission {id = 3, functionName = "活動管理", actionCategory = "編輯"},
+                    new Permission {id = 4, functionName = "活動管理", actionCategory = "刪除"}
+                );
             // modelBuilder.Entity<PersonalSetting>()
             //     .HasData(
             //         new PersonalSetting {}
@@ -225,10 +249,10 @@ new EventMst {id = 12, categoryId = 4, status = "T", cost = "1000", eventStDate 
                     new User {account = "yiyuan", password = "yiyuan", name = "阿摳", email = "charles01270@gmail.com", accountStatus = "Active"},
                     new User {account = "pang", password = "pang", name = "阿彭", email = "cxz0917001997@gmail.com", accountStatus = "Active"}
                 );
-            // modelBuilder.Entity<UserAppendix>()
-            //     .HasData(
-            //         new UserAppendix {}
-            //     );
+            modelBuilder.Entity<UserAppendix>()
+                .HasData(
+                    new UserAppendix {id = 1, userAccount = "yiyuan", category = "H", appendixPath = "/Data/0.jpg"}
+                );
             // modelBuilder.Entity<UserNotify>()
             //     .HasData(
             //         new UserNotify {}

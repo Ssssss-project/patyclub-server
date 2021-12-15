@@ -14,10 +14,10 @@ namespace patyclub_server.Entities
     public int eventMstId { get; set; }
 
     [Column("category")] //附件類別
-    public int category { get; set; }
+    public string category { get; set; }
 
     [Column("appendixPath")] //附件路徑
-    public int appendixPath { get; set; }
+    public string appendixPath { get; set; }
 
   }
 
