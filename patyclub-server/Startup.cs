@@ -19,7 +19,10 @@ using SignalRTest.Hubs;
 using System.Reflection;
 using System.IO;
 using Microsoft.OpenApi.Models;
-
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 namespace patyclub_server
 {
     public class Startup
@@ -84,6 +87,28 @@ namespace patyclub_server
             });
 
             services.AddSingleton<JwtHelpers>();
+            services
+                .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    // 當驗證失敗時，回應標頭會包含 WWW-Authenticate 標頭，這裡會顯示失敗的詳細錯誤原因
+                    options.IncludeErrorDetails = true; // 預設值為 true，有時會特別關閉
+
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        // 一般我們都會驗證 Issuer
+                        ValidateIssuer = false,
+                        ValidIssuer = Configuration.GetValue<string>("JwtSettings:Issuer"),
+                        ValidateAudience = false,
+
+                        // 一般我們都會驗證 Token 的有效期間
+                        ValidateLifetime = false,
+
+                        // 如果 Token 中包含 key 才需要驗證，一般都只有簽章而已
+                        ValidateIssuerSigningKey = false,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration.GetValue<string>("JwtSettings:SignKey")))
+                    };
+                });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -95,16 +120,16 @@ namespace patyclub_server
             }
 
             app.UseCors("CorsPolicy");
-
+            
             app.UseHttpsRedirection();
-
+            
             app.UseStaticFiles(new StaticFileOptions
             {
                 FileProvider = new PhysicalFileProvider(
                     Path.Combine(env.ContentRootPath, "Data")),
                 RequestPath = "/Data"
             });
-
+            app.UseAuthentication();
             app.UseRouting();
 
             app.UseAuthorization();
