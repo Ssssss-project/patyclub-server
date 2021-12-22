@@ -34,6 +34,12 @@ namespace patyclub_server.Entities
     [Column("examinationPassedDate")] //審核通過日期
     public string examinationPassedDate { get; set; }
 
+    [Column("signUpStDate")] //報名開始日期
+    public string signUpStDate { get; set; }
+
+    [Column("signUpEdDate")] //報名結束日期
+    public string signUpEdDate { get; set; }
+
     [Column("eventIntroduction")] //活動簡介
     public string eventIntroduction { get; set; }
 

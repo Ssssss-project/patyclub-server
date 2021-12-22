@@ -134,7 +134,7 @@ new EventMst {id = 1, categoryId = 3, status = "T", cost = "1000", eventStDate =
 
 12.衛生紙
 
-13.毛巾 （看個人非必要）", tag = "H", eventTitle = "爬爬爬爬爬山趣"},
+13.毛巾 （看個人非必要）", tag = "S", eventTitle = "爬爬爬爬爬山趣"},
 new EventMst {id = 2, categoryId = 3, status = "T", cost = "1000", eventStDate = "2021/12/05", eventEdDate = "2021/12/05", eventCreateDate = "2021/12/05", examinationPassedDate = "2021/12/05", eventIntroduction = @"", eventDetail = @"", eventAttantion = @"", tag = "S", eventTitle = "颱風天要幹嘛? 當然是去泛舟R!"},
 new EventMst {id = 3, categoryId = 2, status = "T", cost = "1000", eventStDate = "2021/12/15", eventEdDate = "2021/12/17", eventCreateDate = "2021/12/01", examinationPassedDate = "2021/12/10", eventIntroduction = @"", eventDetail = @"", eventAttantion = @"", tag = "S", eventTitle = "SideProject Coding..."},
 new EventMst {id = 4, categoryId = 1, status = "T", cost = "1000", eventStDate = "2021/12/18", eventEdDate = "2021/12/20", eventCreateDate = "2021/12/05", examinationPassedDate = "", eventIntroduction = @"", eventDetail = @"", eventAttantion = @"", tag = "S", eventTitle = "一日雙塔，騎起來~"},
@@ -171,10 +171,14 @@ new EventMst {id = 12, categoryId = 4, status = "T", cost = "1000", eventStDate 
             //     .HasData(
             //         new EventCollect {}
             //     );
-            // modelBuilder.Entity<EventPersonnel>()
-            //     .HasData(
-            //         new EventPersonnel {}
-            //     );
+            modelBuilder.Entity<EventPersonnel>()
+                .HasData(
+                    new EventPersonnel {userAccount = "adda", eventMstId = 1, permission = "OWNER", status = "??"},
+                    new EventPersonnel {userAccount = "yiyuan", eventMstId = 1, permission = "MEMBER", status = "??"},
+                    new EventPersonnel {userAccount = "peng", eventMstId = 1, permission = "MEMBER", status = "??"},
+                    new EventPersonnel {userAccount = "yiyuan", eventMstId = 2, permission = "OWNER", status = "??"},
+                    new EventPersonnel {userAccount = "peng", eventMstId = 2, permission = "MEMBER", status = "??"}
+                );
             // modelBuilder.Entity<EventViewLog>()
             //     .HasData(
             //         new EventViewLog {}
@@ -235,12 +239,15 @@ new EventMst {id = 12, categoryId = 4, status = "T", cost = "1000", eventStDate 
                     new SysCodeDtl {id = 2, sysCodeMstId = 1, codeName = "S", codeDesc = "精選活動"},
                     new SysCodeDtl {id = 3, sysCodeMstId = 2, codeName = "T", codeDesc = "暫存中"},
                     new SysCodeDtl {id = 4, sysCodeMstId = 2, codeName = "C", codeDesc = "已取消"},
-                    new SysCodeDtl {id = 5, sysCodeMstId = 2, codeName = "D", codeDesc = "已刪除"}
+                    new SysCodeDtl {id = 5, sysCodeMstId = 2, codeName = "D", codeDesc = "已刪除"},
+                    new SysCodeDtl {id = 6, sysCodeMstId = 3, codeName = "OWNER", codeDesc = "擁有者"},
+                    new SysCodeDtl {id = 7, sysCodeMstId = 3, codeName = "MEMBER", codeDesc = "成員"}
                 );
             modelBuilder.Entity<SysCodeMst>()
                 .HasData(
                     new SysCodeMst {id = 1, name = "TAG", remark = "活動標記代碼"},
-                    new SysCodeMst {id = 2, name = "eventStatus", remark = "活動狀態代碼"}
+                    new SysCodeMst {id = 2, name = "eventStatus", remark = "活動狀態代碼"},
+                    new SysCodeMst {id = 3, name = "EventPersonnelPermission", remark = "活動人員權限"}
                 );
             modelBuilder.Entity<User>()
                 .HasData(
