@@ -62,8 +62,19 @@ namespace patyclub_server.Controllers
             // 密碼錯誤
             if(loginUser.password != args.password) return StatusCode(401, new Response {message = "Account pass denied"});
 
+            // 取得頭貼位置
+            var resultAppendix = from appendix in _context.userAppendix
+                           where appendix.userAccount == loginUser.account
+                           where appendix.category == "H"
+                           select appendix.appendixPath;
+
+            var headPhotoPath = "";
+            if (resultAppendix.ToList().Count == 1)
+                headPhotoPath = resultAppendix.ToList()[0];
+
+            
             string token = jwtHelpers.GenerateToken(loginUser.name, "ADMIN");
-            return Ok(new Response {message = "Account pass", data = token});
+            return Ok(new Response {message = "Account pass", data = new {token, headPhotoPath}});
         }
 
         public class forgetPwdArgs{

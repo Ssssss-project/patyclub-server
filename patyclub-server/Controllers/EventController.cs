@@ -5,6 +5,7 @@ using patyclub_server.Entities;
 using patyclub_server.Service;
 using System.Collections.Generic;
 using System.Linq;
+using System;
 
 
 namespace patyclub_server.Controllers
@@ -42,7 +43,7 @@ namespace patyclub_server.Controllers
         // }
 
         /// <summary>
-        /// 取得精選活動清單
+        /// 取得單筆活動
         /// </summary>
         [HttpGet("getEvent/{id}")]
         public ActionResult getEvent(int id)
@@ -52,22 +53,31 @@ namespace patyclub_server.Controllers
             //                                 .Where(b => b.id.Equals(id))
             //                                 .ToList();
 
-            var result = from em in _context.eventMst
-                                     join code in _context.sysCodeDtl on em.status equals code.codeName where code.sysCodeMstId == 2
-                                     where em.id == id
-                                     select new {em,
-                                                 statusName = code.codeDesc};
+            var result = from em in _context.eventMst.Where(x => x.id == id)
+                        join code in _context.sysCodeDtl.Where(x => x.sysCodeMstId == 2) on em.status equals code.codeName
+                        join ep in _context.eventPersonnel
+                        on new {id = em.id, permission = "OWNER"} equals 
+                            new {id = ep.eventMstId, permission = ep.permission}
+                        select new {em.id,
+                                    em.categoryId,
+                                    em.status,
+                                    statusName = code.codeDesc,
+                                    em.cost,
+                                    em.eventStDate,
+                                    em.eventEdDate,
+                                    em.eventCreateDate,
+                                    em.examinationPassedDate,
+                                    em.eventIntroduction,
+                                    em.eventDetail,
+                                    em.eventAttantion,
+                                    em.tag,
+                                    em.eventTitle,
+                                    owner = ep.userAccount
+                                    };
 
-            // if (resultEventMstList.ToList().Count == 0)
-            //     return StatusCode(404, new Response {message = "Id is dismatch in Database."});
 
-            
-            // var aa = from code in _context.sysCodeDtl where code.sysCodeMstId == 2 select code.codeName;
-            // var eventAppendix = from ea in _context.eventAppendix
-            //                     where ea.eventMstId == id
-            //                     select ea;
-
-            // var test = from code in _context.sysCodeDtl where code.sysCodeMstId == 2 where code.codeName == "T" select code.codeDesc;
+            if (result.ToList().Count == 0)
+                return StatusCode(404, new Response {message = "Id is dismatch in Database."});
 
             return Ok(new Response {message = "", data = result.ToList()});
         } 
@@ -78,10 +88,22 @@ namespace patyclub_server.Controllers
         [HttpGet("getSpecialEvent")]
         public ActionResult getSpecialEvent()
         {
-            List<EventMst> resultEventMstList = _context.eventMst
-                                            .Where(b => b.tag.Equals("S"))
+            var resultEventMstList = from em in _context.eventMst
+                                     join ep in _context.eventPersonnel
+                                        on new {id = em.id, permission = "OWNER"} equals 
+                                           new {id = ep.eventMstId, permission = ep.permission}
+                                     where em.tag == "S"
+                                     select new {
+                                        em.id,
+                                        em.eventTitle,
+                                        em.eventIntroduction,
+                                        em.signUpStDate,
+                                        em.signUpEdDate,
+                                        em.eventStDate,
+                                        em.eventEdDate,
+                                        owner = ep.userAccount
+                                     };
                                             
-                                            .ToList();
             return Ok(new Response {message = "", data = resultEventMstList});
         }
 
