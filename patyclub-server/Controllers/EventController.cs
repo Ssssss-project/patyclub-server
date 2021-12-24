@@ -107,6 +107,50 @@ namespace patyclub_server.Controllers
             return Ok(new Response {message = "", data = resultEventMstList});
         }
 
+
+        public class getEventWithConditionsArgs {
+            public int? category {get; set;}
+            public string TAG {get; set;}
+            public string eventStDate {get; set;}
+        };
+        /// <summary>
+        /// 依條件篩選活動
+        /// </summary>
+        [HttpPost("getEventWithConditions")]
+        public ActionResult getEventWithConditions(getEventWithConditionsArgs args)
+        {
+
+            var resultEventMstList = _context.eventMst.ToList();
+
+            if (args.category != null) 
+                resultEventMstList = resultEventMstList.Where(b => b.categoryId == args.category).ToList();
+            if (args.TAG != "") 
+                resultEventMstList = resultEventMstList.Where(b => b.tag == args.TAG).ToList();
+            if (args.eventStDate != "")
+                resultEventMstList = resultEventMstList.Where(b => Convert.ToDateTime(b.eventStDate) == Convert.ToDateTime(args.eventStDate)).ToList();
+
+            var result = from em in resultEventMstList
+                        join ec in _context.eventCategory on args.category equals ec.id
+                        join ep in _context.eventPersonnel
+                        on new {id = em.id, permission = "OWNER"} equals 
+                            new {id = ep.eventMstId, permission = ep.permission}
+                        where em.tag == "S"
+                        select new {
+                        em.id,
+                        em.eventTitle,
+                        em.eventIntroduction,
+                        em.signUpStDate,
+                        em.signUpEdDate,
+                        em.eventStDate,
+                        em.eventEdDate,
+                        owner = ep.userAccount
+                        };
+
+
+                                            
+            return Ok(new Response {message = ""});
+        }
+
     }
 
     
