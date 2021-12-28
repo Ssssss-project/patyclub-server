@@ -148,7 +148,7 @@ namespace patyclub_server.Controllers
 
 
                                             
-            return Ok(new Response {message = ""});
+            return Ok(new Response {message = "", data = result});
         }
 
     }

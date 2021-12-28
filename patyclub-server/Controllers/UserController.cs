@@ -62,20 +62,33 @@ namespace patyclub_server.Controllers
             // 密碼錯誤
             if(loginUser.password != args.password) return StatusCode(401, new Response {message = "Account pass denied"});
 
-            // 取得頭貼位置
-            var resultAppendix = from appendix in _context.userAppendix
-                           where appendix.userAccount == loginUser.account
-                           where appendix.category == "H"
-                           select appendix.appendixPath;
-
-            var headPhotoPath = "";
-            if (resultAppendix.ToList().Count == 1)
-                headPhotoPath = resultAppendix.ToList()[0];
 
             
             string token = jwtHelpers.GenerateToken(loginUser.name, "ADMIN");
-            return Ok(new Response {message = "Account pass", data = new {token, headPhotoPath}});
+            return Ok(new Response {message = "Account pass", data = new {token}});
         }
+
+
+        ///<summary>
+        ///取得使用者資訊
+        ///</summary>
+        [HttpGet("getUserProfile")]
+        public ActionResult getUserProfile(string userAccount){
+
+            // LEFT JOIN 用法
+            var resultUser = (from user in _context.user.Where(u => u.account == userAccount)
+                             join appendix in _context.userAppendix.Where( a=> a.category == "H") on user.account equals appendix.userAccount into ua
+                             from headSticker in ua.DefaultIfEmpty()
+                             select new {
+                                 user.account,
+                                 user.name,
+                                 user.nickName,
+                                 headStickerPath = headSticker.appendixPath ?? string.Empty
+                             }).ToList();
+
+            return Ok(new Response{message = resultUser.Count != 0 ? "" : "user Not found!", data = resultUser.Count != 0 ? resultUser[0] : null});
+        }
+
 
         public class forgetPwdArgs{
             public string userEmail{get; set;}
