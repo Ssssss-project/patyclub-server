@@ -129,26 +129,31 @@ namespace patyclub_server.Controllers
             if (args.eventStDate != "")
                 resultEventMstList = resultEventMstList.Where(b => Convert.ToDateTime(b.eventStDate) == Convert.ToDateTime(args.eventStDate)).ToList();
 
-            var result = from em in resultEventMstList
-                        join ec in _context.eventCategory on args.category equals ec.id
+            var result = (from em in resultEventMstList
+                        join ec in _context.eventCategory on em.categoryId equals ec.id
                         join ep in _context.eventPersonnel
                         on new {id = em.id, permission = "OWNER"} equals 
-                            new {id = ep.eventMstId, permission = ep.permission}
-                        where em.tag == "S"
+                            new {id = ep.eventMstId, permission = ep.permission} into subEp
+                        from owner in subEp.DefaultIfEmpty()
+                        join ap in _context.eventAppendix.Where(a => a.category == "P") on em.id equals ap.eventMstId into subAp
+                        from cover in subAp.DefaultIfEmpty()
                         select new {
                         em.id,
+                        em.categoryId,
+                        ec.categoryName,
                         em.eventTitle,
                         em.eventIntroduction,
                         em.signUpStDate,
                         em.signUpEdDate,
                         em.eventStDate,
                         em.eventEdDate,
-                        owner = ep.userAccount
-                        };
+                        owner = owner?.userAccount ?? string.Empty,
+                        coverPath = cover?.appendixPath ?? string.Empty
+                        }).ToList();
 
 
                                             
-            return Ok(new Response {message = "", data = result});
+            return Ok(new Response {message = "##", data = result});
         }
 
     }

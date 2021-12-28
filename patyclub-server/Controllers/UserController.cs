@@ -77,7 +77,7 @@ namespace patyclub_server.Controllers
 
             // LEFT JOIN 用法
             var resultUser = (from user in _context.user.Where(u => u.account == userAccount)
-                             join appendix in _context.userAppendix.Where( a=> a.category == "H") on user.account equals appendix.userAccount into ua
+                             join appendix in _context.userAppendix.Where(a=> a.category == "H") on user.account equals appendix.userAccount into ua
                              from headSticker in ua.DefaultIfEmpty()
                              select new {
                                  user.account,
