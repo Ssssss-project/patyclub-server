@@ -62,9 +62,15 @@ namespace patyclub_server.Controllers
             // 密碼錯誤
             if(loginUser.password != args.password) return StatusCode(401, new Response {message = "Account pass denied"});
 
+            var permissionResult = (from p in _context.permission
+                                   join mp in _context.mappingPermissionRole on p.id equals mp.permissionId
+                                   join mr in _context.mappingUserRole on mp.roleId equals mr.roleId
+                                   join u in _context.user on mr.userAccount equals u.account
+                                   where u.account == args.account
+                                   select new {permission = p.id + "-" + p.functionName + "-" + p.actionCategory}).ToList();
 
-            
-            string token = jwtHelpers.GenerateToken(loginUser.name, "ADMIN");
+            string permission = string.Join(", ", permissionResult.Select(x => x.permission));
+            string token = jwtHelpers.GenerateToken(loginUser.name, permission);
             return Ok(new Response {message = "Account pass", data = new {token}});
         }
 
