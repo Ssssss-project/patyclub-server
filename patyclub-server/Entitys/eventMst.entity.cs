@@ -53,9 +53,6 @@ namespace patyclub_server.Entities
     [Column("tag")] //活動標籤
     public string tag { get; set; }
 
-    [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
-    [Column("lastUpdatedDate")] //最後更新時間
-    public string lastUpdatedDate { get; set; }
   }
 
   public class EventMstService
