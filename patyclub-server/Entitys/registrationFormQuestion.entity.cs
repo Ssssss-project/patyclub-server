@@ -7,6 +7,7 @@ namespace patyclub_server.Entities
   [Table("REGISTRATION_FORM_QUESTION")]
   public class RegistrationFormQuestion
   {
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     [Column("id")] //題目ID
     public int id { get; set; }
 

@@ -9,7 +9,8 @@ namespace patyclub_server.Entities
   {
     [Column("userAccount")] //使用者帳號
     public string userAccount { get; set; }
-
+    
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     [Column("id")] //通知ID
     public int id { get; set; }
 

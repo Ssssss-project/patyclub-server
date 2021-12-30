@@ -7,6 +7,7 @@ namespace patyclub_server.Entities
   [Table("EVENT_APPENDIX")]
   public class EventAppendix
   {
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     [Column("id")] //附件ID
     public int id { get; set; }
 

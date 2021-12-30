@@ -7,6 +7,7 @@ namespace patyclub_server.Entities
   [Table("AUTO_COMPLETE_LIST")]
   public class AutoCompleteList
   {
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     [Column("id")] //ID
     public int id { get; set; }
 

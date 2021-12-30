@@ -7,6 +7,7 @@ namespace patyclub_server.Entities
   [Table("SYS_CODE_DTL")]
   public class SysCodeDtl
   {
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     [Column("id")] //參數ID
     public int id { get; set; }
 

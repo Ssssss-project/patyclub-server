@@ -7,6 +7,7 @@ namespace patyclub_server.Entities
   [Table("SYS_CODE_MST")]
   public class SysCodeMst
   {
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     [Column("id")] //參數類別ID
     public int id { get; set; }
 

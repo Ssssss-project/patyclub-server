@@ -7,6 +7,7 @@ namespace patyclub_server.Entities
   [Table("EVENT_MST")]
   public class EventMst
   {
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     [Column("id")] // 活動ID
     public int id { get; set; }
 
@@ -51,6 +52,10 @@ namespace patyclub_server.Entities
 
     [Column("tag")] //活動標籤
     public string tag { get; set; }
+
+    [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+    [Column("lastUpdatedDate")] //最後更新時間
+    public string lastUpdatedDate { get; set; }
   }
 
   public class EventMstService

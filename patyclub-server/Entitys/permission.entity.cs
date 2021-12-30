@@ -7,6 +7,7 @@ namespace patyclub_server.Entities
   [Table("PERMISSION")]
   public class Permission
   {
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     [Column("id")] //權限ID
     public int id { get; set; }
 

@@ -7,6 +7,7 @@ namespace patyclub_server.Entities
   [Table("EVENT_CATEGORY")]
   public class EventCategory
   {
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     [Column("id")] //類別ID
     public int id { get; set; }
 

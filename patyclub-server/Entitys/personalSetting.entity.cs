@@ -7,6 +7,7 @@ namespace patyclub_server.Entities
   [Table("PERSONAL_SETTING")]
   public class PersonalSetting
   {
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     [Column("id")] //設定ID
     public int id { get; set; }
 

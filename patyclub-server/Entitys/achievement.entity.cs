@@ -7,6 +7,7 @@ namespace patyclub_server.Entities
   [Table("ACHIEVEMENT")]
   public class Achievement
   {
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     [Column("id")] //成就ID
     public int id { get; set; }
 

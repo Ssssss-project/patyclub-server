@@ -7,6 +7,7 @@ namespace patyclub_server.Entities
   [Table("ROLE")]
   public class Role
   {
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     [Column("id")] //角色ID
     public int id { get; set; }
 
