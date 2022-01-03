@@ -45,7 +45,11 @@ namespace patyclub_server.Controllers
             _context.eventMst.Add(newEventMst);
             _context.SaveChanges();            
 
-            _context.eventPersonnel.Add(new EventPersonnel{userAccount = "wait for JWT decode", eventMstId = newEventMst.id, permission = "OWNER"});
+            _context.eventPersonnel.Add(new EventPersonnel{
+                                                            userAccount = User.Claims.FirstOrDefault(a => a.Type == "userName").Value, 
+                                                            eventMstId = newEventMst.id, 
+                                                            permission = "OWNER"
+                                                           });
             _context.SaveChanges();
 
             return Ok(new Response{message = "event created success.", data = new {id = newEventMst.id}});
