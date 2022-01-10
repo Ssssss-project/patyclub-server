@@ -134,11 +134,11 @@ new EventMst {id = 1, categoryId = 3, status = "T", cost = "1000", eventStDate =
 
 12.衛生紙
 
-13.毛巾 （看個人非必要）", tag = "S", eventTitle = "爬爬爬爬爬山趣"},
-new EventMst {id = 2, categoryId = 3, status = "T", cost = "1000", eventStDate = "2021/12/05", eventEdDate = "2021/12/05", eventCreateDate = "2021/12/05", examinationPassedDate = "2021/12/05", eventIntroduction = @"", eventDetail = @"", eventAttantion = @"", tag = "S", eventTitle = "颱風天要幹嘛? 當然是去泛舟R!"},
-new EventMst {id = 3, categoryId = 2, status = "T", cost = "1000", eventStDate = "2021/12/15", eventEdDate = "2021/12/17", eventCreateDate = "2021/12/01", examinationPassedDate = "2021/12/10", eventIntroduction = @"", eventDetail = @"", eventAttantion = @"", tag = "S", eventTitle = "SideProject Coding..."},
-new EventMst {id = 4, categoryId = 1, status = "T", cost = "1000", eventStDate = "2021/12/18", eventEdDate = "2021/12/20", eventCreateDate = "2021/12/05", examinationPassedDate = "", eventIntroduction = @"", eventDetail = @"", eventAttantion = @"", tag = "S", eventTitle = "一日雙塔，騎起來~"},
-new EventMst {id = 5, categoryId = 4, status = "T", cost = "1000", eventStDate = "2021/12/20", eventEdDate = "2021/12/20", eventCreateDate = "2021/12/01", examinationPassedDate = "2021/12/10", eventIntroduction = @"", eventDetail = @"", eventAttantion = @"", tag = "H", eventTitle = "JustDance跳跳跳!"},
+13.毛巾 （看個人非必要）", tag = "S", eventTitle = "爬爬爬爬爬山趣", personLimit = 10},
+new EventMst {id = 2, categoryId = 3, status = "T", cost = "1000", eventStDate = "2021/12/05", eventEdDate = "2021/12/05", eventCreateDate = "2021/12/05", examinationPassedDate = "2021/12/05", eventIntroduction = @"", eventDetail = @"", eventAttantion = @"", tag = "S", eventTitle = "颱風天要幹嘛? 當然是去泛舟R!", personLimit = 6, ageLimit = ">15"},
+new EventMst {id = 3, categoryId = 2, status = "T", cost = "1000", eventStDate = "2021/12/15", eventEdDate = "2021/12/17", eventCreateDate = "2021/12/01", examinationPassedDate = "2021/12/10", eventIntroduction = @"", eventDetail = @"", eventAttantion = @"", tag = "S", eventTitle = "SideProject Coding...", personLimit = 8, ageLimit = ">6"},
+new EventMst {id = 4, categoryId = 1, status = "T", cost = "1000", eventStDate = "2021/12/18", eventEdDate = "2021/12/20", eventCreateDate = "2021/12/05", examinationPassedDate = "", eventIntroduction = @"", eventDetail = @"", eventAttantion = @"", tag = "S", eventTitle = "一日雙塔，騎起來~", ageLimit = ">15"},
+new EventMst {id = 5, categoryId = 4, status = "T", cost = "1000", eventStDate = "2021/12/20", eventEdDate = "2021/12/20", eventCreateDate = "2021/12/01", examinationPassedDate = "2021/12/10", eventIntroduction = @"", eventDetail = @"", eventAttantion = @"", tag = "H", eventTitle = "JustDance跳跳跳!", ageLimit = ">18"},
 new EventMst {id = 6, categoryId = 4, status = "T", cost = "1000", eventStDate = "2021/12/15", eventEdDate = "2021/12/16", eventCreateDate = "2021/12/02", examinationPassedDate = "", eventIntroduction = @"銅牌一日上白金", eventDetail = @"今天晚上五點開打
 打到白金為止", eventAttantion = @"雷包勿來", tag = "", eventTitle = "APEX 爬分"},
 new EventMst {id = 7, categoryId = 4, status = "T", cost = "1000", eventStDate = "2021/12/25", eventEdDate = "2021/12/26", eventCreateDate = "2021/12/01", examinationPassedDate = "2021/12/20", eventIntroduction = @"如題", eventDetail = @"打到大家都累為止", eventAttantion = @"for fun", tag = "", eventTitle = "LOL NG隨便打"},
@@ -241,13 +241,18 @@ new EventMst {id = 12, categoryId = 4, status = "T", cost = "1000", eventStDate 
                     new SysCodeDtl {id = 4, sysCodeMstId = 2, codeName = "C", codeDesc = "已取消"},
                     new SysCodeDtl {id = 5, sysCodeMstId = 2, codeName = "D", codeDesc = "已刪除"},
                     new SysCodeDtl {id = 6, sysCodeMstId = 3, codeName = "OWNER", codeDesc = "擁有者"},
-                    new SysCodeDtl {id = 7, sysCodeMstId = 3, codeName = "MEMBER", codeDesc = "成員"}
+                    new SysCodeDtl {id = 7, sysCodeMstId = 3, codeName = "MEMBER", codeDesc = "成員"},
+                    new SysCodeDtl {id = 8, sysCodeMstId = 4, codeName = "<6", codeDesc = "6-"},
+                    new SysCodeDtl {id = 9, sysCodeMstId = 4, codeName = ">6", codeDesc = "6+"},
+                    new SysCodeDtl {id = 10, sysCodeMstId = 4, codeName = ">15", codeDesc = "15+"},
+                    new SysCodeDtl {id = 11, sysCodeMstId = 4, codeName = ">18", codeDesc = "18+"}
                 );
             modelBuilder.Entity<SysCodeMst>()
                 .HasData(
                     new SysCodeMst {id = 1, name = "TAG", remark = "活動標記代碼"},
                     new SysCodeMst {id = 2, name = "eventStatus", remark = "活動狀態代碼"},
-                    new SysCodeMst {id = 3, name = "EventPersonnelPermission", remark = "活動人員權限"}
+                    new SysCodeMst {id = 3, name = "EventPersonnelPermission", remark = "活動人員權限"},
+                    new SysCodeMst {id = 4, name = "ageLimit", remark = "年齡限制分級"}
                 );
             modelBuilder.Entity<User>()
                 .HasData(
