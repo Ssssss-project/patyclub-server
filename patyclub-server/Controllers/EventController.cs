@@ -139,7 +139,9 @@ namespace patyclub_server.Controllers
                                     em.eventAttantion,
                                     em.tag,
                                     em.eventTitle,
-                                    owner = o.userAccount ?? string.Empty
+                                    owner = o.userAccount ?? string.Empty,
+                                    em.ageLimit,
+                                    em.personLimit
                                     }).ToList();
 
 
@@ -148,7 +150,9 @@ namespace patyclub_server.Controllers
 
             var appendixPathResultList = _context.eventAppendix.Where(ep => ep.eventMstId == id).ToList();
 
-            return Ok(new Response {message = "", data = new {eventDtl = eventMstResult[0], eventAppendixList = appendixPathResultList}});
+            var memberCnt = _context.eventPersonnel.Where(ep => ep.eventMstId == id).Count();
+
+            return Ok(new Response {message = "", data = new {eventDtl = eventMstResult[0], eventAppendixList = appendixPathResultList, memberCnt}});
         } 
 
         /// <summary>
@@ -181,6 +185,7 @@ namespace patyclub_server.Controllers
             public int? category {get; set;}
             public string TAG {get; set;}
             public string eventStDate {get; set;}
+            public List<string> queryList {get; set;}
         };
         /// <summary>
         /// 依條件篩選活動
@@ -197,6 +202,11 @@ namespace patyclub_server.Controllers
                 resultEventMstList = resultEventMstList.Where(b => b.tag == args.TAG).ToList();
             if (args.eventStDate != "" && args.TAG != null)
                 resultEventMstList = resultEventMstList.Where(b => Convert.ToDateTime(b.eventStDate) == Convert.ToDateTime(args.eventStDate)).ToList();
+
+            foreach (var query in args.queryList)
+            {
+                resultEventMstList = resultEventMstList.Where(b => b.eventTitle.Contains(query)).ToList();
+            }
 
             var result = (from em in resultEventMstList
                         join ec in _context.eventCategory on em.categoryId equals ec.id into category
