@@ -48,7 +48,7 @@ namespace patyclub_server.Controllers
             JwtHelpers jwtHelpers = new JwtHelpers(_configuration);
 
             User.Claims.Where(c => c.Type == "" || c.Type == "");
-            string token = jwtHelpers.GenerateToken(User.Claims.FirstOrDefault(a => a.Type == "userName").Value, User.Claims.FirstOrDefault(a => a.Type == "permission").Value);
+            string token = jwtHelpers.GenerateToken(User.Claims.FirstOrDefault(a => a.Type == "account").Value, User.Claims.FirstOrDefault(a => a.Type == "permission").Value);
             return Ok(new Response{message = "JWT refresh success.", data = token});
         }
 

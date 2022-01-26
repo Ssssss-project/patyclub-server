@@ -70,7 +70,7 @@ namespace patyclub_server.Controllers
                                    select new {permission = p.id + "-" + p.functionName + "-" + p.actionCategory}).ToList();
 
             string permission = string.Join(", ", permissionResult.Select(x => x.permission));
-            string token = jwtHelpers.GenerateToken(loginUser.name, permission);
+            string token = jwtHelpers.GenerateToken(loginUser.account, permission);
             return Ok(new Response {message = "Account pass", data = new {token}});
         }
 

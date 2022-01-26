@@ -52,7 +52,12 @@ namespace patyclub_server.Entities
 
     [Column("tag")] //活動標籤
     public string tag { get; set; }
+    
+    [Column("personLimit")] //人數限制
+    public int personLimit { get; set; }
 
+    [Column("ageLimit")] //年齡限制
+    public string ageLimit { get; set; }
   }
 
   public class EventMstService
