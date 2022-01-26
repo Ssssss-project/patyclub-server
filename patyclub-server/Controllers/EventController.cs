@@ -16,6 +16,7 @@ namespace patyclub_server.Controllers
     {
         private DBContext _context;
         private Random _random;
+        private CoreService _coreService;
 
         private readonly ILogger<EventController> _logger;
 
@@ -24,6 +25,7 @@ namespace patyclub_server.Controllers
             _logger = logger;
             _context = context;
             _random = new Random();
+            _coreService = new CoreService();
         }
 
 
@@ -61,6 +63,13 @@ namespace patyclub_server.Controllers
         ///</summary>
         [HttpPost("updateEvent")]
         public ActionResult updateEvent(Event args){
+            if (!_coreService.isDate(args.eventMst.eventStDate) ||
+                !_coreService.isDate(args.eventMst.eventEdDate) ||
+                !_coreService.isDate(args.eventMst.eventCreateDate) ||
+                !_coreService.isDate(args.eventMst.examinationPassedDate) ||
+                !_coreService.isDate(args.eventMst.signUpStDate) ||
+                !_coreService.isDate(args.eventMst.signUpEdDate))
+                return StatusCode(500, new Response{message = "日期格式錯誤，未成功更新"});
             _context.eventMst.Update(args.eventMst);
 
 
@@ -184,8 +193,8 @@ namespace patyclub_server.Controllers
         public class getEventWithConditionsArgs {
             public int? category {get; set;}
             public string TAG {get; set;}
-            public string eventStDate {get; set;}
             public List<string> queryList {get; set;}
+            public string nonCompleteEvent {get; set;}
         };
         /// <summary>
         /// 依條件篩選活動
@@ -200,13 +209,22 @@ namespace patyclub_server.Controllers
                 resultEventMstList = resultEventMstList.Where(b => b.categoryId == args.category).ToList();
             if (args.TAG != ""  && args.TAG != null) 
                 resultEventMstList = resultEventMstList.Where(b => b.tag == args.TAG).ToList();
-            if (args.eventStDate != "" && args.TAG != null)
-                resultEventMstList = resultEventMstList.Where(b => Convert.ToDateTime(b.eventStDate) == Convert.ToDateTime(args.eventStDate)).ToList();
+            if (args.nonCompleteEvent != "" && args.nonCompleteEvent!= null)
+                resultEventMstList = resultEventMstList.Where(b => {
+                    if (!_coreService.isDate(b.eventEdDate))
+                        return false;
+                    else 
+                        return Convert.ToDateTime(b.eventEdDate).CompareTo(DateTime.Now) > 0;
+                }).ToList();
 
-            foreach (var query in args.queryList)
+            if (args.queryList != null)
             {
-                resultEventMstList = resultEventMstList.Where(b => b.eventTitle.Contains(query)).ToList();
+                foreach (var query in args.queryList)
+                {
+                    resultEventMstList = resultEventMstList.Where(b => b.eventTitle.Contains(query)).ToList();
+                }
             }
+
 
             var result = (from em in resultEventMstList
                         join ec in _context.eventCategory on em.categoryId equals ec.id into category
@@ -235,8 +253,14 @@ namespace patyclub_server.Controllers
                                             
             return Ok(new Response {message = "", data = result});
         }
-
+        [HttpGet("testA")]
+        public ActionResult testA(string A){
+            return Ok(new Response{data = Convert.ToDateTime(A).CompareTo(DateTime.Now) > 0});
+        }
     }
+
+
+
 
     
 
