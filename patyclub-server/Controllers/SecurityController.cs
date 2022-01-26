@@ -38,6 +38,9 @@ namespace patyclub_server.Controllers
             return Ok(new Response{message = "success", data = securityService.string2SHA256(str)});
         }
 
+        ///<summary>
+        ///更新JWT
+        ///</summary>
         [HttpGet("refreshJWT")]
         [Authorize]
         public ActionResult refreshJWT()
