@@ -61,6 +61,7 @@ namespace patyclub_server.Controllers
         ///<summary>
         ///更新活動
         ///</summary>
+        /// <response code="500">日期格式錯誤，未成功更新</response>
         [HttpPost("updateEvent")]
         public ActionResult updateEvent(Event args){
             if (!_coreService.isDate(args.eventMst.eventStDate) ||
@@ -124,6 +125,7 @@ namespace patyclub_server.Controllers
         /// <summary>
         /// 取得單筆活動
         /// </summary>
+        /// <response code="404">Id is dismatch in Database.</response>
         [HttpGet("getEvent/{id}")]
         public ActionResult getEvent(int id)
         {
@@ -150,7 +152,9 @@ namespace patyclub_server.Controllers
                                     em.eventTitle,
                                     owner = o.userAccount ?? string.Empty,
                                     em.ageLimit,
-                                    em.personLimit
+                                    em.personLimit,
+                                    timeStatus = Convert.ToDateTime(em.eventStDate).CompareTo(DateTime.Now) > 0?"comingSoon":
+                                                Convert.ToDateTime(em.eventEdDate).CompareTo(DateTime.Now) < 0?"expired":"inProgress"
                                     }).ToList();
 
 
@@ -159,9 +163,9 @@ namespace patyclub_server.Controllers
 
             var appendixPathResultList = _context.eventAppendix.Where(ep => ep.eventMstId == id).ToList();
 
-            var memberCnt = _context.eventPersonnel.Where(ep => ep.eventMstId == id).Count();
+            var eventMember = _context.eventPersonnel.Where(ep => ep.eventMstId == id);
 
-            return Ok(new Response {message = "", data = new {eventDtl = eventMstResult[0], eventAppendixList = appendixPathResultList, memberCnt}});
+            return Ok(new Response {message = "", data = new {eventDtl = eventMstResult[0], eventAppendixList = appendixPathResultList, eventMember = eventMember.ToList()}});
         } 
 
         /// <summary>
@@ -199,6 +203,10 @@ namespace patyclub_server.Controllers
         /// <summary>
         /// 依條件篩選活動
         /// </summary>
+        /// <remarks>
+        /// nonCompleteEvent: IF nonCompleteEvent is not null then limit eventEdDate must large than now and eventEdDate must is valid date format
+        /// 
+        /// </remarks>
         [HttpPost("getEventWithConditions")]
         public ActionResult getEventWithConditions(getEventWithConditionsArgs args)
         {
@@ -246,17 +254,62 @@ namespace patyclub_server.Controllers
                         em.eventStDate,
                         em.eventEdDate,
                         owner = owner?.userAccount ?? string.Empty,
-                        coverPath = cover?.appendixPath ?? string.Empty
+                        coverPath = cover?.appendixPath ?? string.Empty,
+                        timeStatus = Convert.ToDateTime(em.eventStDate).CompareTo(DateTime.Now) > 0?"comingSoon":
+                                        Convert.ToDateTime(em.eventEdDate).CompareTo(DateTime.Now) < 0?"expired":"inProgress"
                         }).ToList();
 
 
                                             
             return Ok(new Response {message = "", data = result});
         }
-        [HttpGet("testA")]
-        public ActionResult testA(string A){
-            return Ok(new Response{data = Convert.ToDateTime(A).CompareTo(DateTime.Now) > 0});
+
+        /// <summary>
+        /// 取得我的活動
+        /// </summary>
+        [HttpPost("getMyEvent")]
+        public ActionResult getMyEvent(string account)
+        {
+
+            var resultEventMstList = (from ep in _context.eventPersonnel.Where(a => a.userAccount == account)
+                                     join em in _context.eventMst on ep.eventMstId equals em.id
+                                     select em).ToList();
+
+            var result = (from em in resultEventMstList
+                        join ec in _context.eventCategory on em.categoryId equals ec.id into category
+                        from c in category.DefaultIfEmpty()
+                        join ep in _context.eventPersonnel
+                        on new {id = em.id, permission = "OWNER"} equals 
+                            new {id = ep.eventMstId, permission = ep.permission} into subEp
+                        from owner in subEp.DefaultIfEmpty()
+                        join ap in _context.eventAppendix.Where(a => a.category == "P") on em.id equals ap.eventMstId into subAp
+                        from cover in subAp.DefaultIfEmpty()
+                        select new {
+                        em.id,
+                        em.categoryId,
+                        categoryName = c?.categoryName ?? string.Empty,
+                        em.eventTitle,
+                        em.eventIntroduction,
+                        em.signUpStDate,
+                        em.signUpEdDate,
+                        em.eventStDate,
+                        em.eventEdDate,
+                        owner = owner?.userAccount ?? string.Empty,
+                        coverPath = cover?.appendixPath ?? string.Empty,
+                        timeStatus = Convert.ToDateTime(em.eventStDate).CompareTo(DateTime.Now) > 0?"comingSoon":
+                                        Convert.ToDateTime(em.eventEdDate).CompareTo(DateTime.Now) < 0?"expired":"inProgress"
+                        }).ToList();
+
+
+                                            
+            return Ok(new Response {message = "", data = result});
         }
+
+        
+        // [HttpGet("testA")]
+        // public ActionResult testA(string A){
+        //     return Ok(new Response{data = Convert.ToDateTime(A).CompareTo(DateTime.Now) > 0});
+        // }
     }
 
 
