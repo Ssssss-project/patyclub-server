@@ -9,6 +9,8 @@ namespace patyclub_server.Service
         {
             try
             {
+                if (isNullOrEmpty(date))
+                    return true;
                 Convert.ToDateTime(date);
                 return true;
             }
@@ -17,6 +19,14 @@ namespace patyclub_server.Service
                 return false;
             }
             // return Regex.Match(date, "[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}").Success;
+        }
+
+        public bool isNullOrEmpty(object A){
+            if (A == "" || A == null)
+            {
+                return true;
+            }
+            return false;
         }
     }
 }
