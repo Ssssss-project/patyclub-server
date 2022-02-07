@@ -95,6 +95,16 @@ namespace patyclub_server.Controllers
             return Ok(new Response{});
         }
 
+        ///<summary>
+        ///取得活動原始欄位
+        ///</summary>
+        [HttpPost("getRawEvent")]
+        public ActionResult getRawEvent(int eventId){
+            var resultEventMst = _context.eventMst.Where(a=>a.id == eventId).ToList();
+            var resultEventAppendix = _context.eventAppendix.Where(a => a.eventMstId == eventId).ToList();
+
+            return Ok(new Response {data = new {eventMst = resultEventMst, eventAppendix = resultEventAppendix}});
+        }
 
         ///<summary>
         ///刪除活動
@@ -307,8 +317,16 @@ namespace patyclub_server.Controllers
 
         
         // [HttpGet("testA")]
-        // public ActionResult testA(string A){
-        //     return Ok(new Response{data = Convert.ToDateTime(A).CompareTo(DateTime.Now) > 0});
+        // public ActionResult testA(string A, string B){
+        //     Console.WriteLine("is 空字串");
+        //     Console.WriteLine(A == "");
+        //     Console.WriteLine("is null");
+        //     Console.WriteLine(A == null);
+        //     Console.WriteLine("is isNullOrEmpty");
+        //     Console.WriteLine(_coreService.isNullOrEmpty(A));
+            
+        //     return Ok(new Response());
+
         // }
     }
 

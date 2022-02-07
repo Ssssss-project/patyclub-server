@@ -46,5 +46,67 @@ namespace patyclub_server.Controllers
             return Ok(new Response{data = codeDtlResult});
         }
 
+        /// <summary>
+        /// 新增代碼群組
+        /// </summary>
+        [HttpPost("addCodeMst")]
+        public ActionResult addCodeMst(SysCodeMst sysCodeMst){
+            var codeMstResult = _context.sysCodeMst.Add(sysCodeMst);
+            _context.SaveChanges();
+            return Ok(new Response{message = "代碼群組新增成功"});
+        }
+
+        /// <summary>
+        /// 新增代碼
+        /// </summary>
+        [HttpPost("addCodeDtl")]
+        public ActionResult addCodeDtl(SysCodeDtl sysCodeDtl){
+            var codeMstResult = _context.sysCodeDtl.Add(sysCodeDtl);
+            _context.SaveChanges();
+            return Ok(new Response{message = "代碼新增成功"});
+        }
+
+        /// <summary>
+        /// 刪除代碼群組
+        /// </summary>
+        [HttpDelete("removeCodeMst")]
+        public ActionResult removeCodeMst(int sysCodeMstId){
+            SysCodeMst item = new SysCodeMst{ id = sysCodeMstId };
+            _context.sysCodeMst.Remove(item);
+            _context.SaveChanges();
+            return Ok(new Response{message = "代碼群組刪除成功"});
+        }
+
+        /// <summary>
+        /// 刪除代碼
+        /// </summary>
+        [HttpDelete("removeCodeDtl")]
+        public ActionResult removeCodeDtl(int sysCodeDtlId){
+            SysCodeDtl item = new SysCodeDtl{ id = sysCodeDtlId };
+            _context.sysCodeDtl.Remove(item);
+            _context.SaveChanges();
+            return Ok(new Response{message = "代碼刪除成功"});
+        }
+
+        /// <summary>
+        /// 更新代碼群組
+        /// </summary>
+        [HttpPost("updateCodeMst")]
+        public ActionResult updateCodeMst(SysCodeMst sysCodeMst){
+            _context.sysCodeMst.Update(sysCodeMst);
+            _context.SaveChanges();
+            return Ok(new Response{message = "代碼群組更新成功"});
+        }
+
+        /// <summary>
+        /// 更新代碼
+        /// </summary>
+        [HttpPost("updateCodeDtl")]
+        public ActionResult updateCodeDtl(SysCodeDtl sysCodeDtl){
+            _context.sysCodeDtl.Update(sysCodeDtl);
+            _context.SaveChanges();
+            return Ok(new Response{message = "代碼更新成功"});
+        }
+
     }
 }
