@@ -8,7 +8,7 @@ using patyclub_server.Entities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using patyclub_server.Core;
 using Microsoft.AspNetCore.Authorization;
-
+using CustomFilter;
 namespace patyclub_server.Controllers
 {
     [ApiController]
@@ -31,6 +31,7 @@ namespace patyclub_server.Controllers
             _jwt = jwt;
         }
 
+        [JwtAuth(new string[] { "HomeLogin", "ModifyEvent" })]
         [HttpGet]
         public string Get()
         {
@@ -44,6 +45,7 @@ namespace patyclub_server.Controllers
             var allValue = User.Claims.Select(c => new {c.Value, c.Type});
             var userName = allValue.FirstOrDefault(c => c.Type == "userName").Value;
             return Ok(userName);
+
         }
     }
 }
