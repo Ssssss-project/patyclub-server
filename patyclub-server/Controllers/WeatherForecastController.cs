@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using patyclub_server.Entities;
+using CustomFilter;
 namespace patyclub_server.Controllers
 {
     [ApiController]
@@ -25,11 +26,11 @@ namespace patyclub_server.Controllers
             _context = context;
         }
 
+        [JwtAuth(new string[] { "HomeLogin", "ModifyEvent" })]
         [HttpGet]
-        public List<User> Get()
+        public int Get()
         {
-            List<User> testList = _context.user.ToList();
-            return testList;
+            return 123;
         }
     }
 }
