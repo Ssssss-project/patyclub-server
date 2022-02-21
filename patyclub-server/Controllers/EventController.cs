@@ -209,13 +209,14 @@ namespace patyclub_server.Controllers
             public string TAG {get; set;}
             public List<string> queryList {get; set;}
             public string nonCompleteEvent {get; set;}
+            public string sortBy {get; set;}
         };
         /// <summary>
         /// 依條件篩選活動
         /// </summary>
         /// <remarks>
         /// nonCompleteEvent: IF nonCompleteEvent is not null then limit eventEdDate must large than now and eventEdDate must is valid date format
-        /// 
+        /// sortBy: 
         /// </remarks>
         [HttpPost("getEventWithConditions")]
         public ActionResult getEventWithConditions(getEventWithConditionsArgs args)
@@ -223,6 +224,7 @@ namespace patyclub_server.Controllers
 
             var resultEventMstList = _context.eventMst.ToList();
 
+            // 套用篩選條件
             if (args.category != null) 
                 resultEventMstList = resultEventMstList.Where(b => b.categoryId == args.category).ToList();
             if (args.TAG != ""  && args.TAG != null) 
@@ -242,6 +244,14 @@ namespace patyclub_server.Controllers
                     resultEventMstList = resultEventMstList.Where(b => b.eventTitle.Contains(query)).ToList();
                 }
             }
+
+            // 套用排序
+            if (args.sortBy == "eventStDate"){
+                resultEventMstList = resultEventMstList.OrderBy(e => e.eventStDate).ToList();
+            }else if(args.sortBy == "hot"){
+                resultEventMstList = resultEventMstList.OrderBy(e => e.eventStDate).ToList();
+            }
+
 
 
             var result = (from em in resultEventMstList
