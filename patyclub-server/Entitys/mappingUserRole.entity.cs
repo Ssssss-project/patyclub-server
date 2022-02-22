@@ -13,18 +13,4 @@ namespace patyclub_server.Entities
     [Column("roleId")] //角色ID
     public int roleId { get; set; }
   }
-
-  public class MappingUserRoleService
-  {
-    public DBContext _context;
-
-    public MappingUserRoleService(DBContext context)
-    {
-      _context = context;
-    }
-
-    public IEnumerable<MappingUserRole> GetMappingUserRoles() {
-      return _context.mappingUserRole.ToList();
-    }
-  }
 }

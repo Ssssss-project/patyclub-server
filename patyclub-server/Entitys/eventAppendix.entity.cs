@@ -21,18 +21,4 @@ namespace patyclub_server.Entities
     public string appendixPath { get; set; }
 
   }
-
-  public class EventAppendixService
-  {
-    public DBContext _context;
-
-    public EventAppendixService(DBContext context)
-    {
-      _context = context;
-    }
-
-    public IEnumerable<EventAppendix> GetEventAppendixs() {
-      return _context.eventAppendix.ToList();
-    }
-  }
 }

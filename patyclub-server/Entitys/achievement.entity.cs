@@ -18,18 +18,4 @@ namespace patyclub_server.Entities
     public int goal { get; set; }
 
   }
-
-  public class AchievementService
-  {
-    public DBContext _context;
-
-    public AchievementService(DBContext context)
-    {
-      _context = context;
-    }
-
-    public IEnumerable<Achievement> GetAchievements() {
-      return _context.achievement.ToList();
-    }
-  }
 }

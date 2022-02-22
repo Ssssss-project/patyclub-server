@@ -13,18 +13,4 @@ namespace patyclub_server.Entities
     [Column("eventMstId")] //活動ID
     public int eventMstId { get; set; }
   }
-
-  public class EventCollectService
-  {
-    public DBContext _context;
-
-    public EventCollectService(DBContext context)
-    {
-      _context = context;
-    }
-
-    public IEnumerable<EventCollect> GetEventCollects() {
-      return _context.eventCollect.ToList();
-    }
-  }
 }

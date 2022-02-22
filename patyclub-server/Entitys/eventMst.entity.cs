@@ -59,18 +59,4 @@ namespace patyclub_server.Entities
     [Column("ageLimit")] //年齡限制
     public string ageLimit { get; set; }
   }
-
-  public class EventMstService
-  {
-    public DBContext _context;
-
-    public EventMstService(DBContext context)
-    {
-      _context = context;
-    }
-
-    public IEnumerable<EventMst> GetEventMsts() {
-      return _context.eventMst.ToList();
-    }
-  }
 }

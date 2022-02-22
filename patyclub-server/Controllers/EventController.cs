@@ -48,7 +48,7 @@ namespace patyclub_server.Controllers
             _context.SaveChanges();            
 
             _context.eventPersonnel.Add(new EventPersonnel{
-                                                            userAccount = User.Claims.FirstOrDefault(a => a.Type == "userName").Value, 
+                                                            userAccount = User.Claims.FirstOrDefault(a => a.Type == "account").Value, 
                                                             eventMstId = newEventMst.id, 
                                                             permission = "OWNER"
                                                            });
@@ -219,6 +219,8 @@ namespace patyclub_server.Controllers
         /// 依條件篩選活動
         /// </summary>
         /// <remarks>
+        /// queryList: 查詢範圍「eventTitle, eventDetail, eventAttantion, eventIntroduction」
+        ///
         /// nonCompleteEvent: IF nonCompleteEvent is "Y" then limit eventEdDate must large than now and eventEdDate must is valid date format
         ///
         /// sortBy: 
@@ -248,7 +250,10 @@ namespace patyclub_server.Controllers
             {
                 foreach (var query in args.queryList)
                 {
-                    resultEventMstList = resultEventMstList.Where(b => b.eventTitle.Contains(query)).ToList();
+                    resultEventMstList = resultEventMstList.Where(b => b.eventTitle.Contains(query) 
+                                                                    || b.eventDetail.Contains(query)
+                                                                    || b.eventAttantion.Contains(query)
+                                                                    || b.eventIntroduction.Contains(query)).ToList();
                 }
             }
 
@@ -263,6 +268,19 @@ namespace patyclub_server.Controllers
             // 套用排序
             if (args.sortBy == "eventStDate"){
                 resultEventMstList = resultEventMstList.OrderBy(e => Convert.ToDateTime(e.eventStDate)).ToList();
+
+            }else if(args.sortBy == "HOT"){
+                resultEventMstList = 
+                    (from em in resultEventMstList
+                     join pCnt in (
+                         from personnel in _context.eventPersonnel
+                         where personnel.permission != "WATCHER"
+                         group personnel by personnel.eventMstId into perG
+                         select new {key = perG.Key, cnt = perG.Count()}
+                     ) on em.id equals pCnt.key
+                     orderby pCnt.cnt descending
+                     select em
+                    ).ToList();
             }
 
 
@@ -338,24 +356,21 @@ namespace patyclub_server.Controllers
             return Ok(new Response {message = "", data = result});
         }
 
-        
-        // [HttpGet("testA")]
-        // public ActionResult testA(string A, string B){
-        //     Console.WriteLine("is 空字串");
-        //     Console.WriteLine(A == "");
-        //     Console.WriteLine("is null");
-        //     Console.WriteLine(A == null);
-        //     Console.WriteLine("is isNullOrEmpty");
-        //     Console.WriteLine(_coreService.isNullOrEmpty(A));
-            
-        //     return Ok(new Response());
 
-        // }
+        /// <summary>
+        /// 紀錄事件檢視LOG
+        /// </summary>
+        [HttpPost("addEventTouchLog")]
+        public ActionResult addEventTouchLog(string eventId)
+        {
+            string currentUser = User.Claims.FirstOrDefault(a => a.Type == "account")?.Value;
+            _context.clientLog.Add(new ClientLog{logCategory = "eventTouch", userAccount = currentUser, targetSeq = eventId, logDate = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")});
+
+            _context.SaveChanges();
+            return Ok(new Response());
+        }
+
+
     }
-
-
-
-
-    
 
 }

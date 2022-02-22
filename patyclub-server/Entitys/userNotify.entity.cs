@@ -23,18 +23,4 @@ namespace patyclub_server.Entities
     [Column("status")] //通知狀態
     public string status { get; set; }
   }
-
-  public class UserNotifyService
-  {
-    public DBContext _context;
-
-    public UserNotifyService(DBContext context)
-    {
-      _context = context;
-    }
-
-    public IEnumerable<UserNotify> GetUserNotifys() {
-      return _context.userNotify.ToList();
-    }
-  }
 }

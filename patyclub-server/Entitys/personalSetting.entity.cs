@@ -14,18 +14,4 @@ namespace patyclub_server.Entities
     [Column("category")] //設定類別
     public string category { get; set; }
   }
-
-  public class PersonalSettingService
-  {
-    public DBContext _context;
-
-    public PersonalSettingService(DBContext context)
-    {
-      _context = context;
-    }
-
-    public IEnumerable<PersonalSetting> GetPersonalSettings() {
-      return _context.personalSetting.ToList();
-    }
-  }
 }

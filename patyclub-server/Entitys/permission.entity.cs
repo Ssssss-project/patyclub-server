@@ -18,18 +18,4 @@ namespace patyclub_server.Entities
     public string actionCategory { get; set; }
 
   }
-
-  public class PermissionService
-  {
-    public DBContext _context;
-
-    public PermissionService(DBContext context)
-    {
-      _context = context;
-    }
-
-    public IEnumerable<Permission> GetPermissions() {
-      return _context.permission.ToList();
-    }
-  }
 }

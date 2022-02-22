@@ -17,18 +17,4 @@ namespace patyclub_server.Entities
     public string currentProgress { get; set; }
 
   }
-
-  public class MappingUserAchievementService
-  {
-    public DBContext _context;
-
-    public MappingUserAchievementService(DBContext context)
-    {
-      _context = context;
-    }
-
-    public IEnumerable<MappingUserAchievement> GetMappingUserAchievements() {
-      return _context.mappingUserAchievement.ToList();
-    }
-  }
 }
