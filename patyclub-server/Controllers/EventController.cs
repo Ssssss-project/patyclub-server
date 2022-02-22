@@ -48,7 +48,7 @@ namespace patyclub_server.Controllers
             _context.SaveChanges();            
 
             _context.eventPersonnel.Add(new EventPersonnel{
-                                                            userAccount = User.Claims.FirstOrDefault(a => a.Type == "userName").Value, 
+                                                            userAccount = User.Claims.FirstOrDefault(a => a.Type == "account").Value, 
                                                             eventMstId = newEventMst.id, 
                                                             permission = "OWNER"
                                                            });
@@ -335,24 +335,21 @@ namespace patyclub_server.Controllers
             return Ok(new Response {message = "", data = result});
         }
 
-        
-        // [HttpGet("testA")]
-        // public ActionResult testA(string A, string B){
-        //     Console.WriteLine("is 空字串");
-        //     Console.WriteLine(A == "");
-        //     Console.WriteLine("is null");
-        //     Console.WriteLine(A == null);
-        //     Console.WriteLine("is isNullOrEmpty");
-        //     Console.WriteLine(_coreService.isNullOrEmpty(A));
-            
-        //     return Ok(new Response());
 
-        // }
+        /// <summary>
+        /// 紀錄事件檢視LOG
+        /// </summary>
+        [HttpPost("addEventTouchLog")]
+        public ActionResult addEventTouchLog(string eventId)
+        {
+            string currentUser = User.Claims.FirstOrDefault(a => a.Type == "account")?.Value;
+            _context.clientLog.Add(new ClientLog{logCategory = "eventTouch", userAccount = currentUser, targetSeq = eventId, logDate = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")});
+
+            _context.SaveChanges();
+            return Ok(new Response());
+        }
+
+
     }
-
-
-
-
-    
 
 }

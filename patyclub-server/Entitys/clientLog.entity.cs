@@ -14,10 +14,10 @@ namespace patyclub_server.Entities
     [Column("userAccount")] //使用者帳號
     public string userAccount { get; set; }
 
-    [Column("targetSeq")] //目標序列
+    [Column("targetSeq")] //目標序列 "eventTouch": eventMstId, "pageTouch": pageId, "searchQuery": queryString
     public string targetSeq { get; set; }
 
-    [Column("logCategory")] //LOG類別
+    [Column("logCategory")] //LOG類別 "eventTouch", "pageTouch", "searchQuery"
     public string logCategory { get; set; }
 
     [Column("logDate")] //紀錄日期
