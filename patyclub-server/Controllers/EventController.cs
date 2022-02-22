@@ -223,11 +223,10 @@ namespace patyclub_server.Controllers
         ///
         /// nonCompleteEvent: IF nonCompleteEvent is "Y" then limit eventEdDate must large than now and eventEdDate must is valid date format
         ///
-        /// sortBy: 
+        /// sortBy: Keyword in ("eventStDate_asc", "eventStDate_desc", "hot_asc", "hot_desc")
         ///
-        /// eventPersonnel: "OWNER" "MEMBER" "WATCH" 
+        /// eventPersonnel: Keyword in ("OWNER" "MEMBER" "WATCHER")
         /// </remarks>
-        [Authorize]
         [HttpPost("getEventWithConditions")]
         public ActionResult getEventWithConditions(getEventWithConditionsArgs args)
         {
@@ -257,7 +256,16 @@ namespace patyclub_server.Controllers
                 }
             }
 
+            List<string> personnelList = new List<string> {
+                "OWNER",
+                "MEMBER",
+                "WATCHER"
+            };
             if (args.eventPersonnel != "" && args.eventPersonnel != null){
+                if (User.Claims.FirstOrDefault(u => u.Type == "account")?.Value == null)
+                    return StatusCode(401, new Response{message = "if U want to use 'eventPersonnel' condition, U must login first"});
+                if (!personnelList.Contains(args.eventPersonnel))
+                    return StatusCode(404, new Response{message = "Error 'eventPersonnel' keyword: " + args.eventPersonnel});
                 resultEventMstList = (from em in resultEventMstList
                                       join ep in _context.eventPersonnel
                                       on new {id = em.id, permission = args.eventPersonnel, userAccount = User.Claims.FirstOrDefault(a => a.Type == "account").Value} equals 
@@ -265,22 +273,47 @@ namespace patyclub_server.Controllers
                                       select em).ToList();
             }
 
-            // 套用排序
-            if (args.sortBy == "eventStDate"){
-                resultEventMstList = resultEventMstList.OrderBy(e => Convert.ToDateTime(e.eventStDate)).ToList();
-
-            }else if(args.sortBy == "HOT"){
-                resultEventMstList = 
-                    (from em in resultEventMstList
-                     join pCnt in (
-                         from personnel in _context.eventPersonnel
-                         where personnel.permission != "WATCHER"
-                         group personnel by personnel.eventMstId into perG
-                         select new {key = perG.Key, cnt = perG.Count()}
-                     ) on em.id equals pCnt.key
-                     orderby pCnt.cnt descending
-                     select em
-                    ).ToList();
+            if (args.sortBy != "" && args.sortBy != null){
+                // 套用排序
+                if (args.sortBy == "eventStDate_asc"){
+                    resultEventMstList = 
+                        (from em in resultEventMstList
+                        orderby Convert.ToDateTime(em.eventStDate) ascending
+                        select em
+                        ).ToList();
+                }else if (args.sortBy == "eventStDate_desc"){
+                    resultEventMstList = 
+                        (from em in resultEventMstList
+                        orderby Convert.ToDateTime(em.eventStDate) descending
+                        select em
+                        ).ToList();
+                }else if(args.sortBy == "hot_asc"){
+                    resultEventMstList = 
+                        (from em in resultEventMstList
+                        join pCnt in (
+                            from personnel in _context.eventPersonnel
+                            where personnel.permission != "WATCHER"
+                            group personnel by personnel.eventMstId into perG
+                            select new {key = perG.Key, cnt = perG.Count()}
+                        ) on em.id equals pCnt.key
+                        orderby pCnt.cnt ascending
+                        select em
+                        ).ToList();
+                }else if (args.sortBy == "hot_desc"){
+                    resultEventMstList = 
+                        (from em in resultEventMstList
+                        join pCnt in (
+                            from personnel in _context.eventPersonnel
+                            where personnel.permission != "WATCHER"
+                            group personnel by personnel.eventMstId into perG
+                            select new {key = perG.Key, cnt = perG.Count()}
+                        ) on em.id equals pCnt.key
+                        orderby pCnt.cnt descending
+                        select em
+                        ).ToList();
+                }else{
+                    return StatusCode(404, new Response{message = "Error 'sortBy' keyword: " + args.sortBy});
+                }
             }
 
 
