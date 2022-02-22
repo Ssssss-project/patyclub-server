@@ -248,8 +248,18 @@ namespace patyclub_server.Controllers
             // 套用排序
             if (args.sortBy == "eventStDate"){
                 resultEventMstList = resultEventMstList.OrderBy(e => e.eventStDate).ToList();
-            }else if(args.sortBy == "hot"){
-                resultEventMstList = resultEventMstList.OrderBy(e => e.eventStDate).ToList();
+            }else if(args.sortBy == "HOT"){
+                resultEventMstList = 
+                    (from em in resultEventMstList
+                     join pCnt in (
+                         from personnel in _context.eventPersonnel
+                         where personnel.permission != "WATCHER"
+                         group personnel by personnel.eventMstId into perG
+                         select new {key = perG.Key, cnt = perG.Count()}
+                     ) on em.id equals pCnt.key
+                     orderby pCnt.cnt descending
+                     select em
+                    ).ToList();;
             }
 
 
