@@ -215,6 +215,7 @@ namespace patyclub_server.Controllers
         /// 依條件篩選活動
         /// </summary>
         /// <remarks>
+        /// queryList: 查詢範圍「eventTitle, eventDetail, eventAttantion, eventIntroduction」
         /// nonCompleteEvent: IF nonCompleteEvent is not null then limit eventEdDate must large than now and eventEdDate must is valid date format
         /// sortBy: 
         /// </remarks>
@@ -241,7 +242,10 @@ namespace patyclub_server.Controllers
             {
                 foreach (var query in args.queryList)
                 {
-                    resultEventMstList = resultEventMstList.Where(b => b.eventTitle.Contains(query)).ToList();
+                    resultEventMstList = resultEventMstList.Where(b => b.eventTitle.Contains(query) 
+                                                                    || b.eventDetail.Contains(query)
+                                                                    || b.eventAttantion.Contains(query)
+                                                                    || b.eventIntroduction.Contains(query)).ToList();
                 }
             }
 

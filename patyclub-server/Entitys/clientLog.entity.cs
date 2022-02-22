@@ -22,5 +22,8 @@ namespace patyclub_server.Entities
 
     [Column("logDate")] //紀錄日期
     public string logDate { get; set; }
+
+    [Column("remark")] //備註
+    public string remark { get; set; }
   }
 }
