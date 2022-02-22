@@ -210,18 +210,25 @@ namespace patyclub_server.Controllers
             public List<string> queryList {get; set;}
             public string nonCompleteEvent {get; set;}
             public string sortBy {get; set;}
+            public string eventPersonnel {get; set;}
         };
+
+
+
         /// <summary>
         /// 依條件篩選活動
         /// </summary>
         /// <remarks>
-        /// nonCompleteEvent: IF nonCompleteEvent is not null then limit eventEdDate must large than now and eventEdDate must is valid date format
+        /// nonCompleteEvent: IF nonCompleteEvent is "Y" then limit eventEdDate must large than now and eventEdDate must is valid date format
+        ///
         /// sortBy: 
+        ///
+        /// eventPersonnel: "OWNER" "MEMBER" "WATCH" 
         /// </remarks>
+        [Authorize]
         [HttpPost("getEventWithConditions")]
         public ActionResult getEventWithConditions(getEventWithConditionsArgs args)
         {
-
             var resultEventMstList = _context.eventMst.ToList();
 
             // 套用篩選條件
@@ -229,7 +236,7 @@ namespace patyclub_server.Controllers
                 resultEventMstList = resultEventMstList.Where(b => b.categoryId == args.category).ToList();
             if (args.TAG != ""  && args.TAG != null) 
                 resultEventMstList = resultEventMstList.Where(b => b.tag == args.TAG).ToList();
-            if (args.nonCompleteEvent != "" && args.nonCompleteEvent!= null)
+            if (args.nonCompleteEvent == "Y" && args.nonCompleteEvent!= null)
                 resultEventMstList = resultEventMstList.Where(b => {
                     if (!_coreService.isDate(b.eventEdDate))
                         return false;
@@ -245,11 +252,17 @@ namespace patyclub_server.Controllers
                 }
             }
 
+            if (args.eventPersonnel != "" && args.eventPersonnel != null){
+                resultEventMstList = (from em in resultEventMstList
+                                      join ep in _context.eventPersonnel
+                                      on new {id = em.id, permission = args.eventPersonnel, userAccount = User.Claims.FirstOrDefault(a => a.Type == "account").Value} equals 
+                                         new {id = ep.eventMstId, permission = ep.permission, userAccount = ep.userAccount}
+                                      select em).ToList();
+            }
+
             // 套用排序
             if (args.sortBy == "eventStDate"){
-                resultEventMstList = resultEventMstList.OrderBy(e => e.eventStDate).ToList();
-            }else if(args.sortBy == "hot"){
-                resultEventMstList = resultEventMstList.OrderBy(e => e.eventStDate).ToList();
+                resultEventMstList = resultEventMstList.OrderBy(e => Convert.ToDateTime(e.eventStDate)).ToList();
             }
 
 
