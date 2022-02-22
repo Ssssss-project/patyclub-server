@@ -55,18 +55,4 @@ namespace patyclub_server.Entities
     [Column("forgetPwdTokenCreatedDate")] //忘記密碼Token
     public string forgetPwdTokenCreatedDate {get; set;}
   }
-
-  public class UserService
-  {
-    public DBContext _context;
-
-    public UserService(DBContext context)
-    {
-      _context = context;
-    }
-
-    public IEnumerable<User> GetUsers() {
-      return _context.user.ToList();
-    }
-  }
 }

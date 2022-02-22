@@ -14,18 +14,4 @@ namespace patyclub_server.Entities
     public int roleId { get; set; }
 
   }
-
-  public class MappingPermissionRoleService
-  {
-    public DBContext _context;
-
-    public MappingPermissionRoleService(DBContext context)
-    {
-      _context = context;
-    }
-
-    public IEnumerable<MappingPermissionRole> GetMappingPermissionRoles() {
-      return _context.mappingPermissionRole.ToList();
-    }
-  }
 }

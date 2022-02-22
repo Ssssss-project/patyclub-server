@@ -17,18 +17,4 @@ namespace patyclub_server.Entities
     public string settingValue { get; set; }
 
   }
-
-  public class MappingUserPersonalSettingService
-  {
-    public DBContext _context;
-
-    public MappingUserPersonalSettingService(DBContext context)
-    {
-      _context = context;
-    }
-
-    public IEnumerable<MappingUserPersonalSetting> GetMappingUserPersonalSettings() {
-      return _context.mappingUserPersonalSetting.ToList();
-    }
-  }
 }

@@ -20,18 +20,4 @@ namespace patyclub_server.Entities
     [Column("appendixPath")] //附件路徑
     public string appendixPath { get; set; }
   }
-
-  public class UserAppendixService
-  {
-    public DBContext _context;
-
-    public UserAppendixService(DBContext context)
-    {
-      _context = context;
-    }
-
-    public IEnumerable<UserAppendix> GetUserAppendixs() {
-      return _context.userAppendix.ToList();
-    }
-  }
 }

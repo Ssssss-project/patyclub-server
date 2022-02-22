@@ -21,18 +21,4 @@ namespace patyclub_server.Entities
     public string codeDesc { get; set; }
 
   }
-
-  public class SysCodeDtlService
-  {
-    public DBContext _context;
-
-    public SysCodeDtlService(DBContext context)
-    {
-      _context = context;
-    }
-
-    public IEnumerable<SysCodeDtl> GetSysCodeDtls() {
-      return _context.sysCodeDtl.ToList();
-    }
-  }
 }

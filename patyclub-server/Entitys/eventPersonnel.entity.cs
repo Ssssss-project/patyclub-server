@@ -19,18 +19,4 @@ namespace patyclub_server.Entities
     [Column("status")] //人員狀態
     public string status { get; set; }
   }
-
-  public class EventPersonnelService
-  {
-    public DBContext _context;
-
-    public EventPersonnelService(DBContext context)
-    {
-      _context = context;
-    }
-
-    public IEnumerable<EventPersonnel> GetEventPersonnels() {
-      return _context.eventPersonnel.ToList();
-    }
-  }
 }

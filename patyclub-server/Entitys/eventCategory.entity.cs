@@ -20,18 +20,4 @@ namespace patyclub_server.Entities
     [Column("enable")] //是否啟用
     public string enable {get; set;}
   }
-
-  public class EventCategoryService
-  {
-    public DBContext _context;
-
-    public EventCategoryService(DBContext context)
-    {
-      _context = context;
-    }
-
-    public IEnumerable<EventCategory> GetEventCategorys() {
-      return _context.eventCategory.ToList();
-    }
-  }
 }

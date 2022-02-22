@@ -21,18 +21,4 @@ namespace patyclub_server.Entities
     public string content { get; set; }
 
   }
-
-  public class RegistrationFormQuestionService
-  {
-    public DBContext _context;
-
-    public RegistrationFormQuestionService(DBContext context)
-    {
-      _context = context;
-    }
-
-    public IEnumerable<RegistrationFormQuestion> GetRegistrationFormQuestions() {
-      return _context.registrationFormQuestion.ToList();
-    }
-  }
 }

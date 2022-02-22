@@ -18,18 +18,4 @@ namespace patyclub_server.Entities
     public string category { get; set; }
 
   }
-
-  public class AutoCompleteListService
-  {
-    public DBContext _context;
-
-    public AutoCompleteListService(DBContext context)
-    {
-      _context = context;
-    }
-
-    public IEnumerable<AutoCompleteList> GetAutoCompleteLists() {
-      return _context.autoCompleteList.ToList();
-    }
-  }
 }
