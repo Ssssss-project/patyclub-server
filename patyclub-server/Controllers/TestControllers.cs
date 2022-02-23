@@ -3,7 +3,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Configuration;
 using patyclub_server.Entities;
-using patyclub_server.Service;
+using patyclub_server.Core.Service;
 using patyclub_server.Core;
 using System.Linq;
 using System;
@@ -30,6 +30,7 @@ namespace patyclub_server.Controllers
         public class testIntPostArgs{
             public int? A {get; set;}
         }
+
         /// <summary>
         /// 測試intPost
         /// </summary>
@@ -37,6 +38,15 @@ namespace patyclub_server.Controllers
         public ActionResult testIntPost(testIntPostArgs args)
         {
             return Ok(new Response{data = args.A.GetValueOrDefault(-1)});
+        }
+
+        /// <summary>
+        /// testEnums
+        /// </summary>
+        [HttpPost("testEnums")]
+        public ActionResult testEnums(logCategoryEnums args)
+        {
+            return Ok(new Response{data =args.ToString()});
         }
 
 

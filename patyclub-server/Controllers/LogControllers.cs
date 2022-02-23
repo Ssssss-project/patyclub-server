@@ -3,7 +3,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Configuration;
 using patyclub_server.Entities;
-using patyclub_server.Service;
+using patyclub_server.Core.Service;
 using patyclub_server.Core;
 using System.Linq;
 using System;
@@ -27,41 +27,20 @@ namespace patyclub_server.Controllers
             _configuration = configuration;
         }
 
-        /// <summary>
-        /// 紀錄活動檢視LOG
-        /// </summary>
-        [HttpPost("addEventTouchLog")]
-        public ActionResult addEventTouchLog(string eventId)
-        {
+        ///<summary>
+        /// 紀錄LOG
+        ///</summary>
+        ///<remarks>
+        /// 0 eventTouch: eventId
+        ///
+        /// 1 pageTouch: pageId
+        ///
+        /// 2 querySearch: searchQueryString
+        ///</remarks>
+        [HttpPost("addLog")]
+        public ActionResult addLog(logCategoryEnums logCate, string targetSeq){
             string currentUser = User.Claims.FirstOrDefault(a => a.Type == "account")?.Value;
-            _context.clientLog.Add(new ClientLog{logCategory = "eventTouch", userAccount = currentUser, targetSeq = eventId, logDate = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")});
-
-            _context.SaveChanges();
-            return Ok(new Response());
-        }
-
-        /// <summary>
-        /// 紀錄頁面檢視LOG
-        /// </summary>
-        [HttpPost("addPageTouchLog")]
-        public ActionResult addPageTouchLog(string eventId)
-        {
-            string currentUser = User.Claims.FirstOrDefault(a => a.Type == "account")?.Value;
-            _context.clientLog.Add(new ClientLog{logCategory = "pageTouch", userAccount = currentUser, targetSeq = eventId, logDate = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")});
-
-            _context.SaveChanges();
-            return Ok(new Response());
-        }
-
-        /// <summary>
-        /// 紀錄查詢LOG
-        /// </summary>
-        [HttpPost("addQuerySearchLog")]
-        public ActionResult addQuerySearchLog(string eventId)
-        {
-            string currentUser = User.Claims.FirstOrDefault(a => a.Type == "account")?.Value;
-            _context.clientLog.Add(new ClientLog{logCategory = "querySearch", userAccount = currentUser, targetSeq = eventId, logDate = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")});
-
+            _context.clientLog.Add(new ClientLog{logCategory = logCate.ToString(), userAccount = currentUser, targetSeq = targetSeq, logDate = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")});
             _context.SaveChanges();
             return Ok(new Response());
         }

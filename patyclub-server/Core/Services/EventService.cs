@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using patyclub_server.Entities;
 using System;
-namespace patyclub_server.Service
+namespace patyclub_server.Core.Service
 {
     public class CateNode {
         public int cateId {get; set;}

@@ -3,7 +3,7 @@ using MailKit;
 using MailKit.Security;
 using MimeKit;
 
-namespace patyclub_server.Service
+namespace patyclub_server.Core.Service
 {
     public class TestService
     {
