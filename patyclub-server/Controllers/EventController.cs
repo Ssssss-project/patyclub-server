@@ -17,6 +17,7 @@ namespace patyclub_server.Controllers
         private DBContext _context;
         private Random _random;
         private CoreService _coreService;
+        private EventService _eventService;
 
         private readonly ILogger<EventController> _logger;
 
@@ -26,6 +27,7 @@ namespace patyclub_server.Controllers
             _context = context;
             _random = new Random();
             _coreService = new CoreService();
+            _eventService = new EventService();
         }
 
 
@@ -233,8 +235,14 @@ namespace patyclub_server.Controllers
             var resultEventMstList = _context.eventMst.ToList();
 
             // 套用篩選條件
-            if (args.category != null) 
-                resultEventMstList = resultEventMstList.Where(b => b.categoryId == args.category).ToList();
+            if (args.category != null){
+                List<int> cateList = _eventService.getCateList(_context.eventCategory.ToList(), args.category.GetValueOrDefault(0));
+                resultEventMstList = (
+                    from em in resultEventMstList.Where(b => cateList.Contains(b.categoryId))
+                    select em
+                    ).ToList();
+            }
+                
             if (args.TAG != ""  && args.TAG != null) 
                 resultEventMstList = resultEventMstList.Where(b => b.tag == args.TAG).ToList();
             if (args.nonCompleteEvent == "Y" && args.nonCompleteEvent!= null)
@@ -388,22 +396,6 @@ namespace patyclub_server.Controllers
                                             
             return Ok(new Response {message = "", data = result});
         }
-
-
-        /// <summary>
-        /// 紀錄事件檢視LOG
-        /// </summary>
-        [HttpPost("addEventTouchLog")]
-        public ActionResult addEventTouchLog(string eventId)
-        {
-            string currentUser = User.Claims.FirstOrDefault(a => a.Type == "account")?.Value;
-            _context.clientLog.Add(new ClientLog{logCategory = "eventTouch", userAccount = currentUser, targetSeq = eventId, logDate = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")});
-
-            _context.SaveChanges();
-            return Ok(new Response());
-        }
-
-
     }
 
 }

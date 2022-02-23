@@ -21,5 +21,17 @@ namespace patyclub_server.Service
             }
             return currnetNode; // 最後回傳自身節點回到上一層
         }
+
+        public List<int> getCateList(List<EventCategory> cateList, int currentCateId){
+            List<int> tmpList = new List<int>{currentCateId};
+            foreach (var cate in cateList) //尋找自己的所有子節點
+            {
+                if (cate.parentId == currentCateId) // 當找到子節點時
+                {
+                    tmpList.AddRange(getCateList(cateList, cate.id)); // 讓子節點再去找他們的子節點，找完之後再把他們加到自身的子節點清單
+                }
+            }
+            return tmpList; // 最後回傳自身節點回到上一層
+        }
     }
 }
