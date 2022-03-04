@@ -22,6 +22,7 @@ using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using System.Text.Json.Serialization;
 using System.Text;
 namespace patyclub_server
 {
@@ -85,6 +86,10 @@ namespace patyclub_server
                     }
                 });
             });
+            services
+                .AddControllers()
+                .AddJsonOptions(options => 
+                    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
 
             services.AddSingleton<JwtHelpers>();
             services
