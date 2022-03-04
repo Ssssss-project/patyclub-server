@@ -210,8 +210,8 @@ namespace patyclub_server.Controllers
             public int? category {get; set;}
             public string TAG {get; set;}
             public List<string> queryList {get; set;}
-            public string nonCompleteEvent {get; set;}
-            public string sortBy {get; set;}
+            public YesNoEnums nonCompleteEvent {get; set;}
+            public eventSortByEnums sortBy {get; set;}
             public string eventPersonnel {get; set;}
         };
 
@@ -223,7 +223,7 @@ namespace patyclub_server.Controllers
         /// <remarks>
         /// queryList: 查詢範圍「eventTitle, eventDetail, eventAttantion, eventIntroduction」
         ///
-        /// nonCompleteEvent: IF nonCompleteEvent is "Y" then limit eventEdDate must large than now and eventEdDate must is valid date format
+        /// nonCompleteEvent: IF nonCompleteEvent is "Yes" then limit eventEdDate must large than now and eventEdDate must is valid date format
         ///
         /// sortBy: Keyword in ("eventStDate_asc", "eventStDate_desc", "hot_asc", "hot_desc")
         ///
@@ -245,13 +245,13 @@ namespace patyclub_server.Controllers
                 
             if (args.TAG != ""  && args.TAG != null) 
                 resultEventMstList = resultEventMstList.Where(b => b.tag == args.TAG).ToList();
-            if (args.nonCompleteEvent == "Y" && args.nonCompleteEvent!= null)
-                resultEventMstList = resultEventMstList.Where(b => {
-                    if (!_coreService.isDate(b.eventEdDate))
-                        return false;
-                    else 
-                        return Convert.ToDateTime(b.eventEdDate).CompareTo(DateTime.Now) > 0;
-                }).ToList();
+            // if (args.nonCompleteEvent == YesNoEnums.Yes)
+            //     resultEventMstList = resultEventMstList.Where(b => {
+            //         if (!_coreService.isDate(b.eventEdDate))
+            //             return false;
+            //         else 
+            //             return Convert.ToDateTime(b.eventEdDate).CompareTo(DateTime.Now) > 0;
+            //     }).ToList();
 
             if (args.queryList != null)
             {
@@ -281,48 +281,48 @@ namespace patyclub_server.Controllers
                                       select em).ToList();
             }
 
-            if (args.sortBy != "" && args.sortBy != null){
-                // 套用排序
-                if (args.sortBy == "eventStDate_asc"){
-                    resultEventMstList = 
-                        (from em in resultEventMstList
-                        orderby Convert.ToDateTime(em.eventStDate) ascending
-                        select em
-                        ).ToList();
-                }else if (args.sortBy == "eventStDate_desc"){
-                    resultEventMstList = 
-                        (from em in resultEventMstList
-                        orderby Convert.ToDateTime(em.eventStDate) descending
-                        select em
-                        ).ToList();
-                }else if(args.sortBy == "hot_asc"){
-                    resultEventMstList = 
-                        (from em in resultEventMstList
-                        join pCnt in (
-                            from personnel in _context.eventPersonnel
-                            where personnel.permission != "WATCHER"
-                            group personnel by personnel.eventMstId into perG
-                            select new {key = perG.Key, cnt = perG.Count()}
-                        ) on em.id equals pCnt.key
-                        orderby pCnt.cnt ascending
-                        select em
-                        ).ToList();
-                }else if (args.sortBy == "hot_desc"){
-                    resultEventMstList = 
-                        (from em in resultEventMstList
-                        join pCnt in (
-                            from personnel in _context.eventPersonnel
-                            where personnel.permission != "WATCHER"
-                            group personnel by personnel.eventMstId into perG
-                            select new {key = perG.Key, cnt = perG.Count()}
-                        ) on em.id equals pCnt.key
-                        orderby pCnt.cnt descending
-                        select em
-                        ).ToList();
-                }else{
-                    return StatusCode(404, new Response{message = "Error 'sortBy' keyword: " + args.sortBy});
-                }
-            }
+            // if (args.sortBy != eventSortByEnums.non_sort){
+            //     // 套用排序
+            //     if (args.sortBy == eventSortByEnums.eventStDate_asc){
+            //         resultEventMstList = 
+            //             (from em in resultEventMstList
+            //             orderby Convert.ToDateTime(em.eventStDate) ascending
+            //             select em
+            //             ).ToList();
+            //     }else if (args.sortBy == eventSortByEnums.eventStDate_desc){
+            //         resultEventMstList = 
+            //             (from em in resultEventMstList
+            //             orderby Convert.ToDateTime(em.eventStDate) descending
+            //             select em
+            //             ).ToList();
+            //     }else if(args.sortBy == eventSortByEnums.hot_asc){
+            //         resultEventMstList = 
+            //             (from em in resultEventMstList
+            //             join pCnt in (
+            //                 from personnel in _context.eventPersonnel
+            //                 where personnel.permission != "WATCHER"
+            //                 group personnel by personnel.eventMstId into perG
+            //                 select new {key = perG.Key, cnt = perG.Count()}
+            //             ) on em.id equals pCnt.key
+            //             orderby pCnt.cnt ascending
+            //             select em
+            //             ).ToList();
+            //     }else if (args.sortBy == eventSortByEnums.hot_desc){
+            //         resultEventMstList = 
+            //             (from em in resultEventMstList
+            //             join pCnt in (
+            //                 from personnel in _context.eventPersonnel
+            //                 where personnel.permission != "WATCHER"
+            //                 group personnel by personnel.eventMstId into perG
+            //                 select new {key = perG.Key, cnt = perG.Count()}
+            //             ) on em.id equals pCnt.key
+            //             orderby pCnt.cnt descending
+            //             select em
+            //             ).ToList();
+            //     }else{
+            //         return StatusCode(404, new Response{message = "Error 'sortBy' keyword: " + args.sortBy});
+            //     }
+            // }
 
 
 
@@ -354,6 +354,7 @@ namespace patyclub_server.Controllers
 
                                             
             return Ok(new Response {message = "", data = result});
+            // return Ok(new Response ());
         }
 
         /// <summary>

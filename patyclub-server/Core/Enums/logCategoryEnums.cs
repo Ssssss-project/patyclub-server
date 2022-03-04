@@ -8,23 +8,17 @@ public enum logCategoryEnums{
     querySearch
 }
 
-public static class logCategoryEnumsExtend{
-    public static string getString(this logCategoryEnums me){
-        switch(me){
-            case logCategoryEnums.eventTouch:
-                return "eventTouchXX";
-            case logCategoryEnums.pageTouch:
-                return "pageTouchXX";
-            case logCategoryEnums.querySearch:
-                return "querySearchXX";
-            default:
-                return "Error";
-        }
-    }
-
-    public static string CC(this List<int> tmp){
-        return tmp[0].ToString();
-    }
-
-
-}
+// public static class logCategoryEnumsExtend{
+//     public static string getString(this logCategoryEnums me){
+//         switch(me){
+//             case logCategoryEnums.eventTouch:
+//                 return "eventTouch";
+//             case logCategoryEnums.pageTouch:
+//                 return "pageTouch";
+//             case logCategoryEnums.querySearch:
+//                 return "querySearch";
+//             default:
+//                 return "Error";
+//         }
+//     }
+// }

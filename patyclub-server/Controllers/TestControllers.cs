@@ -44,9 +44,29 @@ namespace patyclub_server.Controllers
         /// testEnums
         /// </summary>
         [HttpPost("testEnums")]
-        public ActionResult testEnums(logCategoryEnums args)
+        public ActionResult testEnums(YesNoEnums args)
         {
             return Ok(new Response{data =args.ToString()});
+        }
+
+
+        public class testPostEnumsArgs {
+            public YesNoEnums YN {get; set;}
+        }
+        /// <summary>
+        /// testPostEnums
+        /// </summary>
+        [HttpPost("testPostEnums")]
+        public ActionResult testPostEnums(testPostEnumsArgs args)
+        {
+            string tmp = "";
+            if(args.YN == YesNoEnums.Yes)
+                tmp += "  YesNoEnums.Yes";
+            if(args.YN == YesNoEnums.No)
+                tmp += "  YesNoEnums.No";
+            if(args.YN == 0)
+                tmp += "  0";
+            return Ok(new Response{message = tmp ,data =args.YN.ToString()});
         }
 
 
