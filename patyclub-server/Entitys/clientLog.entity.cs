@@ -25,5 +25,8 @@ namespace patyclub_server.Entities
 
     [Column("remark")] //備註
     public string remark { get; set; }
+    
+    [Column("stauts")] //狀態
+    public string stauts { get; set; }
   }
 }

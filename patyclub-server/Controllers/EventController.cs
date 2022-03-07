@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Authorization;
 using patyclub_server.Entities;
-using patyclub_server.Service;
+using patyclub_server.Core.Service;
 using System.Collections.Generic;
 using System.Linq;
 using System;
@@ -27,6 +27,7 @@ namespace patyclub_server.Controllers
             _context = context;
             _random = new Random();
             _coreService = new CoreService();
+            _eventService = new EventService();
         }
 
 
@@ -206,12 +207,12 @@ namespace patyclub_server.Controllers
 
 
         public class getEventWithConditionsArgs {
-            public int category {get; set;}
+            public int? category {get; set;}
             public string TAG {get; set;}
             public List<string> queryList {get; set;}
-            public string nonCompleteEvent {get; set;}
-            public string sortBy {get; set;}
-            public string eventPersonnel {get; set;}
+            public YesNoEnums nonCompleteEvent {get; set;}
+            public eventSortByEnums sortBy {get; set;}
+            public eventPersonnel eventPersonnel {get; set;}
         };
 
 
@@ -222,7 +223,7 @@ namespace patyclub_server.Controllers
         /// <remarks>
         /// queryList: 查詢範圍「eventTitle, eventDetail, eventAttantion, eventIntroduction」
         ///
-        /// nonCompleteEvent: IF nonCompleteEvent is "Y" then limit eventEdDate must large than now and eventEdDate must is valid date format
+        /// nonCompleteEvent: IF nonCompleteEvent is "Yes" then limit eventEdDate must large than now and eventEdDate must is valid date format
         ///
         /// sortBy: Keyword in ("eventStDate_asc", "eventStDate_desc", "hot_asc", "hot_desc")
         ///
@@ -235,93 +236,86 @@ namespace patyclub_server.Controllers
 
             // 套用篩選條件
             if (args.category != null){
-                List<EventCategory> resultEventCategoryList = _context.eventCategory.ToList();
-                List<int> cateList = _eventService.getCateList(resultEventCategoryList, args.category);
-                // resultEventMstList = resultEventMstList.Where(b => cateList.Contains(b.categoryId)).ToList();
+                List<int> cateList = _eventService.getCateList(_context.eventCategory.ToList(), args.category.GetValueOrDefault(0));
+                resultEventMstList = (
+                    from em in resultEventMstList.Where(b => cateList.Contains(b.categoryId))
+                    select em
+                    ).ToList();
             }
                 
-            // if (args.TAG != ""  && args.TAG != null) 
-            //     resultEventMstList = resultEventMstList.Where(b => b.tag == args.TAG).ToList();
-            // if (args.nonCompleteEvent == "Y" && args.nonCompleteEvent!= null)
-            //     resultEventMstList = resultEventMstList.Where(b => {
-            //         if (!_coreService.isDate(b.eventEdDate))
-            //             return false;
-            //         else 
-            //             return Convert.ToDateTime(b.eventEdDate).CompareTo(DateTime.Now) > 0;
-            //     }).ToList();
+            if (args.TAG != ""  && args.TAG != null) 
+                resultEventMstList = resultEventMstList.Where(b => b.tag == args.TAG).ToList();
+            if (args.nonCompleteEvent == YesNoEnums.Yes)
+                resultEventMstList = resultEventMstList.Where(b => {
+                    if (!_coreService.isDate(b.eventEdDate))
+                        return false;
+                    else 
+                        return Convert.ToDateTime(b.eventEdDate).CompareTo(DateTime.Now) > 0;
+                }).ToList();
 
-            // if (args.queryList != null)
-            // {
-            //     foreach (var query in args.queryList)
-            //     {
-            //         resultEventMstList = resultEventMstList.Where(b => b.eventTitle.Contains(query) 
-            //                                                         || b.eventDetail.Contains(query)
-            //                                                         || b.eventAttantion.Contains(query)
-            //                                                         || b.eventIntroduction.Contains(query)).ToList();
-            //     }
-            // }
+            if (args.queryList != null)
+            {
+                foreach (var query in args.queryList)
+                {
+                    resultEventMstList = resultEventMstList.Where(b => b.eventTitle.Contains(query) 
+                                                                    || b.eventDetail.Contains(query)
+                                                                    || b.eventAttantion.Contains(query)
+                                                                    || b.eventIntroduction.Contains(query)).ToList();
+                }
+            }
 
-            // List<string> personnelList = new List<string> {
-            //     "OWNER",
-            //     "MEMBER",
-            //     "WATCHER"
-            // };
-            // if (args.eventPersonnel != "" && args.eventPersonnel != null){
-            //     if (User.Claims.FirstOrDefault(u => u.Type == "account")?.Value == null)
-            //         return StatusCode(401, new Response{message = "if U want to use 'eventPersonnel' condition, U must login first"});
-            //     if (!personnelList.Contains(args.eventPersonnel))
-            //         return StatusCode(404, new Response{message = "Error 'eventPersonnel' keyword: " + args.eventPersonnel});
-            //     resultEventMstList = (from em in resultEventMstList
-            //                           join ep in _context.eventPersonnel
-            //                           on new {id = em.id, permission = args.eventPersonnel, userAccount = User.Claims.FirstOrDefault(a => a.Type == "account").Value} equals 
-            //                              new {id = ep.eventMstId, permission = ep.permission, userAccount = ep.userAccount}
-            //                           select em).ToList();
-            // }
+            if (args.eventPersonnel == eventPersonnel.non_select){
+                if (User.Claims.FirstOrDefault(u => u.Type == "account")?.Value == null)
+                    return StatusCode(401, new Response{message = "if U want to use 'eventPersonnel' condition, U must login first"});
+                resultEventMstList = (from em in resultEventMstList
+                                      join ep in _context.eventPersonnel
+                                      on new {id = em.id, permission = args.eventPersonnel.ToString(), userAccount = User.Claims.FirstOrDefault(a => a.Type == "account").Value} equals 
+                                         new {id = ep.eventMstId, permission = ep.permission, userAccount = ep.userAccount}
+                                      select em).ToList();
+            }
 
-            // if (args.sortBy != "" && args.sortBy != null){
-            //     // 套用排序
-            //     if (args.sortBy == "eventStDate_asc"){
-            //         resultEventMstList = 
-            //             (from em in resultEventMstList
-            //             orderby Convert.ToDateTime(em.eventStDate) ascending
-            //             select em
-            //             ).ToList();
-            //     }else if (args.sortBy == "eventStDate_desc"){
-            //         resultEventMstList = 
-            //             (from em in resultEventMstList
-            //             orderby Convert.ToDateTime(em.eventStDate) descending
-            //             select em
-            //             ).ToList();
-            //     }else if(args.sortBy == "hot_asc"){
-            //         resultEventMstList = 
-            //             (from em in resultEventMstList
-            //             join pCnt in (
-            //                 from personnel in _context.eventPersonnel
-            //                 where personnel.permission != "WATCHER"
-            //                 group personnel by personnel.eventMstId into perG
-            //                 select new {key = perG.Key, cnt = perG.Count()}
-            //             ) on em.id equals pCnt.key
-            //             orderby pCnt.cnt ascending
-            //             select em
-            //             ).ToList();
-            //     }else if (args.sortBy == "hot_desc"){
-            //         resultEventMstList = 
-            //             (from em in resultEventMstList
-            //             join pCnt in (
-            //                 from personnel in _context.eventPersonnel
-            //                 where personnel.permission != "WATCHER"
-            //                 group personnel by personnel.eventMstId into perG
-            //                 select new {key = perG.Key, cnt = perG.Count()}
-            //             ) on em.id equals pCnt.key
-            //             orderby pCnt.cnt descending
-            //             select em
-            //             ).ToList();
-            //     }else{
-            //         return StatusCode(404, new Response{message = "Error 'sortBy' keyword: " + args.sortBy});
-            //     }
-            // }
-
-
+            if (args.sortBy != eventSortByEnums.non_sort){
+                // 套用排序
+                if (args.sortBy == eventSortByEnums.eventStDate_asc){
+                    resultEventMstList = 
+                        (from em in resultEventMstList
+                        orderby Convert.ToDateTime(em.eventStDate) ascending
+                        select em
+                        ).ToList();
+                }else if (args.sortBy == eventSortByEnums.eventStDate_desc){
+                    resultEventMstList = 
+                        (from em in resultEventMstList
+                        orderby Convert.ToDateTime(em.eventStDate) descending
+                        select em
+                        ).ToList();
+                }else if(args.sortBy == eventSortByEnums.hot_asc){
+                    resultEventMstList = 
+                        (from em in resultEventMstList
+                        join pCnt in (
+                            from personnel in _context.eventPersonnel
+                            where personnel.permission != "WATCHER"
+                            group personnel by personnel.eventMstId into perG
+                            select new {key = perG.Key, cnt = perG.Count()}
+                        ) on em.id equals pCnt.key
+                        orderby pCnt.cnt ascending
+                        select em
+                        ).ToList();
+                }else if (args.sortBy == eventSortByEnums.hot_desc){
+                    resultEventMstList = 
+                        (from em in resultEventMstList
+                        join pCnt in (
+                            from personnel in _context.eventPersonnel
+                            where personnel.permission != "WATCHER"
+                            group personnel by personnel.eventMstId into perG
+                            select new {key = perG.Key, cnt = perG.Count()}
+                        ) on em.id equals pCnt.key
+                        orderby pCnt.cnt descending
+                        select em
+                        ).ToList();
+                }else{
+                    return StatusCode(404, new Response{message = "Error 'sortBy' keyword: " + args.sortBy});
+                }
+            }
 
             var result = (from em in resultEventMstList
                         join ec in _context.eventCategory on em.categoryId equals ec.id into category
@@ -351,6 +345,7 @@ namespace patyclub_server.Controllers
 
                                             
             return Ok(new Response {message = "", data = result});
+            // return Ok(new Response ());
         }
 
         /// <summary>
@@ -393,22 +388,6 @@ namespace patyclub_server.Controllers
                                             
             return Ok(new Response {message = "", data = result});
         }
-
-
-        /// <summary>
-        /// 紀錄事件檢視LOG
-        /// </summary>
-        [HttpPost("addEventTouchLog")]
-        public ActionResult addEventTouchLog(string eventId)
-        {
-            string currentUser = User.Claims.FirstOrDefault(a => a.Type == "account")?.Value;
-            _context.clientLog.Add(new ClientLog{logCategory = "eventTouch", userAccount = currentUser, targetSeq = eventId, logDate = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")});
-
-            _context.SaveChanges();
-            return Ok(new Response());
-        }
-
-
     }
 
 }

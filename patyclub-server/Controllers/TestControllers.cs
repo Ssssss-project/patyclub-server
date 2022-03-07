@@ -3,7 +3,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Configuration;
 using patyclub_server.Entities;
-using patyclub_server.Service;
+using patyclub_server.Core.Service;
 using patyclub_server.Core;
 using System.Linq;
 using System;
@@ -27,15 +27,51 @@ namespace patyclub_server.Controllers
             _logger = logger;
             _context = context;
             _configuration = configuration;
-            _eventService = new EventService();
         }
 
-        [HttpGet("testGetCateList")]
-        public ActionResult testGetCateList(int startId){
-            var cateList = _context.eventCategory.ToList();
-            Console.WriteLine(String.Join(", ",_eventService.getCateList(cateList, startId)));
-            return Ok();
+        public class testIntPostArgs{
+            public int? A {get; set;}
         }
+
+        /// <summary>
+        /// 測試intPost
+        /// </summary>
+        [HttpPost("testIntPost")]
+        public ActionResult testIntPost(testIntPostArgs args)
+        {
+            return Ok(new Response{data = args.A.GetValueOrDefault(-1)});
+        }
+
+        /// <summary>
+        /// testEnums
+        /// </summary>
+        [HttpPost("testEnums")]
+        public ActionResult testEnums(YesNoEnums args)
+        {
+            return Ok(new Response{data =args.ToString()});
+        }
+
+
+        public class testPostEnumsArgs {
+            public YesNoEnums YN {get; set;}
+        }
+        /// <summary>
+        /// testPostEnums
+        /// </summary>
+        [HttpPost("testPostEnums")]
+        public ActionResult testPostEnums(testPostEnumsArgs args)
+        {
+            string tmp = "";
+            if(args.YN == YesNoEnums.Yes)
+                tmp += "  YesNoEnums.Yes";
+            if(args.YN == YesNoEnums.No)
+                tmp += "  YesNoEnums.No";
+            if(args.YN == 0)
+                tmp += "  0";
+            return Ok(new Response{message = tmp ,data =args.YN.ToString()});
+        }
+
+
 
     }
 }

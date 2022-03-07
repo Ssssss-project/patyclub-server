@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System;
 
-namespace patyclub_server.Service
+namespace patyclub_server.Core.Service
 {
     public class CoreService {
         public bool isDate(string date)

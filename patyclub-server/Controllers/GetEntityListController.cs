@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using patyclub_server.Entities;
-using patyclub_server.Service;
+using patyclub_server.Core.Service;
 using System.Linq;
 using System;
 using System.Collections.Generic;
@@ -39,7 +39,20 @@ namespace patyclub_server.Controllers
             return Ok(new Response {data = result});
         }
 
+        /// <summary>
+        /// 取得下屬活動清單
+        /// </summary>
+        [HttpGet("getEventCategoryList")]
+        public ActionResult getEventCategoryList(int rootCateId)
+        {
 
+            List<EventCategory> resultEventCategoryList = _context.eventCategory
+                                            .Where(b => b.enable.Equals("Y"))
+                                            .ToList();
+            EventService eventService = new EventService();
+            List<int> result = eventService.getCateList(resultEventCategoryList, rootCateId);
+            return Ok(new Response {data = result});
+        }
 
 
     }
