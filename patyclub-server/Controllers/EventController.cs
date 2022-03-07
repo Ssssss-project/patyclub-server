@@ -324,8 +324,19 @@ namespace patyclub_server.Controllers
                         on new {id = em.id, permission = "OWNER"} equals 
                             new {id = ep.eventMstId, permission = ep.permission} into subEp
                         from owner in subEp.DefaultIfEmpty()
+                        join ep in (
+                            from ep in _context.eventPersonnel
+                            where ep.permission == "MEMBER" || ep.permission == "OWNER"
+                            group ep by ep.eventMstId into epc
+                            select new {key = epc.Key, cnt = epc.Count()}
+                            )
+                        on new {id = em.id} equals 
+                            new {id = ep.key} into subEp2
+                        from member in subEp2.DefaultIfEmpty()
                         join ap in _context.eventAppendix.Where(a => a.category == "P") on em.id equals ap.eventMstId into subAp
                         from cover in subAp.DefaultIfEmpty()
+                        from statusDesc in _context.sysCodeDtl
+                        where statusDesc.sysCodeMstId == 2 && statusDesc.codeName == em.status
                         select new {
                         em.id,
                         em.categoryId,
@@ -337,6 +348,8 @@ namespace patyclub_server.Controllers
                         em.eventStDate,
                         em.eventEdDate,
                         owner = owner?.userAccount ?? string.Empty,
+                        memberCount = member.cnt,
+                        statusDesc = statusDesc.codeDesc,
                         coverPath = cover?.appendixPath ?? string.Empty,
                         timeStatus = Convert.ToDateTime(em.eventStDate).CompareTo(DateTime.Now) > 0?"comingSoon":
                                         Convert.ToDateTime(em.eventEdDate).CompareTo(DateTime.Now) < 0?"expired":"inProgress"
@@ -345,7 +358,6 @@ namespace patyclub_server.Controllers
 
                                             
             return Ok(new Response {message = "", data = result});
-            // return Ok(new Response ());
         }
 
         /// <summary>
