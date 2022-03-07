@@ -317,8 +317,6 @@ namespace patyclub_server.Controllers
                 }
             }
 
-
-
             var result = (from em in resultEventMstList
                         join ec in _context.eventCategory on em.categoryId equals ec.id into category
                         from c in category.DefaultIfEmpty()

@@ -20,6 +20,8 @@ namespace patyclub_server.Controllers
         private readonly ILogger<TestController> _logger;
         private IConfiguration _configuration;
 
+        private EventService _eventService;
+
         public TestController(ILogger<TestController> logger, DBContext context, IConfiguration configuration)
         {
             _logger = logger;
