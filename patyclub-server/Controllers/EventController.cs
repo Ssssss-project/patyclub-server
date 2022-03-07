@@ -264,7 +264,7 @@ namespace patyclub_server.Controllers
                 }
             }
 
-            if (args.eventPersonnel == eventPersonnel.non_select){
+            if (args.eventPersonnel != eventPersonnel.non_select){
                 if (User.Claims.FirstOrDefault(u => u.Type == "account")?.Value == null)
                     return StatusCode(401, new Response{message = "if U want to use 'eventPersonnel' condition, U must login first"});
                 resultEventMstList = (from em in resultEventMstList
