@@ -5,3 +5,10 @@ public enum eventSortByEnums{
     hot_asc, 
     hot_desc
 }
+
+public enum eventPersonnel{
+    non_select,
+    OWNER,
+    MEMBER,
+    WATCHE
+}

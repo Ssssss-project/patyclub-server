@@ -212,7 +212,7 @@ namespace patyclub_server.Controllers
             public List<string> queryList {get; set;}
             public YesNoEnums nonCompleteEvent {get; set;}
             public eventSortByEnums sortBy {get; set;}
-            public string eventPersonnel {get; set;}
+            public eventPersonnel eventPersonnel {get; set;}
         };
 
 
@@ -245,13 +245,13 @@ namespace patyclub_server.Controllers
                 
             if (args.TAG != ""  && args.TAG != null) 
                 resultEventMstList = resultEventMstList.Where(b => b.tag == args.TAG).ToList();
-            // if (args.nonCompleteEvent == YesNoEnums.Yes)
-            //     resultEventMstList = resultEventMstList.Where(b => {
-            //         if (!_coreService.isDate(b.eventEdDate))
-            //             return false;
-            //         else 
-            //             return Convert.ToDateTime(b.eventEdDate).CompareTo(DateTime.Now) > 0;
-            //     }).ToList();
+            if (args.nonCompleteEvent == YesNoEnums.Yes)
+                resultEventMstList = resultEventMstList.Where(b => {
+                    if (!_coreService.isDate(b.eventEdDate))
+                        return false;
+                    else 
+                        return Convert.ToDateTime(b.eventEdDate).CompareTo(DateTime.Now) > 0;
+                }).ToList();
 
             if (args.queryList != null)
             {
@@ -264,65 +264,58 @@ namespace patyclub_server.Controllers
                 }
             }
 
-            List<string> personnelList = new List<string> {
-                "OWNER",
-                "MEMBER",
-                "WATCHER"
-            };
-            if (args.eventPersonnel != "" && args.eventPersonnel != null){
+            if (args.eventPersonnel == eventPersonnel.non_select){
                 if (User.Claims.FirstOrDefault(u => u.Type == "account")?.Value == null)
                     return StatusCode(401, new Response{message = "if U want to use 'eventPersonnel' condition, U must login first"});
-                if (!personnelList.Contains(args.eventPersonnel))
-                    return StatusCode(404, new Response{message = "Error 'eventPersonnel' keyword: " + args.eventPersonnel});
                 resultEventMstList = (from em in resultEventMstList
                                       join ep in _context.eventPersonnel
-                                      on new {id = em.id, permission = args.eventPersonnel, userAccount = User.Claims.FirstOrDefault(a => a.Type == "account").Value} equals 
+                                      on new {id = em.id, permission = args.eventPersonnel.ToString(), userAccount = User.Claims.FirstOrDefault(a => a.Type == "account").Value} equals 
                                          new {id = ep.eventMstId, permission = ep.permission, userAccount = ep.userAccount}
                                       select em).ToList();
             }
 
-            // if (args.sortBy != eventSortByEnums.non_sort){
-            //     // 套用排序
-            //     if (args.sortBy == eventSortByEnums.eventStDate_asc){
-            //         resultEventMstList = 
-            //             (from em in resultEventMstList
-            //             orderby Convert.ToDateTime(em.eventStDate) ascending
-            //             select em
-            //             ).ToList();
-            //     }else if (args.sortBy == eventSortByEnums.eventStDate_desc){
-            //         resultEventMstList = 
-            //             (from em in resultEventMstList
-            //             orderby Convert.ToDateTime(em.eventStDate) descending
-            //             select em
-            //             ).ToList();
-            //     }else if(args.sortBy == eventSortByEnums.hot_asc){
-            //         resultEventMstList = 
-            //             (from em in resultEventMstList
-            //             join pCnt in (
-            //                 from personnel in _context.eventPersonnel
-            //                 where personnel.permission != "WATCHER"
-            //                 group personnel by personnel.eventMstId into perG
-            //                 select new {key = perG.Key, cnt = perG.Count()}
-            //             ) on em.id equals pCnt.key
-            //             orderby pCnt.cnt ascending
-            //             select em
-            //             ).ToList();
-            //     }else if (args.sortBy == eventSortByEnums.hot_desc){
-            //         resultEventMstList = 
-            //             (from em in resultEventMstList
-            //             join pCnt in (
-            //                 from personnel in _context.eventPersonnel
-            //                 where personnel.permission != "WATCHER"
-            //                 group personnel by personnel.eventMstId into perG
-            //                 select new {key = perG.Key, cnt = perG.Count()}
-            //             ) on em.id equals pCnt.key
-            //             orderby pCnt.cnt descending
-            //             select em
-            //             ).ToList();
-            //     }else{
-            //         return StatusCode(404, new Response{message = "Error 'sortBy' keyword: " + args.sortBy});
-            //     }
-            // }
+            if (args.sortBy != eventSortByEnums.non_sort){
+                // 套用排序
+                if (args.sortBy == eventSortByEnums.eventStDate_asc){
+                    resultEventMstList = 
+                        (from em in resultEventMstList
+                        orderby Convert.ToDateTime(em.eventStDate) ascending
+                        select em
+                        ).ToList();
+                }else if (args.sortBy == eventSortByEnums.eventStDate_desc){
+                    resultEventMstList = 
+                        (from em in resultEventMstList
+                        orderby Convert.ToDateTime(em.eventStDate) descending
+                        select em
+                        ).ToList();
+                }else if(args.sortBy == eventSortByEnums.hot_asc){
+                    resultEventMstList = 
+                        (from em in resultEventMstList
+                        join pCnt in (
+                            from personnel in _context.eventPersonnel
+                            where personnel.permission != "WATCHER"
+                            group personnel by personnel.eventMstId into perG
+                            select new {key = perG.Key, cnt = perG.Count()}
+                        ) on em.id equals pCnt.key
+                        orderby pCnt.cnt ascending
+                        select em
+                        ).ToList();
+                }else if (args.sortBy == eventSortByEnums.hot_desc){
+                    resultEventMstList = 
+                        (from em in resultEventMstList
+                        join pCnt in (
+                            from personnel in _context.eventPersonnel
+                            where personnel.permission != "WATCHER"
+                            group personnel by personnel.eventMstId into perG
+                            select new {key = perG.Key, cnt = perG.Count()}
+                        ) on em.id equals pCnt.key
+                        orderby pCnt.cnt descending
+                        select em
+                        ).ToList();
+                }else{
+                    return StatusCode(404, new Response{message = "Error 'sortBy' keyword: " + args.sortBy});
+                }
+            }
 
 
 
