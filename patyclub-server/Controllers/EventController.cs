@@ -141,17 +141,29 @@ namespace patyclub_server.Controllers
         [HttpGet("getEvent/{id}")]
         public ActionResult getEvent(int id)
         {
-            var eventMstResult = (from em in _context.eventMst.Where(x => x.id == id)
+            var eventMstResult = _context.eventMst.Where(x => x.id == id).ToList();
+            var result = (from em in eventMstResult
                         join code in _context.sysCodeDtl.Where(x => x.sysCodeMstId == 2) on em.status equals code.codeName into statusCode
                         from sc in statusCode.DefaultIfEmpty()
                         join ep in _context.eventPersonnel
                         on new {id = em.id, permission = "OWNER"} equals 
                             new {id = ep.eventMstId, permission = ep.permission} into owner
                         from o in owner.DefaultIfEmpty()
+                        join ep in (
+                            from ep in _context.eventPersonnel
+                            where ep.permission == "MEMBER" || ep.permission == "OWNER"
+                            group ep by ep.eventMstId into epc
+                            select new {key = epc.Key, cnt = epc.Count()}
+                            )
+                        on new {id = em.id} equals 
+                            new {id = ep.key} into subEp2
+                        from member in subEp2.DefaultIfEmpty()
+                        from statusDesc in _context.sysCodeDtl
+                        where statusDesc.sysCodeMstId == 2 && statusDesc.codeName == em.status
                         select new {em.id,
                                     em.categoryId,
                                     em.status,
-                                    statusName = sc.codeDesc ?? string.Empty,
+                                    statusName = sc?.codeDesc ?? string.Empty,
                                     em.cost,
                                     em.eventStDate,
                                     em.eventEdDate,
@@ -162,7 +174,9 @@ namespace patyclub_server.Controllers
                                     em.eventAttantion,
                                     em.tag,
                                     em.eventTitle,
-                                    owner = o.userAccount ?? string.Empty,
+                                    owner = o?.userAccount ?? string.Empty,
+                                    memberCount = member?.cnt ?? 0,
+                                    statusDesc = statusDesc.codeDesc,
                                     em.ageLimit,
                                     em.personLimit,
                                     timeStatus = Convert.ToDateTime(em.eventStDate).CompareTo(DateTime.Now) > 0?"comingSoon":
@@ -177,33 +191,8 @@ namespace patyclub_server.Controllers
 
             var eventMember = _context.eventPersonnel.Where(ep => ep.eventMstId == id);
 
-            return Ok(new Response {message = "", data = new {eventDtl = eventMstResult[0], eventAppendixList = appendixPathResultList, eventMember = eventMember.ToList()}});
+            return Ok(new Response {message = "", data = new {eventDtl = result[0], eventAppendixList = appendixPathResultList, eventMember = eventMember.ToList()}});
         } 
-
-        /// <summary>
-        /// 取得精選活動清單
-        /// </summary>
-        [HttpGet("getSpecialEvent")]
-        public ActionResult getSpecialEvent()
-        {
-            var resultEventMstList = from em in _context.eventMst
-                                     join ep in _context.eventPersonnel
-                                        on new {id = em.id, permission = "OWNER"} equals 
-                                           new {id = ep.eventMstId, permission = ep.permission}
-                                     where em.tag == "S"
-                                     select new {
-                                        em.id,
-                                        em.eventTitle,
-                                        em.eventIntroduction,
-                                        em.signUpStDate,
-                                        em.signUpEdDate,
-                                        em.eventStDate,
-                                        em.eventEdDate,
-                                        owner = ep.userAccount
-                                     };
-                                            
-            return Ok(new Response {message = "", data = resultEventMstList});
-        }
 
 
         public class getEventWithConditionsArgs {
@@ -348,49 +337,8 @@ namespace patyclub_server.Controllers
                         em.eventStDate,
                         em.eventEdDate,
                         owner = owner?.userAccount ?? string.Empty,
-                        memberCount = member.cnt,
+                        memberCount = member?.cnt ?? 0,
                         statusDesc = statusDesc.codeDesc,
-                        coverPath = cover?.appendixPath ?? string.Empty,
-                        timeStatus = Convert.ToDateTime(em.eventStDate).CompareTo(DateTime.Now) > 0?"comingSoon":
-                                        Convert.ToDateTime(em.eventEdDate).CompareTo(DateTime.Now) < 0?"expired":"inProgress"
-                        }).ToList();
-
-
-                                            
-            return Ok(new Response {message = "", data = result});
-        }
-
-        /// <summary>
-        /// 取得我的活動
-        /// </summary>
-        [HttpPost("getMyEvent")]
-        public ActionResult getMyEvent(string account)
-        {
-
-            var resultEventMstList = (from ep in _context.eventPersonnel.Where(a => a.userAccount == account)
-                                     join em in _context.eventMst on ep.eventMstId equals em.id
-                                     select em).ToList();
-
-            var result = (from em in resultEventMstList
-                        join ec in _context.eventCategory on em.categoryId equals ec.id into category
-                        from c in category.DefaultIfEmpty()
-                        join ep in _context.eventPersonnel
-                        on new {id = em.id, permission = "OWNER"} equals 
-                            new {id = ep.eventMstId, permission = ep.permission} into subEp
-                        from owner in subEp.DefaultIfEmpty()
-                        join ap in _context.eventAppendix.Where(a => a.category == "P") on em.id equals ap.eventMstId into subAp
-                        from cover in subAp.DefaultIfEmpty()
-                        select new {
-                        em.id,
-                        em.categoryId,
-                        categoryName = c?.categoryName ?? string.Empty,
-                        em.eventTitle,
-                        em.eventIntroduction,
-                        em.signUpStDate,
-                        em.signUpEdDate,
-                        em.eventStDate,
-                        em.eventEdDate,
-                        owner = owner?.userAccount ?? string.Empty,
                         coverPath = cover?.appendixPath ?? string.Empty,
                         timeStatus = Convert.ToDateTime(em.eventStDate).CompareTo(DateTime.Now) > 0?"comingSoon":
                                         Convert.ToDateTime(em.eventEdDate).CompareTo(DateTime.Now) < 0?"expired":"inProgress"
