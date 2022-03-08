@@ -201,7 +201,7 @@ namespace patyclub_server.Controllers
             public List<string> queryList {get; set;}
             public YesNoEnums nonCompleteEvent {get; set;}
             public eventSortByEnums sortBy {get; set;}
-            public eventPersonnel eventPersonnel {get; set;}
+            public eventPersonnelEnums eventPersonnel {get; set;}
         };
 
 
@@ -253,7 +253,7 @@ namespace patyclub_server.Controllers
                 }
             }
 
-            if (args.eventPersonnel != eventPersonnel.non_select){
+            if (args.eventPersonnel != eventPersonnelEnums.non_select){
                 if (User.Claims.FirstOrDefault(u => u.Type == "account")?.Value == null)
                     return StatusCode(401, new Response{message = "if U want to use 'eventPersonnel' condition, U must login first"});
                 resultEventMstList = (from em in resultEventMstList
@@ -347,6 +347,23 @@ namespace patyclub_server.Controllers
 
                                             
             return Ok(new Response {message = "", data = result});
+        }
+
+
+        [Authorize]
+        [HttpPut("joinEvent")]
+        public ActionResult joinEvent(int eventId){
+            _context.eventPersonnel.Add(new EventPersonnel{userAccount = User.Claims.FirstOrDefault(a => a.Type == "account").Value, eventMstId = eventId, permission = "MEMBER", status = "??"});
+            _context.SaveChanges();
+            return Ok(new Response{});
+        }
+
+        [Authorize]
+        [HttpPut("watchEvent")]
+        public ActionResult watchEvent(int eventId){
+            _context.eventPersonnel.Add(new EventPersonnel{userAccount = User.Claims.FirstOrDefault(a => a.Type == "account").Value, eventMstId = eventId, permission = "WATCHER", status = "??"});
+            _context.SaveChanges();
+            return Ok(new Response{});
         }
     }
 
