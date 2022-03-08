@@ -7,6 +7,7 @@ namespace patyclub_server.Entities
   [Table("EVENT_MST")]
   public class EventMst
   {
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     [Column("id")] // 活動ID
     public int id { get; set; }
 
@@ -51,19 +52,11 @@ namespace patyclub_server.Entities
 
     [Column("tag")] //活動標籤
     public string tag { get; set; }
-  }
+    
+    [Column("personLimit")] //人數限制
+    public int personLimit { get; set; }
 
-  public class EventMstService
-  {
-    public DBContext _context;
-
-    public EventMstService(DBContext context)
-    {
-      _context = context;
-    }
-
-    public IEnumerable<EventMst> GetEventMsts() {
-      return _context.eventMst.ToList();
-    }
+    [Column("ageLimit")] //年齡限制
+    public string ageLimit { get; set; }
   }
 }

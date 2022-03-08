@@ -7,6 +7,7 @@ namespace patyclub_server.Entities
   [Table("AUTO_COMPLETE_LIST")]
   public class AutoCompleteList
   {
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     [Column("id")] //ID
     public int id { get; set; }
 
@@ -16,19 +17,5 @@ namespace patyclub_server.Entities
     [Column("category")] //類別
     public string category { get; set; }
 
-  }
-
-  public class AutoCompleteListService
-  {
-    public DBContext _context;
-
-    public AutoCompleteListService(DBContext context)
-    {
-      _context = context;
-    }
-
-    public IEnumerable<AutoCompleteList> GetAutoCompleteLists() {
-      return _context.autoCompleteList.ToList();
-    }
   }
 }

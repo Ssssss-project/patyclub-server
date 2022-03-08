@@ -7,6 +7,7 @@ namespace patyclub_server.Entities
   [Table("EVENT_APPENDIX")]
   public class EventAppendix
   {
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     [Column("id")] //附件ID
     public int id { get; set; }
 
@@ -19,19 +20,5 @@ namespace patyclub_server.Entities
     [Column("appendixPath")] //附件路徑
     public string appendixPath { get; set; }
 
-  }
-
-  public class EventAppendixService
-  {
-    public DBContext _context;
-
-    public EventAppendixService(DBContext context)
-    {
-      _context = context;
-    }
-
-    public IEnumerable<EventAppendix> GetEventAppendixs() {
-      return _context.eventAppendix.ToList();
-    }
   }
 }

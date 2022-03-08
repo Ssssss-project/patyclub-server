@@ -10,6 +10,7 @@ namespace patyclub_server.Entities
     [Column("userAccount")] //使用者帳號
     public string userAccount { get; set; }
 
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     [Column("id")] //附件ID
     public int id { get; set; }
 
@@ -18,19 +19,5 @@ namespace patyclub_server.Entities
 
     [Column("appendixPath")] //附件路徑
     public string appendixPath { get; set; }
-  }
-
-  public class UserAppendixService
-  {
-    public DBContext _context;
-
-    public UserAppendixService(DBContext context)
-    {
-      _context = context;
-    }
-
-    public IEnumerable<UserAppendix> GetUserAppendixs() {
-      return _context.userAppendix.ToList();
-    }
   }
 }

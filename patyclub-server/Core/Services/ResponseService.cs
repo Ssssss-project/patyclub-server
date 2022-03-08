@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace patyclub_server.Service
+namespace patyclub_server.Core.Service
 {
     public class Response
     {

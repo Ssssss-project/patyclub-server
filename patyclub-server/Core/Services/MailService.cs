@@ -4,7 +4,7 @@ using MailKit.Security;
 using MimeKit;
 using System.Collections.Generic;
 
-namespace patyclub_server.Service
+namespace patyclub_server.Core.Service
 {
     public class MailUser{
         public MailUser(string _userName, string _mailAddress) {

@@ -7,6 +7,7 @@ namespace patyclub_server.Entities
   [Table("SYS_CODE_DTL")]
   public class SysCodeDtl
   {
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     [Column("id")] //參數ID
     public int id { get; set; }
 
@@ -19,19 +20,5 @@ namespace patyclub_server.Entities
     [Column("codeDesc")] //參數內容
     public string codeDesc { get; set; }
 
-  }
-
-  public class SysCodeDtlService
-  {
-    public DBContext _context;
-
-    public SysCodeDtlService(DBContext context)
-    {
-      _context = context;
-    }
-
-    public IEnumerable<SysCodeDtl> GetSysCodeDtls() {
-      return _context.sysCodeDtl.ToList();
-    }
   }
 }

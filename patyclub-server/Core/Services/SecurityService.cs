@@ -1,7 +1,7 @@
 using System.Security.Cryptography;
 using System.Text;
 
-namespace patyclub_server.Service
+namespace patyclub_server.Core.Service
 {
     public class SecurityService
     {

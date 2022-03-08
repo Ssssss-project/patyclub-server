@@ -9,12 +9,12 @@ namespace patyclub_server.Entities
 
         public DbSet<Achievement> achievement { get; set; }
         public DbSet<AutoCompleteList> autoCompleteList { get; set; }
+        public DbSet<ClientLog> clientLog { get; set; }
         public DbSet<EventMst> eventMst { get; set; }
         public DbSet<EventAppendix> eventAppendix { get; set; }
         public DbSet<EventCategory> eventCategory { get; set; }
         public DbSet<EventCollect> eventCollect { get; set; }
         public DbSet<EventPersonnel> eventPersonnel { get; set; }
-        public DbSet<EventViewLog> eventViewLog { get; set; }
         public DbSet<MappingEventTag> mappingEventTag { get; set; }
         public DbSet<MappingPermissionRole> mappingPermissionRole { get; set; }
         public DbSet<MappingUserAchievement> mappingUserAchievement { get; set; }
@@ -40,8 +40,6 @@ namespace patyclub_server.Entities
             modelBuilder.Entity<EventCollect>()
                 .HasKey(table => new {table.userAccount, table.eventMstId});
             modelBuilder.Entity<EventPersonnel>()
-                .HasKey(table => new {table.userAccount, table.eventMstId});
-            modelBuilder.Entity<EventViewLog>()
                 .HasKey(table => new {table.userAccount, table.eventMstId});
             modelBuilder.Entity<MappingEventTag>()
                 .HasKey(table => new {table.eventMstId, table.tagId});
@@ -72,6 +70,19 @@ namespace patyclub_server.Entities
                 .HasData(
                     new Achievement {id = 1, describe = "連續登入10天", goal = 10}
                 );
+            modelBuilder.Entity<ClientLog>()
+                .HasData(
+                    new ClientLog {id = 1, userAccount = "adda", logCategory = "eventTouch", targetSeq = "1", logDate = "2021/12/3 09:25:36"},
+                    new ClientLog {id = 2, userAccount = "adda", logCategory = "eventTouch", targetSeq = "1", logDate = "2021/12/4 08:45:23"},
+                    new ClientLog {id = 3, userAccount = "adda", logCategory = "eventTouch", targetSeq = "1", logDate = "2021/12/8 05:25:28"},
+                    new ClientLog {id = 4, userAccount = "adda", logCategory = "eventTouch", targetSeq = "1", logDate = "2021/12/9 20:12:34"},
+                    new ClientLog {id = 5, userAccount = "adda", logCategory = "eventTouch", targetSeq = "1", logDate = "2021/12/5 23:53:14"},
+                    new ClientLog {id = 6, userAccount = "adda", logCategory = "eventTouch", targetSeq = "1", logDate = "2021/12/7 10:01:02"},
+                    new ClientLog {id = 7, userAccount = "adda", logCategory = "eventTouch", targetSeq = "1", logDate = "2021/12/5 01:42:51"},
+                    new ClientLog {id = 8, userAccount = "adda", logCategory = "eventTouch", targetSeq = "1", logDate = "2021/12/5 13:12:44"},
+                    new ClientLog {id = 9, userAccount = "adda", logCategory = "eventTouch", targetSeq = "1", logDate = "2021/12/1 15:32:12"},
+                    new ClientLog {id = 10, userAccount = "adda", logCategory = "eventTouch", targetSeq = "1", logDate = "2021/12/2 18:42:31"}
+                );
             modelBuilder.Entity<AutoCompleteList>()
                 .HasData(
                     new AutoCompleteList {id = 1, content = "patyclub", category = "K"},
@@ -91,7 +102,7 @@ namespace patyclub_server.Entities
             modelBuilder.Entity<EventMst>()
                 .HasData(
 
-new EventMst {id = 1, categoryId = 3, status = "T", cost = "1000", eventStDate = "2021/12/31", eventEdDate = "2021/12/31", eventCreateDate = "2021/12/05", examinationPassedDate = "2021/12/10", eventIntroduction = @"號稱台中最美的中級山-鳶嘴山，是台中登山旅遊的熱門景點，位在台中東勢，海拔2180公尺，險峻的峭壁危崖吸引許多喜歡冒險的登山者挑戰。
+new EventMst {id = 1, categoryId = 3, status = "TEMP", cost = "1000", eventStDate = "2021/12/31", eventEdDate = "2021/12/31", eventCreateDate = "2021/12/05", examinationPassedDate = "2021/12/10", eventIntroduction = @"號稱台中最美的中級山-鳶嘴山，是台中登山旅遊的熱門景點，位在台中東勢，海拔2180公尺，險峻的峭壁危崖吸引許多喜歡冒險的登山者挑戰。
 
 對於初次挑戰者困難度稍高，建議有登山經驗的帶領會比較安全一點，登頂後的美麗風景讓人覺得一切真的都值得，有機會的話真的要來造訪一次", eventDetail = @"日期：2021/03/20（六）
 天氣：晴☀️
@@ -134,22 +145,22 @@ new EventMst {id = 1, categoryId = 3, status = "T", cost = "1000", eventStDate =
 
 12.衛生紙
 
-13.毛巾 （看個人非必要）", tag = "S", eventTitle = "爬爬爬爬爬山趣"},
-new EventMst {id = 2, categoryId = 3, status = "T", cost = "1000", eventStDate = "2021/12/05", eventEdDate = "2021/12/05", eventCreateDate = "2021/12/05", examinationPassedDate = "2021/12/05", eventIntroduction = @"", eventDetail = @"", eventAttantion = @"", tag = "S", eventTitle = "颱風天要幹嘛? 當然是去泛舟R!"},
-new EventMst {id = 3, categoryId = 2, status = "T", cost = "1000", eventStDate = "2021/12/15", eventEdDate = "2021/12/17", eventCreateDate = "2021/12/01", examinationPassedDate = "2021/12/10", eventIntroduction = @"", eventDetail = @"", eventAttantion = @"", tag = "S", eventTitle = "SideProject Coding..."},
-new EventMst {id = 4, categoryId = 1, status = "T", cost = "1000", eventStDate = "2021/12/18", eventEdDate = "2021/12/20", eventCreateDate = "2021/12/05", examinationPassedDate = "", eventIntroduction = @"", eventDetail = @"", eventAttantion = @"", tag = "S", eventTitle = "一日雙塔，騎起來~"},
-new EventMst {id = 5, categoryId = 4, status = "T", cost = "1000", eventStDate = "2021/12/20", eventEdDate = "2021/12/20", eventCreateDate = "2021/12/01", examinationPassedDate = "2021/12/10", eventIntroduction = @"", eventDetail = @"", eventAttantion = @"", tag = "H", eventTitle = "JustDance跳跳跳!"},
-new EventMst {id = 6, categoryId = 4, status = "T", cost = "1000", eventStDate = "2021/12/15", eventEdDate = "2021/12/16", eventCreateDate = "2021/12/02", examinationPassedDate = "", eventIntroduction = @"銅牌一日上白金", eventDetail = @"今天晚上五點開打
+13.毛巾 （看個人非必要）", tag = "S", eventTitle = "爬爬爬爬爬山趣", personLimit = 10},
+new EventMst {id = 2, categoryId = 3, status = "TEMP", cost = "1000", eventStDate = "2021/12/05", eventEdDate = "2021/12/05", eventCreateDate = "2021/12/05", examinationPassedDate = "2021/12/05", eventIntroduction = @"", eventDetail = @"", eventAttantion = @"", tag = "S", eventTitle = "颱風天要幹嘛? 當然是去泛舟R!", personLimit = 6, ageLimit = ">15"},
+new EventMst {id = 3, categoryId = 2, status = "TEMP", cost = "1000", eventStDate = "2021/12/15", eventEdDate = "2021/12/17", eventCreateDate = "2021/12/01", examinationPassedDate = "2021/12/10", eventIntroduction = @"", eventDetail = @"", eventAttantion = @"", tag = "S", eventTitle = "SideProject Coding...", personLimit = 8, ageLimit = ">6"},
+new EventMst {id = 4, categoryId = 1, status = "TEMP", cost = "1000", eventStDate = "2021/12/18", eventEdDate = "2021/12/20", eventCreateDate = "2021/12/05", examinationPassedDate = "", eventIntroduction = @"", eventDetail = @"", eventAttantion = @"", tag = "S", eventTitle = "一日雙塔，騎起來~", ageLimit = ">15"},
+new EventMst {id = 5, categoryId = 4, status = "TEMP", cost = "1000", eventStDate = "2021/12/20", eventEdDate = "2021/12/20", eventCreateDate = "2021/12/01", examinationPassedDate = "2021/12/10", eventIntroduction = @"", eventDetail = @"", eventAttantion = @"", tag = "H", eventTitle = "JustDance跳跳跳!", ageLimit = ">18"},
+new EventMst {id = 6, categoryId = 4, status = "TEMP", cost = "1000", eventStDate = "2021/12/15", eventEdDate = "2021/12/16", eventCreateDate = "2021/12/02", examinationPassedDate = "", eventIntroduction = @"銅牌一日上白金", eventDetail = @"今天晚上五點開打
 打到白金為止", eventAttantion = @"雷包勿來", tag = "", eventTitle = "APEX 爬分"},
-new EventMst {id = 7, categoryId = 4, status = "T", cost = "1000", eventStDate = "2021/12/25", eventEdDate = "2021/12/26", eventCreateDate = "2021/12/01", examinationPassedDate = "2021/12/20", eventIntroduction = @"如題", eventDetail = @"打到大家都累為止", eventAttantion = @"for fun", tag = "", eventTitle = "LOL NG隨便打"},
-new EventMst {id = 8, categoryId = 4, status = "T", cost = "1000", eventStDate = "2021/12/2", eventEdDate = "2021/12/5", eventCreateDate = "2021/12/05", examinationPassedDate = "", eventIntroduction = @"阿里山鄉位於臺灣嘉義縣東部，北鄰南投縣竹山鎮，東鄰南投縣信義鄉、高雄市桃源區，西鄰梅山鄉、竹崎鄉、番路鄉，南接大埔鄉與高雄市那瑪夏區，是嘉義縣面積最大、人口密度最低的鄉鎮，其面積約佔全縣的1/5，也是嘉義縣唯一的山地鄉。", eventDetail = @"記得攜帶個人所需物品
+new EventMst {id = 7, categoryId = 4, status = "TEMP", cost = "1000", eventStDate = "2021/12/25", eventEdDate = "2021/12/26", eventCreateDate = "2021/12/01", examinationPassedDate = "2021/12/20", eventIntroduction = @"如題", eventDetail = @"打到大家都累為止", eventAttantion = @"for fun", tag = "", eventTitle = "LOL NG隨便打"},
+new EventMst {id = 8, categoryId = 4, status = "TEMP", cost = "1000", eventStDate = "2021/12/2", eventEdDate = "2021/12/5", eventCreateDate = "2021/12/05", examinationPassedDate = "", eventIntroduction = @"阿里山鄉位於臺灣嘉義縣東部，北鄰南投縣竹山鎮，東鄰南投縣信義鄉、高雄市桃源區，西鄰梅山鄉、竹崎鄉、番路鄉，南接大埔鄉與高雄市那瑪夏區，是嘉義縣面積最大、人口密度最低的鄉鎮，其面積約佔全縣的1/5，也是嘉義縣唯一的山地鄉。", eventDetail = @"記得攜帶個人所需物品
 天冷注意保暖", eventAttantion = @"要帶夠錢錢
 要帶水
 要帶健保卡", tag = "S", eventTitle = "阿里山郊遊趣"},
-new EventMst {id = 9, categoryId = 4, status = "T", cost = "1000", eventStDate = "2021/12/3", eventEdDate = "2021/12/8", eventCreateDate = "2021/12/01", examinationPassedDate = "", eventIntroduction = @"", eventDetail = @"", eventAttantion = @"", tag = "", eventTitle = "不想想活動名-A4"},
-new EventMst {id = 10, categoryId = 4, status = "T", cost = "1000", eventStDate = "2021/12/5", eventEdDate = "2021/12/5", eventCreateDate = "2021/12/02", examinationPassedDate = "2021/12/2", eventIntroduction = @"", eventDetail = @"", eventAttantion = @"", tag = "", eventTitle = "不想想活動名-A5"},
-new EventMst {id = 11, categoryId = 4, status = "T", cost = "1000", eventStDate = "2021/12/9", eventEdDate = "2021/12/9", eventCreateDate = "2021/12/01", examinationPassedDate = "", eventIntroduction = @"", eventDetail = @"", eventAttantion = @"", tag = "S", eventTitle = "不想想活動名-A6"},
-new EventMst {id = 12, categoryId = 4, status = "T", cost = "1000", eventStDate = "2021/12/8", eventEdDate = "2021/12/8", eventCreateDate = "2021/12/02", examinationPassedDate = "", eventIntroduction = @"", eventDetail = @"", eventAttantion = @"", tag = "", eventTitle = "不想想活動名-A7"}
+new EventMst {id = 9, categoryId = 4, status = "TEMP", cost = "1000", eventStDate = "2021/12/3", eventEdDate = "2021/12/8", eventCreateDate = "2021/12/01", examinationPassedDate = "", eventIntroduction = @"", eventDetail = @"", eventAttantion = @"", tag = "", eventTitle = "不想想活動名-A4"},
+new EventMst {id = 10, categoryId = 4, status = "TEMP", cost = "1000", eventStDate = "2021/12/5", eventEdDate = "2021/12/5", eventCreateDate = "2021/12/02", examinationPassedDate = "2021/12/2", eventIntroduction = @"", eventDetail = @"", eventAttantion = @"", tag = "", eventTitle = "不想想活動名-A5"},
+new EventMst {id = 11, categoryId = 4, status = "TEMP", cost = "1000", eventStDate = "2021/12/9", eventEdDate = "2021/12/9", eventCreateDate = "2021/12/01", examinationPassedDate = "", eventIntroduction = @"", eventDetail = @"", eventAttantion = @"", tag = "S", eventTitle = "不想想活動名-A6"},
+new EventMst {id = 12, categoryId = 4, status = "TEMP", cost = "1000", eventStDate = "2021/12/8", eventEdDate = "2021/12/8", eventCreateDate = "2021/12/02", examinationPassedDate = "", eventIntroduction = @"", eventDetail = @"", eventAttantion = @"", tag = "", eventTitle = "不想想活動名-A7"}
 
                 );
             modelBuilder.Entity<EventAppendix>()
@@ -237,17 +248,24 @@ new EventMst {id = 12, categoryId = 4, status = "T", cost = "1000", eventStDate 
                 .HasData(
                     new SysCodeDtl {id = 1, sysCodeMstId = 1, codeName = "H", codeDesc = "熱門活動"},
                     new SysCodeDtl {id = 2, sysCodeMstId = 1, codeName = "S", codeDesc = "精選活動"},
-                    new SysCodeDtl {id = 3, sysCodeMstId = 2, codeName = "T", codeDesc = "暫存中"},
-                    new SysCodeDtl {id = 4, sysCodeMstId = 2, codeName = "C", codeDesc = "已取消"},
-                    new SysCodeDtl {id = 5, sysCodeMstId = 2, codeName = "D", codeDesc = "已刪除"},
+                    new SysCodeDtl {id = 3, sysCodeMstId = 2, codeName = "TEMP", codeDesc = "暫存中"},
+                    new SysCodeDtl {id = 4, sysCodeMstId = 2, codeName = "COMPLETE", codeDesc = "已完成未送審"},
+                    new SysCodeDtl {id = 5, sysCodeMstId = 2, codeName = "DELETE", codeDesc = "已刪除"},
                     new SysCodeDtl {id = 6, sysCodeMstId = 3, codeName = "OWNER", codeDesc = "擁有者"},
-                    new SysCodeDtl {id = 7, sysCodeMstId = 3, codeName = "MEMBER", codeDesc = "成員"}
+                    new SysCodeDtl {id = 7, sysCodeMstId = 3, codeName = "MEMBER", codeDesc = "成員"},
+                    new SysCodeDtl {id = 8, sysCodeMstId = 4, codeName = "<6", codeDesc = "6-"},
+                    new SysCodeDtl {id = 9, sysCodeMstId = 4, codeName = ">6", codeDesc = "6+"},
+                    new SysCodeDtl {id = 10, sysCodeMstId = 4, codeName = ">15", codeDesc = "15+"},
+                    new SysCodeDtl {id = 11, sysCodeMstId = 4, codeName = ">18", codeDesc = "18+"},
+                    new SysCodeDtl {id = 12, sysCodeMstId = 2, codeName = "AUDIT", codeDesc = "送審中"},
+                    new SysCodeDtl {id = 13, sysCodeMstId = 2, codeName = "AUDIT_PASS", codeDesc = "審核通過"}
                 );
             modelBuilder.Entity<SysCodeMst>()
                 .HasData(
                     new SysCodeMst {id = 1, name = "TAG", remark = "活動標記代碼"},
                     new SysCodeMst {id = 2, name = "eventStatus", remark = "活動狀態代碼"},
-                    new SysCodeMst {id = 3, name = "EventPersonnelPermission", remark = "活動人員權限"}
+                    new SysCodeMst {id = 3, name = "EventPersonnelPermission", remark = "活動人員權限"},
+                    new SysCodeMst {id = 4, name = "ageLimit", remark = "年齡限制分級"}
                 );
             modelBuilder.Entity<User>()
                 .HasData(

@@ -7,6 +7,7 @@ namespace patyclub_server.Entities
   [Table("REGISTRATION_FORM_QUESTION_OPTION")]
   public class RegistrationFormQuestionOption
   {
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     [Column("id")] //選項ID
     public int id { get; set; }
 
@@ -16,19 +17,5 @@ namespace patyclub_server.Entities
     [Column("content")] //選項內容
     public string content { get; set; }
 
-  }
-
-  public class RegistrationFormQuestionOptionService
-  {
-    public DBContext _context;
-
-    public RegistrationFormQuestionOptionService(DBContext context)
-    {
-      _context = context;
-    }
-
-    public IEnumerable<RegistrationFormQuestionOption> GetRegistrationFormQuestionOptions() {
-      return _context.registrationFormQuestionOption.ToList();
-    }
   }
 }

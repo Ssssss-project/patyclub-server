@@ -7,6 +7,7 @@ namespace patyclub_server.Entities
   [Table("TAG_LIST")]
   public class TagList
   {
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     [Column("id")] //TAG ID
     public int id { get; set; }
 

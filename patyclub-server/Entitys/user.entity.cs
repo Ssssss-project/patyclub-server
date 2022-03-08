@@ -46,9 +46,6 @@ namespace patyclub_server.Entities
     [Column("introduction")] //簡介(關於我)
     public string introduction { get; set; }
 
-    [Column("photoStickerPath")] //大頭貼路徑
-    public string photoStickerPath { get; set; }
-
     [Column("accountStatus")] //帳號狀態
     public string accountStatus { get; set; }
 
@@ -57,19 +54,5 @@ namespace patyclub_server.Entities
 
     [Column("forgetPwdTokenCreatedDate")] //忘記密碼Token
     public string forgetPwdTokenCreatedDate {get; set;}
-  }
-
-  public class UserService
-  {
-    public DBContext _context;
-
-    public UserService(DBContext context)
-    {
-      _context = context;
-    }
-
-    public IEnumerable<User> GetUsers() {
-      return _context.user.ToList();
-    }
   }
 }

@@ -7,6 +7,7 @@ namespace patyclub_server.Entities
   [Table("NEWS")]
   public class News
   {
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     [Column("id")] //TAG ID
     public int id { get; set; }
 
