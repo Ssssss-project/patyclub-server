@@ -10,5 +10,5 @@ public enum eventPersonnelEnums{
     non_select,
     OWNER,
     MEMBER,
-    WATCHE
+    WATCHER
 }
