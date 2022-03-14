@@ -6,7 +6,7 @@ public enum eventSortByEnums{
     hot_desc
 }
 
-public enum eventPersonnel{
+public enum eventPersonnelEnums{
     non_select,
     OWNER,
     MEMBER,
