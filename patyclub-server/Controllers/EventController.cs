@@ -164,7 +164,7 @@ namespace patyclub_server.Controllers
                                     em.eventTitle,
                                     owner = o.userAccount ?? string.Empty,
                                     em.ageLimit,
-                                    em.personLimit,
+                                    memberLimit = em.personLimit,
                                     timeStatus = Convert.ToDateTime(em.eventStDate).CompareTo(DateTime.Now) > 0?"comingSoon":
                                                 Convert.ToDateTime(em.eventEdDate).CompareTo(DateTime.Now) < 0?"expired":"inProgress"
                                     }).ToList();
@@ -349,6 +349,7 @@ namespace patyclub_server.Controllers
                         em.eventEdDate,
                         owner = owner?.userAccount ?? string.Empty,
                         memberCount = member.cnt,
+                        memberLimit = em.personLimit,
                         statusDesc = statusDesc.codeDesc,
                         coverPath = cover?.appendixPath ?? string.Empty,
                         timeStatus = Convert.ToDateTime(em.eventStDate).CompareTo(DateTime.Now) > 0?"comingSoon":
