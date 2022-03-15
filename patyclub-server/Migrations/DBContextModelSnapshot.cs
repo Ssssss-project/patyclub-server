@@ -1074,10 +1074,6 @@ namespace patyclub_server.Migrations
 
             modelBuilder.Entity("patyclub_server.Entities.SysCodeDtl", b =>
                 {
-                    b.Property<int>("sysCodeMstId")
-                        .HasColumnType("integer")
-                        .HasColumnName("sysCodeMstId");
-
                     b.Property<int>("id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
@@ -1092,111 +1088,120 @@ namespace patyclub_server.Migrations
                         .HasColumnType("text")
                         .HasColumnName("codeName");
 
-                    b.HasKey("sysCodeMstId", "id");
+                    b.Property<string>("sysCodeMstKeyword")
+                        .HasColumnType("text")
+                        .HasColumnName("sysCodeMstKeyword");
+
+                    b.HasKey("id");
 
                     b.ToTable("SYS_CODE_DTL");
 
                     b.HasData(
                         new
                         {
-                            sysCodeMstId = 1,
                             id = 1,
                             codeDesc = "熱門活動",
-                            codeName = "H"
+                            codeName = "H",
+                            sysCodeMstKeyword = "eventTag"
                         },
                         new
                         {
-                            sysCodeMstId = 1,
                             id = 2,
                             codeDesc = "精選活動",
-                            codeName = "S"
+                            codeName = "S",
+                            sysCodeMstKeyword = "eventTag"
                         },
                         new
                         {
-                            sysCodeMstId = 2,
                             id = 3,
                             codeDesc = "暫存中",
-                            codeName = "TEMP"
+                            codeName = "TEMP",
+                            sysCodeMstKeyword = "eventStatus"
                         },
                         new
                         {
-                            sysCodeMstId = 2,
                             id = 4,
                             codeDesc = "已完成未送審",
-                            codeName = "COMPLETE"
+                            codeName = "COMPLETE",
+                            sysCodeMstKeyword = "eventStatus"
                         },
                         new
                         {
-                            sysCodeMstId = 2,
                             id = 5,
                             codeDesc = "已刪除",
-                            codeName = "DELETE"
+                            codeName = "DELETE",
+                            sysCodeMstKeyword = "eventStatus"
                         },
                         new
                         {
-                            sysCodeMstId = 3,
                             id = 6,
                             codeDesc = "擁有者",
-                            codeName = "OWNER"
+                            codeName = "OWNER",
+                            sysCodeMstKeyword = "eventPersonnel"
                         },
                         new
                         {
-                            sysCodeMstId = 3,
                             id = 7,
                             codeDesc = "成員",
-                            codeName = "MEMBER"
+                            codeName = "MEMBER",
+                            sysCodeMstKeyword = "eventPersonnel"
                         },
                         new
                         {
-                            sysCodeMstId = 4,
                             id = 8,
                             codeDesc = "6-",
-                            codeName = "<6"
+                            codeName = "<6",
+                            sysCodeMstKeyword = "ageLimit"
                         },
                         new
                         {
-                            sysCodeMstId = 4,
                             id = 9,
                             codeDesc = "6+",
-                            codeName = ">6"
+                            codeName = ">6",
+                            sysCodeMstKeyword = "ageLimit"
                         },
                         new
                         {
-                            sysCodeMstId = 4,
                             id = 10,
                             codeDesc = "15+",
-                            codeName = ">15"
+                            codeName = ">15",
+                            sysCodeMstKeyword = "ageLimit"
                         },
                         new
                         {
-                            sysCodeMstId = 4,
                             id = 11,
                             codeDesc = "18+",
-                            codeName = ">18"
+                            codeName = ">18",
+                            sysCodeMstKeyword = "ageLimit"
                         },
                         new
                         {
-                            sysCodeMstId = 2,
                             id = 12,
                             codeDesc = "送審中",
-                            codeName = "AUDIT"
+                            codeName = "AUDIT",
+                            sysCodeMstKeyword = "eventStatus"
                         },
                         new
                         {
-                            sysCodeMstId = 2,
                             id = 13,
                             codeDesc = "審核通過",
-                            codeName = "AUDIT_PASS"
+                            codeName = "AUDIT_PASS",
+                            sysCodeMstKeyword = "eventStatus"
+                        },
+                        new
+                        {
+                            id = 14,
+                            codeDesc = "關注者",
+                            codeName = "WATCHER",
+                            sysCodeMstKeyword = "eventPersonnel"
                         });
                 });
 
             modelBuilder.Entity("patyclub_server.Entities.SysCodeMst", b =>
                 {
-                    b.Property<int>("id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("id")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+                    b.Property<string>("keyword")
+                        .HasColumnType("text")
+                        .HasColumnName("keyword");
 
                     b.Property<string>("name")
                         .HasColumnType("text")
@@ -1206,32 +1211,32 @@ namespace patyclub_server.Migrations
                         .HasColumnType("text")
                         .HasColumnName("remark");
 
-                    b.HasKey("id");
+                    b.HasKey("keyword");
 
                     b.ToTable("SYS_CODE_MST");
 
                     b.HasData(
                         new
                         {
-                            id = 1,
+                            keyword = "eventTag",
                             name = "TAG",
                             remark = "活動標記代碼"
                         },
                         new
                         {
-                            id = 2,
+                            keyword = "eventStatus",
                             name = "eventStatus",
                             remark = "活動狀態代碼"
                         },
                         new
                         {
-                            id = 3,
+                            keyword = "eventPersonnel",
                             name = "EventPersonnelPermission",
                             remark = "活動人員權限"
                         },
                         new
                         {
-                            id = 4,
+                            keyword = "ageLimit",
                             name = "ageLimit",
                             remark = "年齡限制分級"
                         });

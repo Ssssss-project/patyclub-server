@@ -9,8 +9,8 @@ using patyclub_server.Entities;
 namespace patyclub_server.Migrations
 {
     [DbContext(typeof(DBContext))]
-    [Migration("20211230062604_remove eventMst lastUpdateDate")]
-    partial class removeeventMstlastUpdateDate
+    [Migration("20220315015010_another init migrtions and modify sysCode schema id to keyword")]
+    partial class anotherinitmigrtionsandmodifysysCodeschemaidtokeyword
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -147,6 +147,125 @@ namespace patyclub_server.Migrations
                             id = 13,
                             category = "H",
                             content = "#下海"
+                        });
+                });
+
+            modelBuilder.Entity("patyclub_server.Entities.ClientLog", b =>
+                {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<string>("logCategory")
+                        .HasColumnType("text")
+                        .HasColumnName("logCategory");
+
+                    b.Property<string>("logDate")
+                        .HasColumnType("text")
+                        .HasColumnName("logDate");
+
+                    b.Property<string>("remark")
+                        .HasColumnType("text")
+                        .HasColumnName("remark");
+
+                    b.Property<string>("stauts")
+                        .HasColumnType("text")
+                        .HasColumnName("stauts");
+
+                    b.Property<string>("targetSeq")
+                        .HasColumnType("text")
+                        .HasColumnName("targetSeq");
+
+                    b.Property<string>("userAccount")
+                        .HasColumnType("text")
+                        .HasColumnName("userAccount");
+
+                    b.HasKey("id");
+
+                    b.ToTable("CLIENT_LOG");
+
+                    b.HasData(
+                        new
+                        {
+                            id = 1,
+                            logCategory = "eventTouch",
+                            logDate = "2021/12/3 09:25:36",
+                            targetSeq = "1",
+                            userAccount = "adda"
+                        },
+                        new
+                        {
+                            id = 2,
+                            logCategory = "eventTouch",
+                            logDate = "2021/12/4 08:45:23",
+                            targetSeq = "1",
+                            userAccount = "adda"
+                        },
+                        new
+                        {
+                            id = 3,
+                            logCategory = "eventTouch",
+                            logDate = "2021/12/8 05:25:28",
+                            targetSeq = "1",
+                            userAccount = "adda"
+                        },
+                        new
+                        {
+                            id = 4,
+                            logCategory = "eventTouch",
+                            logDate = "2021/12/9 20:12:34",
+                            targetSeq = "1",
+                            userAccount = "adda"
+                        },
+                        new
+                        {
+                            id = 5,
+                            logCategory = "eventTouch",
+                            logDate = "2021/12/5 23:53:14",
+                            targetSeq = "1",
+                            userAccount = "adda"
+                        },
+                        new
+                        {
+                            id = 6,
+                            logCategory = "eventTouch",
+                            logDate = "2021/12/7 10:01:02",
+                            targetSeq = "1",
+                            userAccount = "adda"
+                        },
+                        new
+                        {
+                            id = 7,
+                            logCategory = "eventTouch",
+                            logDate = "2021/12/5 01:42:51",
+                            targetSeq = "1",
+                            userAccount = "adda"
+                        },
+                        new
+                        {
+                            id = 8,
+                            logCategory = "eventTouch",
+                            logDate = "2021/12/5 13:12:44",
+                            targetSeq = "1",
+                            userAccount = "adda"
+                        },
+                        new
+                        {
+                            id = 9,
+                            logCategory = "eventTouch",
+                            logDate = "2021/12/1 15:32:12",
+                            targetSeq = "1",
+                            userAccount = "adda"
+                        },
+                        new
+                        {
+                            id = 10,
+                            logCategory = "eventTouch",
+                            logDate = "2021/12/2 18:42:31",
+                            targetSeq = "1",
+                            userAccount = "adda"
                         });
                 });
 
@@ -290,6 +409,10 @@ namespace patyclub_server.Migrations
                         .HasColumnName("id")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
+                    b.Property<string>("ageLimit")
+                        .HasColumnType("text")
+                        .HasColumnName("ageLimit");
+
                     b.Property<int>("categoryId")
                         .HasColumnType("integer")
                         .HasColumnName("categoryId");
@@ -330,6 +453,10 @@ namespace patyclub_server.Migrations
                         .HasColumnType("text")
                         .HasColumnName("examinationPassedDate");
 
+                    b.Property<int>("personLimit")
+                        .HasColumnType("integer")
+                        .HasColumnName("personLimit");
+
                     b.Property<string>("signUpEdDate")
                         .HasColumnType("text")
                         .HasColumnName("signUpEdDate");
@@ -364,12 +491,14 @@ namespace patyclub_server.Migrations
                             eventStDate = "2021/12/31",
                             eventTitle = "爬爬爬爬爬山趣",
                             examinationPassedDate = "2021/12/10",
-                            status = "T",
+                            personLimit = 10,
+                            status = "TEMP",
                             tag = "S"
                         },
                         new
                         {
                             id = 2,
+                            ageLimit = ">15",
                             categoryId = 3,
                             cost = "1000",
                             eventAttantion = "",
@@ -380,12 +509,14 @@ namespace patyclub_server.Migrations
                             eventStDate = "2021/12/05",
                             eventTitle = "颱風天要幹嘛? 當然是去泛舟R!",
                             examinationPassedDate = "2021/12/05",
-                            status = "T",
+                            personLimit = 6,
+                            status = "TEMP",
                             tag = "S"
                         },
                         new
                         {
                             id = 3,
+                            ageLimit = ">6",
                             categoryId = 2,
                             cost = "1000",
                             eventAttantion = "",
@@ -396,12 +527,14 @@ namespace patyclub_server.Migrations
                             eventStDate = "2021/12/15",
                             eventTitle = "SideProject Coding...",
                             examinationPassedDate = "2021/12/10",
-                            status = "T",
+                            personLimit = 8,
+                            status = "TEMP",
                             tag = "S"
                         },
                         new
                         {
                             id = 4,
+                            ageLimit = ">15",
                             categoryId = 1,
                             cost = "1000",
                             eventAttantion = "",
@@ -412,12 +545,14 @@ namespace patyclub_server.Migrations
                             eventStDate = "2021/12/18",
                             eventTitle = "一日雙塔，騎起來~",
                             examinationPassedDate = "",
-                            status = "T",
+                            personLimit = 0,
+                            status = "TEMP",
                             tag = "S"
                         },
                         new
                         {
                             id = 5,
+                            ageLimit = ">18",
                             categoryId = 4,
                             cost = "1000",
                             eventAttantion = "",
@@ -428,7 +563,8 @@ namespace patyclub_server.Migrations
                             eventStDate = "2021/12/20",
                             eventTitle = "JustDance跳跳跳!",
                             examinationPassedDate = "2021/12/10",
-                            status = "T",
+                            personLimit = 0,
+                            status = "TEMP",
                             tag = "H"
                         },
                         new
@@ -444,7 +580,8 @@ namespace patyclub_server.Migrations
                             eventStDate = "2021/12/15",
                             eventTitle = "APEX 爬分",
                             examinationPassedDate = "",
-                            status = "T",
+                            personLimit = 0,
+                            status = "TEMP",
                             tag = ""
                         },
                         new
@@ -460,7 +597,8 @@ namespace patyclub_server.Migrations
                             eventStDate = "2021/12/25",
                             eventTitle = "LOL NG隨便打",
                             examinationPassedDate = "2021/12/20",
-                            status = "T",
+                            personLimit = 0,
+                            status = "TEMP",
                             tag = ""
                         },
                         new
@@ -476,7 +614,8 @@ namespace patyclub_server.Migrations
                             eventStDate = "2021/12/2",
                             eventTitle = "阿里山郊遊趣",
                             examinationPassedDate = "",
-                            status = "T",
+                            personLimit = 0,
+                            status = "TEMP",
                             tag = "S"
                         },
                         new
@@ -492,7 +631,8 @@ namespace patyclub_server.Migrations
                             eventStDate = "2021/12/3",
                             eventTitle = "不想想活動名-A4",
                             examinationPassedDate = "",
-                            status = "T",
+                            personLimit = 0,
+                            status = "TEMP",
                             tag = ""
                         },
                         new
@@ -508,7 +648,8 @@ namespace patyclub_server.Migrations
                             eventStDate = "2021/12/5",
                             eventTitle = "不想想活動名-A5",
                             examinationPassedDate = "2021/12/2",
-                            status = "T",
+                            personLimit = 0,
+                            status = "TEMP",
                             tag = ""
                         },
                         new
@@ -524,7 +665,8 @@ namespace patyclub_server.Migrations
                             eventStDate = "2021/12/9",
                             eventTitle = "不想想活動名-A6",
                             examinationPassedDate = "",
-                            status = "T",
+                            personLimit = 0,
+                            status = "TEMP",
                             tag = "S"
                         },
                         new
@@ -540,7 +682,8 @@ namespace patyclub_server.Migrations
                             eventStDate = "2021/12/8",
                             eventTitle = "不想想活動名-A7",
                             examinationPassedDate = "",
-                            status = "T",
+                            personLimit = 0,
+                            status = "TEMP",
                             tag = ""
                         });
                 });
@@ -603,29 +746,6 @@ namespace patyclub_server.Migrations
                             permission = "MEMBER",
                             status = "??"
                         });
-                });
-
-            modelBuilder.Entity("patyclub_server.Entities.EventViewLog", b =>
-                {
-                    b.Property<string>("userAccount")
-                        .HasColumnType("text")
-                        .HasColumnName("userAccount");
-
-                    b.Property<int>("eventMstId")
-                        .HasColumnType("integer")
-                        .HasColumnName("eventMstId");
-
-                    b.Property<string>("viewDate")
-                        .HasColumnType("text")
-                        .HasColumnName("viewDate");
-
-                    b.Property<int>("viewSeq")
-                        .HasColumnType("integer")
-                        .HasColumnName("viewSeq");
-
-                    b.HasKey("userAccount", "eventMstId");
-
-                    b.ToTable("EVENT_VIEW_LOG");
                 });
 
             modelBuilder.Entity("patyclub_server.Entities.MappingEventTag", b =>
@@ -956,10 +1076,6 @@ namespace patyclub_server.Migrations
 
             modelBuilder.Entity("patyclub_server.Entities.SysCodeDtl", b =>
                 {
-                    b.Property<int>("sysCodeMstId")
-                        .HasColumnType("integer")
-                        .HasColumnName("sysCodeMstId");
-
                     b.Property<int>("id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
@@ -974,69 +1090,120 @@ namespace patyclub_server.Migrations
                         .HasColumnType("text")
                         .HasColumnName("codeName");
 
-                    b.HasKey("sysCodeMstId", "id");
+                    b.Property<string>("sysCodeMstKeyword")
+                        .HasColumnType("text")
+                        .HasColumnName("sysCodeMstKeyword");
+
+                    b.HasKey("id");
 
                     b.ToTable("SYS_CODE_DTL");
 
                     b.HasData(
                         new
                         {
-                            sysCodeMstId = 1,
                             id = 1,
                             codeDesc = "熱門活動",
-                            codeName = "H"
+                            codeName = "H",
+                            sysCodeMstKeyword = "eventTag"
                         },
                         new
                         {
-                            sysCodeMstId = 1,
                             id = 2,
                             codeDesc = "精選活動",
-                            codeName = "S"
+                            codeName = "S",
+                            sysCodeMstKeyword = "eventTag"
                         },
                         new
                         {
-                            sysCodeMstId = 2,
                             id = 3,
                             codeDesc = "暫存中",
-                            codeName = "T"
+                            codeName = "TEMP",
+                            sysCodeMstKeyword = "eventStatus"
                         },
                         new
                         {
-                            sysCodeMstId = 2,
                             id = 4,
-                            codeDesc = "已取消",
-                            codeName = "C"
+                            codeDesc = "已完成未送審",
+                            codeName = "COMPLETE",
+                            sysCodeMstKeyword = "eventStatus"
                         },
                         new
                         {
-                            sysCodeMstId = 2,
                             id = 5,
                             codeDesc = "已刪除",
-                            codeName = "D"
+                            codeName = "DELETE",
+                            sysCodeMstKeyword = "eventStatus"
                         },
                         new
                         {
-                            sysCodeMstId = 3,
                             id = 6,
                             codeDesc = "擁有者",
-                            codeName = "OWNER"
+                            codeName = "OWNER",
+                            sysCodeMstKeyword = "eventPersonnel"
                         },
                         new
                         {
-                            sysCodeMstId = 3,
                             id = 7,
                             codeDesc = "成員",
-                            codeName = "MEMBER"
+                            codeName = "MEMBER",
+                            sysCodeMstKeyword = "eventPersonnel"
+                        },
+                        new
+                        {
+                            id = 8,
+                            codeDesc = "6-",
+                            codeName = "<6",
+                            sysCodeMstKeyword = "ageLimit"
+                        },
+                        new
+                        {
+                            id = 9,
+                            codeDesc = "6+",
+                            codeName = ">6",
+                            sysCodeMstKeyword = "ageLimit"
+                        },
+                        new
+                        {
+                            id = 10,
+                            codeDesc = "15+",
+                            codeName = ">15",
+                            sysCodeMstKeyword = "ageLimit"
+                        },
+                        new
+                        {
+                            id = 11,
+                            codeDesc = "18+",
+                            codeName = ">18",
+                            sysCodeMstKeyword = "ageLimit"
+                        },
+                        new
+                        {
+                            id = 12,
+                            codeDesc = "送審中",
+                            codeName = "AUDIT",
+                            sysCodeMstKeyword = "eventStatus"
+                        },
+                        new
+                        {
+                            id = 13,
+                            codeDesc = "審核通過",
+                            codeName = "AUDIT_PASS",
+                            sysCodeMstKeyword = "eventStatus"
+                        },
+                        new
+                        {
+                            id = 14,
+                            codeDesc = "關注者",
+                            codeName = "WATCHER",
+                            sysCodeMstKeyword = "eventPersonnel"
                         });
                 });
 
             modelBuilder.Entity("patyclub_server.Entities.SysCodeMst", b =>
                 {
-                    b.Property<int>("id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("id")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+                    b.Property<string>("keyword")
+                        .HasColumnType("text")
+                        .HasColumnName("keyword");
 
                     b.Property<string>("name")
                         .HasColumnType("text")
@@ -1046,28 +1213,34 @@ namespace patyclub_server.Migrations
                         .HasColumnType("text")
                         .HasColumnName("remark");
 
-                    b.HasKey("id");
+                    b.HasKey("keyword");
 
                     b.ToTable("SYS_CODE_MST");
 
                     b.HasData(
                         new
                         {
-                            id = 1,
+                            keyword = "eventTag",
                             name = "TAG",
                             remark = "活動標記代碼"
                         },
                         new
                         {
-                            id = 2,
+                            keyword = "eventStatus",
                             name = "eventStatus",
                             remark = "活動狀態代碼"
                         },
                         new
                         {
-                            id = 3,
+                            keyword = "eventPersonnel",
                             name = "EventPersonnelPermission",
                             remark = "活動人員權限"
+                        },
+                        new
+                        {
+                            keyword = "ageLimit",
+                            name = "ageLimit",
+                            remark = "年齡限制分級"
                         });
                 });
 

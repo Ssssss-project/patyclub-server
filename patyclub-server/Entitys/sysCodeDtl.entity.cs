@@ -11,8 +11,8 @@ namespace patyclub_server.Entities
     [Column("id")] //參數ID
     public int id { get; set; }
 
-    [Column("sysCodeMstId")] //參數類別ID
-    public int sysCodeMstId { get; set; }
+    [Column("sysCodeMstKeyword")] //參數識別碼
+    public string sysCodeMstKeyword { get; set; }
     
     [Column("codeName")] //參數名稱
     public string codeName { get; set; }
