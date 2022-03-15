@@ -41,8 +41,8 @@ namespace patyclub_server.Controllers
         /// 取得代碼組
         /// </summary>
         [HttpGet("getCodeDtl")]
-        public ActionResult getCodeDtl(string mstId){
-            var codeDtlResult = _context.sysCodeDtl.Where(a => a.sysCodeMstId == Convert.ToInt64(mstId)).ToList();
+        public ActionResult getCodeDtl(string mstKeyword){
+            var codeDtlResult = _context.sysCodeDtl.Where(a => a.sysCodeMstKeyword == mstKeyword).OrderBy(a => a.orderSeq).ToList();
             return Ok(new Response{data = codeDtlResult});
         }
 
@@ -70,8 +70,8 @@ namespace patyclub_server.Controllers
         /// 刪除代碼群組
         /// </summary>
         [HttpDelete("removeCodeMst")]
-        public ActionResult removeCodeMst(int sysCodeMstId){
-            SysCodeMst item = new SysCodeMst{ id = sysCodeMstId };
+        public ActionResult removeCodeMst(string sysCodeMstKeyword){
+            SysCodeMst item = new SysCodeMst{ keyword = sysCodeMstKeyword };
             _context.sysCodeMst.Remove(item);
             _context.SaveChanges();
             return Ok(new Response{message = "代碼群組刪除成功"});

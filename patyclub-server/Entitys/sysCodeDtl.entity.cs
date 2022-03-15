@@ -20,5 +20,8 @@ namespace patyclub_server.Entities
     [Column("codeDesc")] //參數內容
     public string codeDesc { get; set; }
 
+    [Column("orderSeq")] // 順序
+    public int orderSeq {get; set;}
+
   }
 }

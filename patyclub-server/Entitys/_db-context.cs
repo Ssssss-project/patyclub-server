@@ -248,25 +248,25 @@ new EventMst {id = 12, categoryId = 4, status = "TEMP", cost = "1000", eventStDa
                 .HasData(
                     new SysCodeDtl {id = 1, sysCodeMstKeyword = "eventTag", codeName = "H", codeDesc = "熱門活動"},
                     new SysCodeDtl {id = 2, sysCodeMstKeyword = "eventTag", codeName = "S", codeDesc = "精選活動"},
-                    new SysCodeDtl {id = 3, sysCodeMstKeyword = "eventStatus", codeName = "TEMP", codeDesc = "暫存中"},
-                    new SysCodeDtl {id = 4, sysCodeMstKeyword = "eventStatus", codeName = "COMPLETE", codeDesc = "已完成未送審"},
-                    new SysCodeDtl {id = 5, sysCodeMstKeyword = "eventStatus", codeName = "DELETE", codeDesc = "已刪除"},
-                    new SysCodeDtl {id = 6, sysCodeMstKeyword = "eventPersonnel", codeName = "OWNER", codeDesc = "擁有者"},
-                    new SysCodeDtl {id = 7, sysCodeMstKeyword = "eventPersonnel", codeName = "MEMBER", codeDesc = "成員"},
-                    new SysCodeDtl {id = 8, sysCodeMstKeyword = "ageLimit", codeName = "<6", codeDesc = "6-"},
-                    new SysCodeDtl {id = 9, sysCodeMstKeyword = "ageLimit", codeName = ">6", codeDesc = "6+"},
-                    new SysCodeDtl {id = 10, sysCodeMstKeyword = "ageLimit", codeName = ">15", codeDesc = "15+"},
-                    new SysCodeDtl {id = 11, sysCodeMstKeyword = "ageLimit", codeName = ">18", codeDesc = "18+"},
-                    new SysCodeDtl {id = 12, sysCodeMstKeyword = "eventStatus", codeName = "AUDIT", codeDesc = "送審中"},
-                    new SysCodeDtl {id = 13, sysCodeMstKeyword = "eventStatus", codeName = "AUDIT_PASS", codeDesc = "審核通過"},
-                    new SysCodeDtl {id = 14, sysCodeMstKeyword = "eventPersonnel", codeName = "WATCHER", codeDesc = "關注者"}
+                    new SysCodeDtl {id = 3, sysCodeMstKeyword = "eventStatus", codeName = "TEMP", codeDesc = "暫存中", orderSeq = 1},
+                    new SysCodeDtl {id = 4, sysCodeMstKeyword = "eventStatus", codeName = "COMPLETE", codeDesc = "已完成未送審", orderSeq = 2},
+                    new SysCodeDtl {id = 5, sysCodeMstKeyword = "eventStatus", codeName = "DELETE", codeDesc = "已刪除", orderSeq = 5},
+                    new SysCodeDtl {id = 6, sysCodeMstKeyword = "eventPersonnel", codeName = "OWNER", codeDesc = "擁有者", orderSeq = 1},
+                    new SysCodeDtl {id = 7, sysCodeMstKeyword = "eventPersonnel", codeName = "MEMBER", codeDesc = "成員", orderSeq = 2},
+                    new SysCodeDtl {id = 8, sysCodeMstKeyword = "ageLimit", codeName = "<6", codeDesc = "6-", orderSeq = 1},
+                    new SysCodeDtl {id = 9, sysCodeMstKeyword = "ageLimit", codeName = ">6", codeDesc = "6+", orderSeq = 2},
+                    new SysCodeDtl {id = 10, sysCodeMstKeyword = "ageLimit", codeName = ">15", codeDesc = "15+", orderSeq = 3},
+                    new SysCodeDtl {id = 11, sysCodeMstKeyword = "ageLimit", codeName = ">18", codeDesc = "18+", orderSeq = 4},
+                    new SysCodeDtl {id = 12, sysCodeMstKeyword = "eventStatus", codeName = "AUDIT", codeDesc = "送審中", orderSeq = 3},
+                    new SysCodeDtl {id = 13, sysCodeMstKeyword = "eventStatus", codeName = "AUDIT_PASS", codeDesc = "審核通過", orderSeq = 4},
+                    new SysCodeDtl {id = 14, sysCodeMstKeyword = "eventPersonnel", codeName = "WATCHER", codeDesc = "關注者", orderSeq = 3}
                 );
             modelBuilder.Entity<SysCodeMst>()
                 .HasData(
-                    new SysCodeMst {keyword = "eventTag", name = "TAG", remark = "活動標記代碼"},
-                    new SysCodeMst {keyword = "eventStatus", name = "eventStatus", remark = "活動狀態代碼"},
-                    new SysCodeMst {keyword = "eventPersonnel", name = "EventPersonnelPermission", remark = "活動人員權限"},
-                    new SysCodeMst {keyword = "ageLimit", name = "ageLimit", remark = "年齡限制分級"}
+                    new SysCodeMst {keyword = "eventTag", name = "活動標記代碼", remark = ""},
+                    new SysCodeMst {keyword = "eventStatus", name = "活動狀態代碼", remark = ""},
+                    new SysCodeMst {keyword = "eventPersonnel", name = "活動人員身分別", remark = ""},
+                    new SysCodeMst {keyword = "ageLimit", name = "年齡限制分級", remark = ""}
                 );
             modelBuilder.Entity<User>()
                 .HasData(
