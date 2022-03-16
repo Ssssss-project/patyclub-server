@@ -12,6 +12,6 @@
 
     public class ResponseWithPage : Response{
         public int maxPageNum {get; set;}
+        public int totalRownum {get; set;}
         public int currentPageNum {get; set;}
-
     }

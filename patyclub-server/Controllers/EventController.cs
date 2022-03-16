@@ -335,9 +335,17 @@ namespace patyclub_server.Controllers
                                         Convert.ToDateTime(em.eventEdDate).CompareTo(DateTime.Now) < 0?"expired":"inProgress"
                         }).ToList();
 
+
             PaginationAttr paginationAttr = _coreService.getPageAttr(result.Count(), args.rownumPerPage, args.requestPageNum);
-            result = result.Skip(paginationAttr.skipRownum).Take(paginationAttr.rownumPerPage).ToList();
-            return Ok(new ResponseWithPage {message = "", data = result, maxPageNum = paginationAttr.maxPageNum, currentPageNum = paginationAttr.currentPageNum});
+            if(paginationAttr.rownumPerPage != 0)
+                result = result.Skip(paginationAttr.skipRownum).Take(paginationAttr.rownumPerPage).ToList();
+            return Ok(new ResponseWithPage {
+                message = "", 
+                data = result, 
+                maxPageNum = paginationAttr.maxPageNum, 
+                currentPageNum = paginationAttr.currentPageNum,
+                totalRownum = paginationAttr.totalRownum
+                });
         }
 
 
