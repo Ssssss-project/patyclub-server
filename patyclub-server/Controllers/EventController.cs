@@ -140,7 +140,7 @@ namespace patyclub_server.Controllers
         {
             var eventMstResult = _context.eventMst.Where(x => x.id == id).ToList();
             var result = (from em in eventMstResult
-                        join code in _context.sysCodeDtl.Where(x => x.sysCodeMstId == 2) on em.status equals code.codeName into statusCode
+                        join code in _context.sysCodeDtl.Where(x => x.sysCodeMstKeyword == "eventStatus") on em.status equals code.codeName into statusCode
                         from sc in statusCode.DefaultIfEmpty()
                         join ep in _context.eventPersonnel
                         on new {id = em.id, permission = "OWNER"} equals 
@@ -156,7 +156,7 @@ namespace patyclub_server.Controllers
                             new {id = ep.key} into subEp2
                         from member in subEp2.DefaultIfEmpty()
                         from statusDesc in _context.sysCodeDtl
-                        where statusDesc.sysCodeMstId == 2 && statusDesc.codeName == em.status
+                        where statusDesc.sysCodeMstKeyword == "eventStatus" && statusDesc.codeName == em.status
                         select new {em.id,
                                     em.categoryId,
                                     em.status,
@@ -315,7 +315,7 @@ namespace patyclub_server.Controllers
                         join ap in _context.eventAppendix.Where(a => a.category == "P") on em.id equals ap.eventMstId into subAp
                         from cover in subAp.DefaultIfEmpty()
                         from statusDesc in _context.sysCodeDtl
-                        where statusDesc.sysCodeMstId == 2 && statusDesc.codeName == em.status
+                        where statusDesc.sysCodeMstKeyword == "eventStatus" && statusDesc.codeName == em.status
                         select new {
                         em.id,
                         em.categoryId,
