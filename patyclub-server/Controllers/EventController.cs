@@ -31,10 +31,7 @@ namespace patyclub_server.Controllers
         }
 
 
-        public class Event {
-            public EventMst eventMst{get; set;}
-            public List<EventAppendix> eventAppendixList{get; set;}
-        }
+
 
         ///<summary>
         ///新建活動
@@ -195,14 +192,7 @@ namespace patyclub_server.Controllers
         } 
 
 
-        public class getEventWithConditionsArgs {
-            public int? category {get; set;}
-            public string TAG {get; set;}
-            public List<string> queryList {get; set;}
-            public YesNoEnums nonCompleteEvent {get; set;}
-            public eventSortByEnums sortBy {get; set;}
-            public eventPersonnelEnums eventPersonnel {get; set;}
-        };
+
 
 
 
@@ -345,9 +335,9 @@ namespace patyclub_server.Controllers
                                         Convert.ToDateTime(em.eventEdDate).CompareTo(DateTime.Now) < 0?"expired":"inProgress"
                         }).ToList();
 
-
-                                            
-            return Ok(new Response {message = "", data = result});
+            PaginationAttr paginationAttr = _coreService.getPageAttr(result.Count(), args.rownumPerPage, args.requestPageNum);
+            result = result.Skip(paginationAttr.skipRownum).Take(paginationAttr.rownumPerPage).ToList();
+            return Ok(new ResponseWithPage {message = "", data = result, maxPageNum = paginationAttr.maxPageNum, currentPageNum = paginationAttr.currentPageNum});
         }
 
 

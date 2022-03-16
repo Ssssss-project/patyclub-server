@@ -44,10 +44,7 @@ namespace patyclub_server.Controllers
         }
 
 
-        public class loginArgs{
-            public string account {get; set;}
-            public string password {get; set;}
-        }
+
         ///<summary>
         ///登入密碼驗證
         ///</summary>
@@ -96,9 +93,7 @@ namespace patyclub_server.Controllers
         }
 
 
-        public class forgetPwdArgs{
-            public string userEmail{get; set;}
-        }
+
         ///<summary>
         ///忘記密碼
         ///</summary>
@@ -174,10 +169,7 @@ namespace patyclub_server.Controllers
 
         }
 
-        public class changePwdWithTokenArgs{
-            public string token{get; set;}
-            public string newPwd{get; set;}
-        }
+
         [HttpPut("changePwdWithToken")]
         public ActionResult changePwdWithToken(changePwdWithTokenArgs args)
         {

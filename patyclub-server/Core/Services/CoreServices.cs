@@ -28,5 +28,14 @@ namespace patyclub_server.Core.Service
             }
             return false;
         }
+
+        public PaginationAttr getPageAttr(int totalRownum, int rownumPerPage, int requestPageNum){
+            return new PaginationAttr{
+                skipRownum = rownumPerPage * requestPageNum, 
+                rownumPerPage = rownumPerPage, 
+                maxPageNum = totalRownum / rownumPerPage,
+                currentPageNum = requestPageNum
+                };
+        }
     }
 }
