@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Authorization;
 using patyclub_server.Entities;
 using patyclub_server.Core.Service;
+using patyclub_server.extendFunction;
 using System.Collections.Generic;
 using System.Linq;
 using System;
@@ -256,17 +257,9 @@ namespace patyclub_server.Controllers
             if (args.sortBy != eventSortByEnums.non_sort){
                 // 套用排序
                 if (args.sortBy == eventSortByEnums.eventStDate_asc){
-                    resultEventMstList = 
-                        (from em in resultEventMstList
-                        orderby Convert.ToDateTime(em.eventStDate) ascending
-                        select em
-                        ).ToList();
+                    resultEventMstList = resultEventMstList.OrderBy(x => Convert.ToDateTime(x.eventStDate)).ToList();
                 }else if (args.sortBy == eventSortByEnums.eventStDate_desc){
-                    resultEventMstList = 
-                        (from em in resultEventMstList
-                        orderby Convert.ToDateTime(em.eventStDate) descending
-                        select em
-                        ).ToList();
+                    resultEventMstList = resultEventMstList.OrderByDescending(x => Convert.ToDateTime(x.eventStDate)).ToList();
                 }else if(args.sortBy == eventSortByEnums.hot_asc){
                     resultEventMstList = 
                         (from em in resultEventMstList
@@ -296,49 +289,30 @@ namespace patyclub_server.Controllers
                 }
             }
 
-            var result = (from em in resultEventMstList
-                        join ec in _context.eventCategory on em.categoryId equals ec.id into category
-                        from c in category.DefaultIfEmpty()
-                        join ep in _context.eventPersonnel
-                        on new {id = em.id, permission = "OWNER"} equals 
-                            new {id = ep.eventMstId, permission = ep.permission} into subEp
-                        from owner in subEp.DefaultIfEmpty()
-                        join ep in (
-                            from ep in _context.eventPersonnel
-                            where ep.permission == "MEMBER" || ep.permission == "OWNER"
-                            group ep by ep.eventMstId into epc
-                            select new {key = epc.Key, cnt = epc.Count()}
-                            )
-                        on new {id = em.id} equals 
-                            new {id = ep.key} into subEp2
-                        from member in subEp2.DefaultIfEmpty()
-                        join ap in _context.eventAppendix.Where(a => a.category == "P") on em.id equals ap.eventMstId into subAp
-                        from cover in subAp.DefaultIfEmpty()
-                        from statusDesc in _context.sysCodeDtl
-                        where statusDesc.sysCodeMstKeyword == "eventStatus" && statusDesc.codeName == em.status
-                        select new {
-                        em.id,
-                        em.categoryId,
-                        categoryName = c?.categoryName ?? string.Empty,
-                        em.eventTitle,
-                        em.eventIntroduction,
-                        em.signUpStDate,
-                        em.signUpEdDate,
-                        em.eventStDate,
-                        em.eventEdDate,
-                        owner = owner?.userAccount ?? string.Empty,
-                        memberCount = member?.cnt ?? 0,
-                        memberLimit = em.personLimit,
-                        statusDesc = statusDesc.codeDesc,
-                        coverPath = cover?.appendixPath ?? string.Empty,
-                        timeStatus = Convert.ToDateTime(em.eventStDate).CompareTo(DateTime.Now) > 0?"comingSoon":
-                                        Convert.ToDateTime(em.eventEdDate).CompareTo(DateTime.Now) < 0?"expired":"inProgress"
-                        }).ToList();
+            var result = resultEventMstList.Select(em => new{
+                em.id,
+                em.categoryId,
+                categoryName = _context.eventCategory.Where(x => x.id == em.categoryId),
+                em.eventTitle,
+                em.eventIntroduction,
+                em.signUpStDate,
+                em.signUpEdDate,
+                em.eventStDate,
+                em.eventEdDate,
+                owner = _context.eventPersonnel.Where(x => x.eventMstId == em.id && x.permission == "OWNER"),
+                memberCount = _context.eventPersonnel.Where(x => x.permission != "WATCHER" && x.eventMstId == em.id),
+                memberLimit = em.personLimit,
+                statusDesc = em.status.getCodeDesc(_context, "eventStatus"),
+                coverPath = _context.eventAppendix.Where(x => x.category == "P" && x.eventMstId == em.id),
+                timeStatus = Convert.ToDateTime(em.eventStDate).CompareTo(DateTime.Now) > 0?"comingSoon":
+                                Convert.ToDateTime(em.eventEdDate).CompareTo(DateTime.Now) < 0?"expired":"inProgress"
+            });
 
-
+            
             PaginationAttr paginationAttr = _coreService.getPageAttr(result.Count(), args.rownumPerPage, args.requestPageNum);
             if(paginationAttr.rownumPerPage != 0)
                 result = result.Skip(paginationAttr.skipRownum).Take(paginationAttr.rownumPerPage).ToList();
+
             return Ok(new ResponseWithPage {
                 message = "", 
                 data = result, 

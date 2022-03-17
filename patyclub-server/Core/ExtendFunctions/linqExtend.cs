@@ -1,3 +1,4 @@
+using patyclub_server.Entities;
 using System.Collections.Generic;
 using System.Linq;
 using System;
@@ -33,20 +34,38 @@ namespace patyclub_server.extendFunction {
                     ;
         }
 
-        public static IEnumerable<object> getChildCount<T, A>(this IEnumerable<T> source, IEnumerable<A> child, string parentKey, string childKey){
+        public class EnumCnt
+        {
+            public object key;
+            public int cnt;
+        }
+
+        public static IEnumerable<EnumCnt> getChildCount<T, A>(this IEnumerable<T> source, IEnumerable<A> child, string parentKeyCol, string childKeyCol){
             return from s in source
                     join g in(
                         from c in child.ToList()
-                        group c by c.getCol(childKey) into gc
+                        group c by c.getCol(childKeyCol) into gc
                         // group c by c.GetType().GetProperty(childKey).GetValue(c) into gc
                         select new {key = gc.Key, cnt = gc.Count()}
                     )
-                    on s.getCol(parentKey) equals g.key into g2
+                    on s.getCol(parentKeyCol) equals g.key into g2
                     // on s.GetType().GetProperty(parentKey).GetValue(s) equals g.key into g2
                     from gg in g2.DefaultIfEmpty()
-                    select new {data = s, cnt = gg?.cnt}
+                    select new EnumCnt{key = s.getCol(parentKeyCol), cnt = gg?.cnt ?? 0}
                     // select s
                     ;
+        }
+
+        public static int getCount<T, A>(this T source, IEnumerable<A> child, string KeyCol){
+            return 
+                    (from c in child.ToList()
+                    where c.getCol(KeyCol).Equals(source)
+                    select c).Count()
+                    ;
+        }
+
+        public static String getCodeDesc(this String codeNo, DBContext _context, string CodeKeyword){
+            return _context.sysCodeDtl.Where(x => x.sysCodeMstKeyword == CodeKeyword && x.codeName == codeNo).Select(x => x.codeDesc).ToString();
         }
 
 
