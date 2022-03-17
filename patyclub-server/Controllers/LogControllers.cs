@@ -66,7 +66,6 @@ namespace patyclub_server.Controllers
                     where cl.userAccount == account
                     && cl.logCategory == "eventTouch"
                     group cl by new {userAccount = cl.userAccount, targetSeq = cl.targetSeq} into cl_distinct
-                    // from cl_distinct in cl_distinct
                     select new {
                         userAccount = cl_distinct.Key.userAccount,
                         targetSeq = cl_distinct.Key.targetSeq,

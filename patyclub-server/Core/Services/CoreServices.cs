@@ -22,7 +22,7 @@ namespace patyclub_server.Core.Service
         }
 
         public bool isNullOrEmpty(object A){
-            if (A == "" || A == null)
+            if (A.Equals("") || A == null)
             {
                 return true;
             }

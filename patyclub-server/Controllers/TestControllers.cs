@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using patyclub_server.Entities;
 using patyclub_server.Core.Service;
 using patyclub_server.Core;
+using patyclub_server.extendFunction;
 using System.Linq;
 using System;
 using System.Collections.Generic;
@@ -69,6 +70,22 @@ namespace patyclub_server.Controllers
             if(args.YN == 0)
                 tmp += "  0";
             return Ok(new Response{message = tmp ,data =args.YN.ToString()});
+        }
+
+        /// <summary>
+        /// testExtendFunc
+        /// </summary>
+        [HttpPost("testExtendFunc")]
+        public ActionResult testExtendFunc()
+        {
+            var pContext = _context.eventMst;
+            var cContext = _context.eventPersonnel;
+            // var res = _context.eventMst.getCol("id");
+            // var res = pContext.jJoin(cContext, "id", "eventMstId");
+            // var res = pContext.sSelect("id");
+            var res = pContext.getChildCount(cContext, "id", "eventMstId");
+            // var res = _context.clientLog.TestExtend("555", x => x.logCategory + "0");
+            return Ok(new Response{data = res.ToList()});
         }
 
 
