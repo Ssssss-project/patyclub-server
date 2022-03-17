@@ -59,12 +59,22 @@ namespace patyclub_server.Controllers
         [Authorize]
         [HttpGet("getTop10PersonalEventTouchLog")]
         public ActionResult getTop10PersonalEventTouchLog(){
+            var account = User.Claims.FirstOrDefault(a => a.Type == "account").Value;
             var resultLog = (
-                from cl in _context.clientLog
-                where cl.userAccount == User.Claims.FirstOrDefault(a => a.Type == "account").Value
-                   && cl.logCategory == "eventTouch"
-                orderby cl.logDate descending
-                select cl
+                from res in (
+                    from cl in _context.clientLog
+                    where cl.userAccount == account
+                    && cl.logCategory == "eventTouch"
+                    group cl by new {userAccount = cl.userAccount, targetSeq = cl.targetSeq} into cl_distinct
+                    // from cl_distinct in cl_distinct
+                    select new {
+                        userAccount = cl_distinct.Key.userAccount,
+                        targetSeq = cl_distinct.Key.targetSeq,
+                        logDate = cl_distinct.Max(x => x.logDate),
+                        }
+                )
+                orderby res.logDate descending
+                select res
             ).Take(10).ToList();
             return Ok(new Response {data = resultLog});
         }

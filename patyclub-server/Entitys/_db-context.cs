@@ -74,14 +74,14 @@ namespace patyclub_server.Entities
                 .HasData(
                     new ClientLog {id = 1, userAccount = "adda", logCategory = "eventTouch", targetSeq = "1", logDate = "2021/12/3 09:25:36"},
                     new ClientLog {id = 2, userAccount = "adda", logCategory = "eventTouch", targetSeq = "1", logDate = "2021/12/4 08:45:23"},
-                    new ClientLog {id = 3, userAccount = "adda", logCategory = "eventTouch", targetSeq = "1", logDate = "2021/12/8 05:25:28"},
-                    new ClientLog {id = 4, userAccount = "adda", logCategory = "eventTouch", targetSeq = "1", logDate = "2021/12/9 20:12:34"},
+                    new ClientLog {id = 3, userAccount = "adda", logCategory = "eventTouch", targetSeq = "2", logDate = "2021/12/8 05:25:28"},
+                    new ClientLog {id = 4, userAccount = "yiyuan", logCategory = "eventTouch", targetSeq = "4", logDate = "2021/12/9 20:12:34"},
                     new ClientLog {id = 5, userAccount = "adda", logCategory = "eventTouch", targetSeq = "1", logDate = "2021/12/5 23:53:14"},
-                    new ClientLog {id = 6, userAccount = "adda", logCategory = "eventTouch", targetSeq = "1", logDate = "2021/12/7 10:01:02"},
-                    new ClientLog {id = 7, userAccount = "adda", logCategory = "eventTouch", targetSeq = "1", logDate = "2021/12/5 01:42:51"},
-                    new ClientLog {id = 8, userAccount = "adda", logCategory = "eventTouch", targetSeq = "1", logDate = "2021/12/5 13:12:44"},
+                    new ClientLog {id = 6, userAccount = "adda", logCategory = "eventTouch", targetSeq = "3", logDate = "2021/12/7 10:01:02"},
+                    new ClientLog {id = 7, userAccount = "adda", logCategory = "eventTouch", targetSeq = "2", logDate = "2021/12/5 01:42:51"},
+                    new ClientLog {id = 8, userAccount = "adda", logCategory = "eventTouch", targetSeq = "3", logDate = "2021/12/5 13:12:44"},
                     new ClientLog {id = 9, userAccount = "adda", logCategory = "eventTouch", targetSeq = "1", logDate = "2021/12/1 15:32:12"},
-                    new ClientLog {id = 10, userAccount = "adda", logCategory = "eventTouch", targetSeq = "1", logDate = "2021/12/2 18:42:31"}
+                    new ClientLog {id = 10, userAccount = "adda", logCategory = "eventTouch", targetSeq = "3", logDate = "2021/12/2 18:42:31"}
                 );
             modelBuilder.Entity<AutoCompleteList>()
                 .HasData(
