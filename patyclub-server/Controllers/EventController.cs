@@ -292,18 +292,18 @@ namespace patyclub_server.Controllers
             var result = resultEventMstList.Select(em => new{
                 em.id,
                 em.categoryId,
-                categoryName = _context.eventCategory.Where(x => x.id == em.categoryId),
+                categoryName = _context.eventCategory.Where(x => x.id == em.categoryId).Select(x => x.categoryName).ToList().FirstOrDefault(),
                 em.eventTitle,
                 em.eventIntroduction,
                 em.signUpStDate,
                 em.signUpEdDate,
                 em.eventStDate,
                 em.eventEdDate,
-                owner = _context.eventPersonnel.Where(x => x.eventMstId == em.id && x.permission == "OWNER"),
-                memberCount = _context.eventPersonnel.Where(x => x.permission != "WATCHER" && x.eventMstId == em.id),
+                owner = _context.eventPersonnel.Where(x => x.eventMstId == em.id && x.permission == "OWNER").Select(x => x.userAccount).ToList().FirstOrDefault(),
+                memberCount = _context.eventPersonnel.Where(x => x.permission != "WATCHER" && x.eventMstId == em.id).Count(),
                 memberLimit = em.personLimit,
                 statusDesc = em.status.getCodeDesc(_context, "eventStatus"),
-                coverPath = _context.eventAppendix.Where(x => x.category == "P" && x.eventMstId == em.id),
+                coverPath = _context.eventAppendix.Where(x => x.category == "P" && x.eventMstId == em.id).Select(x => x.appendixPath).ToList().FirstOrDefault(),
                 timeStatus = Convert.ToDateTime(em.eventStDate).CompareTo(DateTime.Now) > 0?"comingSoon":
                                 Convert.ToDateTime(em.eventEdDate).CompareTo(DateTime.Now) < 0?"expired":"inProgress"
             });
