@@ -307,7 +307,8 @@ namespace patyclub_server.Controllers
                 coverPath = _context.eventAppendix.Where(x => x.category == "P" && x.eventMstId == em.id).Select(x => x.appendixPath).ToList().FirstOrDefault(),
                 timeStatus = Convert.ToDateTime(em.eventStDate).CompareTo(DateTime.Now) > 0?"comingSoon":
                                 Convert.ToDateTime(em.eventEdDate).CompareTo(DateTime.Now) < 0?"expired":"inProgress",
-                userPersonnel = logingUser != null?(_context.eventPersonnel.Where(x => x.eventMstId == em.id && x.userAccount == logingUser).Select(x => x.permission).ToList().FirstOrDefault()):""
+                userPersonnel = logingUser != null?(_context.eventPersonnel.Where(x => x.eventMstId == em.id && x.userAccount == logingUser && x.permission != "WATCHER").Select(x => x.permission).ToList().FirstOrDefault()):"",
+                isWatcher = _context.eventPersonnel.Where(x => x.eventMstId == em.id && x.userAccount == logingUser && x.permission == "WATCHER").Any()
             });
 
             
@@ -333,10 +334,22 @@ namespace patyclub_server.Controllers
             return Ok(new Response{});
         }
 
+
+
+        ///<summary>
+        ///切換收藏狀態
+        ///</summary>
         [Authorize]
-        [HttpPut("watchEvent")]
-        public ActionResult watchEvent(int eventId){
-            _context.eventPersonnel.Add(new EventPersonnel{userAccount = User.Claims.FirstOrDefault(a => a.Type == "account").Value, eventMstId = eventId, permission = "WATCHER", status = "??"});
+        [HttpPut("switchWatchEvent")]
+        public ActionResult switchWatchEvent(int eventId){
+            string loginUser = User.Claims.FirstOrDefault(a => a.Type == "account").Value;
+            var result = _context.eventPersonnel.Where(x => x.eventMstId == eventId && x.userAccount == loginUser && x.permission == "WATCHER");
+            if (result.Any()){
+                foreach (var item in result)
+                    _context.eventPersonnel.Remove(item);
+            }
+            else
+                _context.eventPersonnel.Add(new EventPersonnel{userAccount = loginUser, eventMstId = eventId, permission = "WATCHER", status = "??"});
             _context.SaveChanges();
             return Ok(new Response{});
         }
