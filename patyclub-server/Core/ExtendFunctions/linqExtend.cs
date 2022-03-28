@@ -65,7 +65,7 @@ namespace patyclub_server.extendFunction {
         }
 
         public static String getCodeDesc(this String codeNo, DBContext _context, string CodeKeyword){
-            return _context.sysCodeDtl.Where(x => x.sysCodeMstKeyword == CodeKeyword && x.codeName == codeNo).Select(x => x.codeDesc).ToString();
+            return _context.sysCodeDtl.Where(x => x.sysCodeMstKeyword == CodeKeyword && x.codeName == codeNo).Select(x => x.codeDesc).FirstOrDefault().ToString();
         }
 
 
