@@ -213,6 +213,7 @@ namespace patyclub_server.Controllers
         public ActionResult getEventWithConditions(getEventWithConditionsArgs args)
         {
             var resultEventMstList = _context.eventMst.ToList();
+            var logingUser = User.Claims.FirstOrDefault(u => u.Type == "account")?.Value;
 
             // 套用篩選條件
             if (args.category != null){
@@ -245,11 +246,11 @@ namespace patyclub_server.Controllers
             }
 
             if (args.eventPersonnel != eventPersonnelEnums.non_select){
-                if (User.Claims.FirstOrDefault(u => u.Type == "account")?.Value == null)
+                if (logingUser == null)
                     return StatusCode(401, new Response{message = "if U want to use 'eventPersonnel' condition, U must login first"});
                 resultEventMstList = (from em in resultEventMstList
                                       join ep in _context.eventPersonnel
-                                      on new {id = em.id, permission = args.eventPersonnel.ToString(), userAccount = User.Claims.FirstOrDefault(a => a.Type == "account").Value} equals 
+                                      on new {id = em.id, permission = args.eventPersonnel.ToString(), userAccount = logingUser} equals 
                                          new {id = ep.eventMstId, permission = ep.permission, userAccount = ep.userAccount}
                                       select em).ToList();
             }
@@ -305,7 +306,8 @@ namespace patyclub_server.Controllers
                 statusDesc = em.status.getCodeDesc(_context, "eventStatus"),
                 coverPath = _context.eventAppendix.Where(x => x.category == "P" && x.eventMstId == em.id).Select(x => x.appendixPath).ToList().FirstOrDefault(),
                 timeStatus = Convert.ToDateTime(em.eventStDate).CompareTo(DateTime.Now) > 0?"comingSoon":
-                                Convert.ToDateTime(em.eventEdDate).CompareTo(DateTime.Now) < 0?"expired":"inProgress"
+                                Convert.ToDateTime(em.eventEdDate).CompareTo(DateTime.Now) < 0?"expired":"inProgress",
+                userPersonnel = logingUser != null?(_context.eventPersonnel.Where(x => x.eventMstId == em.id && x.userAccount == logingUser).Select(x => x.permission).ToList().FirstOrDefault()):""
             });
 
             
