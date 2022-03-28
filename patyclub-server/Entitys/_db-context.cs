@@ -40,7 +40,7 @@ namespace patyclub_server.Entities
             modelBuilder.Entity<EventCollect>()
                 .HasKey(table => new {table.userAccount, table.eventMstId});
             modelBuilder.Entity<EventPersonnel>()
-                .HasKey(table => new {table.userAccount, table.eventMstId});
+                .HasKey(table => new {table.userAccount, table.eventMstId, table.permission});
             modelBuilder.Entity<MappingEventTag>()
                 .HasKey(table => new {table.eventMstId, table.tagId});
             modelBuilder.Entity<MappingPermissionRole>()
