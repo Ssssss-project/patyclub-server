@@ -30,15 +30,15 @@ namespace patyclub_server.Core.Service
         }
 
         public PaginationAttr getPageAttr(int totalRownum, int rownumPerPage, int requestPageNum){
-            // total = 15
-            // perPage = 4
-            // maxPage = 4
+            // total   = 16, 2
+            // perPage = 4 , 10
+            // maxPage = 4 , 1
             
             // reqPage = -1 1 2 3  4  5
             // skip    =  0 0 4 8 12 12
             // getRow  =  4 4 4 4  4  4
             int skipRownum;
-            int maxPageNum = (rownumPerPage!=0?totalRownum / rownumPerPage:0) + 1;
+            int maxPageNum = (rownumPerPage!=0?(totalRownum / rownumPerPage) + (totalRownum%rownumPerPage!=0 ? 1:0):1);
             int currentPageNum;
 
             if(requestPageNum > maxPageNum){
