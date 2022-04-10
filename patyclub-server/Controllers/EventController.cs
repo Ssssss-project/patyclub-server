@@ -343,15 +343,19 @@ namespace patyclub_server.Controllers
         [HttpPut("switchWatchEvent")]
         public ActionResult switchWatchEvent(int eventId){
             string loginUser = User.Claims.FirstOrDefault(a => a.Type == "account").Value;
+            string msg = "";
             var result = _context.eventPersonnel.Where(x => x.eventMstId == eventId && x.userAccount == loginUser && x.permission == "WATCHER");
             if (result.Any()){
                 foreach (var item in result)
                     _context.eventPersonnel.Remove(item);
+                    msg = "解除收藏成功";
             }
-            else
+            else {
                 _context.eventPersonnel.Add(new EventPersonnel{userAccount = loginUser, eventMstId = eventId, permission = "WATCHER", status = "??"});
+                msg = "收藏成功";
+            }
             _context.SaveChanges();
-            return Ok(new Response{});
+            return Ok(new Response{message = msg});
         }
     }
 
