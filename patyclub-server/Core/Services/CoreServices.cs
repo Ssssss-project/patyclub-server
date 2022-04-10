@@ -41,17 +41,24 @@ namespace patyclub_server.Core.Service
             int maxPageNum = (rownumPerPage!=0?(totalRownum / rownumPerPage) + (totalRownum%rownumPerPage!=0 ? 1:0):1);
             int currentPageNum;
 
-            if(requestPageNum > maxPageNum){
-                skipRownum = rownumPerPage * (maxPageNum-1);
-                currentPageNum = maxPageNum;
-            }
-            else if (requestPageNum < 0){
-                skipRownum = 0;
-                currentPageNum = 1;
+            if(totalRownum != 0){
+                if(requestPageNum > maxPageNum){
+                    skipRownum = rownumPerPage * (maxPageNum-1);
+                    currentPageNum = maxPageNum;
+                }
+                else if (requestPageNum < 1){
+                    skipRownum = 0;
+                    currentPageNum = 1;
+                }
+                else{
+                    skipRownum = rownumPerPage * (requestPageNum-1);
+                    currentPageNum = requestPageNum;
+                }
             }
             else{
-                skipRownum = rownumPerPage * (requestPageNum-1);
-                currentPageNum = requestPageNum;
+                maxPageNum = 1;
+                currentPageNum = 1;
+                skipRownum = 0;
             }
 
             return new PaginationAttr{
