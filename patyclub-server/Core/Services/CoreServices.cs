@@ -45,7 +45,7 @@ namespace patyclub_server.Core.Service
                 skipRownum = rownumPerPage * (maxPageNum-1);
                 currentPageNum = maxPageNum;
             }
-            else if (requestPageNum < 1){
+            else if (requestPageNum < 0){
                 skipRownum = 0;
                 currentPageNum = 1;
             }
