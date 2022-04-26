@@ -33,5 +33,15 @@ namespace patyclub_server.Core.Service
             }
             return tmpList; // 最後回傳自身節點回到上一層
         }
+
+        public List<object> getSourceCateList(List<EventCategory> cateList, int currentCateId){
+            EventCategory currentCate = cateList.Find(a => a.id == currentCateId);
+            if(currentCate is null)
+                return new List<object>{};
+            List<object> tmpList = new List<object>{new {id = currentCateId, name = currentCate.categoryName}};
+            if(currentCate.parentId != 0)
+                tmpList.AddRange(getSourceCateList(cateList, currentCate.parentId));
+            return tmpList;
+        }
     }
 }

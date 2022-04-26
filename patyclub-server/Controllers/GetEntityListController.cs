@@ -54,6 +54,21 @@ namespace patyclub_server.Controllers
             return Ok(new Response {data = result});
         }
 
+        /// <summary>
+        /// 取得來源活動類別清單
+        /// </summary>
+        [HttpGet("getSourceEventCategoryList")]
+        public ActionResult getSourceEventCategoryList(int rootCateId)
+        {
+
+            List<EventCategory> resultEventCategoryList = _context.eventCategory
+                                            .Where(b => b.enable.Equals("Y"))
+                                            .ToList();
+            EventService eventService = new EventService();
+            List<object> result = eventService.getSourceCateList(resultEventCategoryList, rootCateId);
+            return Ok(new Response {data = result});
+        }
+
 
     }
 

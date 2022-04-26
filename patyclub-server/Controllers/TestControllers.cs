@@ -28,6 +28,7 @@ namespace patyclub_server.Controllers
             _logger = logger;
             _context = context;
             _configuration = configuration;
+            _eventService = new EventService();
         }
 
         public class testIntPostArgs{
@@ -86,6 +87,15 @@ namespace patyclub_server.Controllers
             var res = pContext.getChildCount(cContext, "id", "eventMstId");
             // var res = _context.clientLog.TestExtend("555", x => x.logCategory + "0");
             return Ok(new Response{data = res.ToList()});
+        }
+
+
+        [HttpGet("testGetSourceCateList")]
+        public ActionResult testGetSourceCateList(int startId){
+            List<EventCategory> resultEventCategoryList = _context.eventCategory
+                                            .Where(b => b.enable.Equals("Y"))
+                                            .ToList();
+            return Ok(new Response{data = _eventService.getSourceCateList(resultEventCategoryList, startId)});
         }
 
 
