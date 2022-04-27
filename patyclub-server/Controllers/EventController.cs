@@ -255,40 +255,7 @@ namespace patyclub_server.Controllers
                                       select em).ToList();
             }
 
-            if (args.sortBy != eventSortByEnums.non_sort){
-                // 套用排序
-                if (args.sortBy == eventSortByEnums.eventStDate_asc){
-                    resultEventMstList = resultEventMstList.OrderBy(x => Convert.ToDateTime(x.eventStDate)).ToList();
-                }else if (args.sortBy == eventSortByEnums.eventStDate_desc){
-                    resultEventMstList = resultEventMstList.OrderByDescending(x => Convert.ToDateTime(x.eventStDate)).ToList();
-                }else if(args.sortBy == eventSortByEnums.hot_asc){
-                    resultEventMstList = 
-                        (from em in resultEventMstList
-                        join pCnt in (
-                            from personnel in _context.eventPersonnel
-                            where personnel.permission != "WATCHER"
-                            group personnel by personnel.eventMstId into perG
-                            select new {key = perG.Key, cnt = perG.Count()}
-                        ) on em.id equals pCnt.key
-                        orderby pCnt.cnt ascending
-                        select em
-                        ).ToList();
-                }else if (args.sortBy == eventSortByEnums.hot_desc){
-                    resultEventMstList = 
-                        (from em in resultEventMstList
-                        join pCnt in (
-                            from personnel in _context.eventPersonnel
-                            where personnel.permission != "WATCHER"
-                            group personnel by personnel.eventMstId into perG
-                            select new {key = perG.Key, cnt = perG.Count()}
-                        ) on em.id equals pCnt.key
-                        orderby pCnt.cnt descending
-                        select em
-                        ).ToList();
-                }else{
-                    return StatusCode(404, new Response{message = "Error 'sortBy' keyword: " + args.sortBy});
-                }
-            }
+
 
             var result = resultEventMstList.Select(em => new{
                 em.id,
@@ -311,7 +278,22 @@ namespace patyclub_server.Controllers
                 isWatcher = _context.eventPersonnel.Where(x => x.eventMstId == em.id && x.userAccount == logingUser && x.permission == "WATCHER").Any()
             });
 
-            
+            if (args.sortBy != eventSortByEnums.non_sort){
+                // 套用排序
+                if (args.sortBy == eventSortByEnums.eventStDate_asc){
+                    result = result.OrderBy(x => Convert.ToDateTime(x.eventStDate)).ToList();
+                }else if (args.sortBy == eventSortByEnums.eventStDate_desc){
+                    result = result.OrderByDescending(x => Convert.ToDateTime(x.eventStDate)).ToList();
+                }else if(args.sortBy == eventSortByEnums.hot_asc){
+                    result = result.OrderBy(x => x.memberCount).ToList();
+                }else if (args.sortBy == eventSortByEnums.hot_desc){
+                    result = result.OrderByDescending(x => x.memberCount).ToList();
+                }else{
+                    return StatusCode(404, new Response{message = "Error 'sortBy' keyword: " + args.sortBy});
+                }
+            }
+
+
             PaginationAttr paginationAttr = _coreService.getPageAttr(result.Count(), args.rownumPerPage, args.requestPageNum);
             if(paginationAttr.rownumPerPage != 0)
                 result = result.Skip(paginationAttr.skipRownum).Take(paginationAttr.rownumPerPage).ToList();
