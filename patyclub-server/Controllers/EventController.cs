@@ -270,7 +270,7 @@ namespace patyclub_server.Controllers
                 owner = _context.eventPersonnel.Where(x => x.eventMstId == em.id && x.permission == "OWNER").Select(x => x.userAccount).ToList().FirstOrDefault(),
                 memberCount = _context.eventPersonnel.Where(x => x.permission != "WATCHER" && x.eventMstId == em.id).Count(),
                 memberLimit = em.personLimit,
-                statusDesc = em.status.getCodeDesc(_context, "eventStatus"),
+                statusDesc = em.status?.getCodeDesc(_context, "eventStatus"),
                 coverPath = _context.eventAppendix.Where(x => x.category == "P" && x.eventMstId == em.id).Select(x => x.appendixPath).ToList().FirstOrDefault(),
                 timeStatus = Convert.ToDateTime(em.eventStDate).CompareTo(DateTime.Now) > 0?"comingSoon":
                                 Convert.ToDateTime(em.eventEdDate).CompareTo(DateTime.Now) < 0?"expired":"inProgress",
