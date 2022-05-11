@@ -14,4 +14,8 @@ public class getEventWithConditionsArgs : PageRequest {
     public YesNoEnums nonCompleteEvent {get; set;}
     public eventSortByEnums sortBy {get; set;}
     public eventPersonnelEnums eventPersonnel {get; set;}
-};
+}
+
+public class eventIdArgs {
+    public int eventId{get; set;}
+}

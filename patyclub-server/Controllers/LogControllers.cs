@@ -38,9 +38,9 @@ namespace patyclub_server.Controllers
         /// 2 querySearch: searchQueryString
         ///</remarks>
         [HttpPost("addLog")]
-        public ActionResult addLog(logCategoryEnums logCate, string targetSeq){
+        public ActionResult addLog(addLogArgs args){
             string currentUser = User.Claims.FirstOrDefault(a => a.Type == "account")?.Value;
-            _context.clientLog.Add(new ClientLog{logCategory = logCate.ToString(), userAccount = currentUser, targetSeq = targetSeq, logDate = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")});
+            _context.clientLog.Add(new ClientLog{logCategory = args.logCate.ToString(), userAccount = currentUser, targetSeq = args.targetSeq, logDate = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")});
             _context.SaveChanges();
             return Ok(new Response());
         }
