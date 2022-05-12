@@ -19,3 +19,8 @@ public class getEventWithConditionsArgs : PageRequest {
 public class eventIdArgs {
     public int eventId{get; set;}
 }
+
+public class updateEventStatusArgs{
+    public int eventId{get; set;}
+    public string status{get; set;}
+}

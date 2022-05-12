@@ -61,6 +61,9 @@ namespace patyclub_server.Controllers
         ///<summary>
         ///更新活動
         ///</summary>
+        ///<remark>
+        ///當活動更新時，活動狀態一律更新為暫存中
+        ///</remark>
         /// <response code="500">日期格式錯誤，未成功更新</response>
         [HttpPut("updateEvent")]
         public ActionResult updateEvent(Event args){
@@ -71,13 +74,16 @@ namespace patyclub_server.Controllers
                 !_coreService.isDate(args.eventMst.signUpStDate) ||
                 !_coreService.isDate(args.eventMst.signUpEdDate))
                 return StatusCode(500, new Response{message = "日期格式錯誤，未成功更新"});
-            _context.eventMst.Update(args.eventMst);
+
+            EventMst eventMst = args.eventMst;
+            eventMst.status = "TEMP"; //修改狀態為暫存中
+            _context.eventMst.Update(eventMst);
 
 
             // TODO 更新附件部分
 
             // 取得原始附件
-            var eventAppendixResultList = _context.eventAppendix.Where(ep => ep.eventMstId == args.eventMst.id).ToList();
+            var eventAppendixResultList = _context.eventAppendix.Where(ep => ep.eventMstId == eventMst.id).ToList();
 
             // 補上新增附件
             foreach(var item in args.eventAppendixList){
@@ -338,6 +344,33 @@ namespace patyclub_server.Controllers
             }
             _context.SaveChanges();
             return Ok(new Response{message = msg});
+        }
+
+
+        ///<summary>
+        ///修改活動狀態
+        ///</summary>
+        [Authorize]
+        [HttpPut("updateEventStatus")]
+        public ActionResult updateEventStatus(updateEventStatusArgs args){
+            string loginUserPermission = User.Claims.FirstOrDefault(a => a.Type == "permission").Value;
+            
+            if(!loginUserPermission.Contains("總管理")){
+                return StatusCode(401, "Update Failed. Permission denied.");
+            }
+
+            EventMst resultEventMst = _context.eventMst.Where(e => e.id == args.eventId).FirstOrDefault();
+
+            if(resultEventMst is null){
+                return StatusCode(404, "EventMst not found.");
+            }
+
+            resultEventMst.status = args.status;
+
+            _context.eventMst.Update(resultEventMst);
+            _context.SaveChanges();
+
+            return Ok(new Response{message = "update event status success. eventId = " + args.eventId.ToString() + ", status = " + args.status});
         }
     }
 
