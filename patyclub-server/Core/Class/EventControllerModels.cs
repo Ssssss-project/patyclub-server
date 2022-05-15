@@ -16,10 +16,6 @@ public class getEventWithConditionsArgs : PageRequest {
     public eventPersonnelEnums eventPersonnel {get; set;}
 }
 
-public class eventIdArgs {
-    public int eventId{get; set;}
-}
-
 public class updateEventStatusArgs{
     public int eventId{get; set;}
     public string status{get; set;}

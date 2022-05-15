@@ -48,7 +48,7 @@ namespace patyclub_server.Controllers
         ///<summary>
         ///登入密碼驗證
         ///</summary>
-        [HttpGet("login")]
+        [HttpPost("login")]
         public ActionResult login(loginArgs args)
         {
             User loginUser = _context.user.Find(args.account);

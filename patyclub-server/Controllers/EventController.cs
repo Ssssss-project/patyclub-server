@@ -65,7 +65,7 @@ namespace patyclub_server.Controllers
         ///當活動更新時，活動狀態一律更新為暫存中
         ///</remark>
         /// <response code="500">日期格式錯誤，未成功更新</response>
-        [HttpPut("updateEvent")]
+        [HttpPost("updateEvent")]
         public ActionResult updateEvent(Event args){
             if (!_coreService.isDate(args.eventMst.eventStDate) ||
                 !_coreService.isDate(args.eventMst.eventEdDate) ||
@@ -104,7 +104,7 @@ namespace patyclub_server.Controllers
         ///<summary>
         ///取得活動原始欄位
         ///</summary>
-        [HttpGet("getRawEvent")]
+        [HttpPost("getRawEvent")]
         public ActionResult getRawEvent(int eventId){
             var resultEventMst = _context.eventMst.Where(a=>a.id == eventId).ToList();
             var resultEventAppendix = _context.eventAppendix.Where(a => a.eventMstId == eventId).ToList();
@@ -116,20 +116,20 @@ namespace patyclub_server.Controllers
         ///刪除活動
         ///</summary>
         [HttpDelete("deleteEvent")]
-        public ActionResult deleteEvent(eventIdArgs args){
+        public ActionResult deleteEvent(int eventMstId){
 
             // 移除活動主檔
-            var eventResultList = _context.eventMst.Where(e => e.id == args.eventId);
+            var eventResultList = _context.eventMst.Where(e => e.id == eventMstId);
             foreach(var item in eventResultList)
                 _context.eventMst.Remove(item);
 
             // 移除活動附件
-            var eventAppendixResultList = _context.eventAppendix.Where(e => e.eventMstId == args.eventId);
+            var eventAppendixResultList = _context.eventAppendix.Where(e => e.eventMstId == eventMstId);
             foreach(var item in eventAppendixResultList)
                 _context.eventAppendix.Remove(item);
 
             // 移除活動成員
-            var eventPersonnelList = _context.eventPersonnel.Where(e => e.eventMstId == args.eventId);
+            var eventPersonnelList = _context.eventPersonnel.Where(e => e.eventMstId == eventMstId);
             foreach(var item in eventPersonnelList)
                 _context.eventPersonnel.Remove(item);
 
@@ -215,7 +215,7 @@ namespace patyclub_server.Controllers
         ///
         /// eventPersonnel: Keyword in ("OWNER" "MEMBER" "WATCHER")
         /// </remarks>
-        [HttpGet("getEventWithConditions")]
+        [HttpPost("getEventWithConditions")]
         public ActionResult getEventWithConditions(getEventWithConditionsArgs args)
         {
             var resultEventMstList = _context.eventMst.ToList();
@@ -315,9 +315,9 @@ namespace patyclub_server.Controllers
 
 
         [Authorize]
-        [HttpPost("joinEvent")]
-        public ActionResult joinEvent(eventIdArgs args){
-            _context.eventPersonnel.Add(new EventPersonnel{userAccount = User.Claims.FirstOrDefault(a => a.Type == "account").Value, eventMstId = args.eventId, permission = "MEMBER", status = "??"});
+        [HttpPut("joinEvent")]
+        public ActionResult joinEvent(int eventId){
+            _context.eventPersonnel.Add(new EventPersonnel{userAccount = User.Claims.FirstOrDefault(a => a.Type == "account").Value, eventMstId = eventId, permission = "MEMBER", status = "??"});
             _context.SaveChanges();
             return Ok(new Response{});
         }
@@ -329,17 +329,17 @@ namespace patyclub_server.Controllers
         ///</summary>
         [Authorize]
         [HttpPut("switchWatchEvent")]
-        public ActionResult switchWatchEvent(eventIdArgs args){
+        public ActionResult switchWatchEvent(int eventId){
             string loginUser = User.Claims.FirstOrDefault(a => a.Type == "account").Value;
             string msg = "";
-            var result = _context.eventPersonnel.Where(x => x.eventMstId == args.eventId && x.userAccount == loginUser && x.permission == "WATCHER");
+            var result = _context.eventPersonnel.Where(x => x.eventMstId == eventId && x.userAccount == loginUser && x.permission == "WATCHER");
             if (result.Any()){
                 foreach (var item in result)
                     _context.eventPersonnel.Remove(item);
                     msg = "解除收藏成功";
             }
             else {
-                _context.eventPersonnel.Add(new EventPersonnel{userAccount = loginUser, eventMstId = args.eventId, permission = "WATCHER", status = "??"});
+                _context.eventPersonnel.Add(new EventPersonnel{userAccount = loginUser, eventMstId = eventId, permission = "WATCHER", status = "??"});
                 msg = "收藏成功";
             }
             _context.SaveChanges();
