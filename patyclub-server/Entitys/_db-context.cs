@@ -259,7 +259,8 @@ new EventMst {id = 12, categoryId = 4, status = "TEMP", cost = "1000", eventStDa
                     new SysCodeDtl {id = 11, sysCodeMstKeyword = "ageLimit", codeName = ">18", codeDesc = "18+", orderSeq = 4},
                     new SysCodeDtl {id = 12, sysCodeMstKeyword = "eventStatus", codeName = "AUDIT", codeDesc = "送審中", orderSeq = 3},
                     new SysCodeDtl {id = 13, sysCodeMstKeyword = "eventStatus", codeName = "AUDIT_PASS", codeDesc = "審核通過", orderSeq = 4},
-                    new SysCodeDtl {id = 14, sysCodeMstKeyword = "eventPersonnel", codeName = "WATCHER", codeDesc = "關注者", orderSeq = 3}
+                    new SysCodeDtl {id = 14, sysCodeMstKeyword = "eventPersonnel", codeName = "WATCHER", codeDesc = "關注者", orderSeq = 3},
+                    new SysCodeDtl {id = 15, sysCodeMstKeyword = "eventStatus", codeName = "AUDIT_REJECT", codeDesc = "退件", orderSeq = 4}
                 );
             modelBuilder.Entity<SysCodeMst>()
                 .HasData(
