@@ -7,6 +7,7 @@ namespace patyclub_server.Core.Service
     public class CoreService {
         public bool isDate(string date)
         {
+            // 允許空字串, 不允許甚麼都沒有
             try
             {
                 if (isNullOrEmpty(date))

@@ -22,12 +22,14 @@ namespace patyclub_server.Controllers
         private IConfiguration _configuration;
 
         private EventService _eventService;
+        private CoreService _coreService;
 
         public TestController(ILogger<TestController> logger, DBContext context, IConfiguration configuration)
         {
             _logger = logger;
             _context = context;
             _configuration = configuration;
+            _coreService = new CoreService();
             _eventService = new EventService();
         }
 
@@ -98,7 +100,12 @@ namespace patyclub_server.Controllers
             return Ok(new Response{data = _eventService.getSourceCateList(resultEventCategoryList, startId)});
         }
 
-
-
+        public class testIsDateArgs{
+            public string eventData {get; set;}
+        };
+        [HttpPost("testIsDate")]
+        public ActionResult testIsDate(testIsDateArgs args){
+            return Ok(new Response{data = _coreService.isDate(args.eventData)});
+        }
     }
 }
