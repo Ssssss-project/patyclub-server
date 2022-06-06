@@ -54,7 +54,7 @@ namespace patyclub_server.Controllers
         [HttpGet("getSlideList")]
         public ActionResult getSlideList()
         {
-            string[] files = Directory.GetFiles(@".\Data\slide", "*.*", SearchOption.AllDirectories);
+            string[] files = Directory.GetFiles("./Data/slide/", "*.*", SearchOption.AllDirectories);
 
             return Ok(new Response{data = files});
         }
@@ -65,7 +65,7 @@ namespace patyclub_server.Controllers
         [HttpDelete("deleteSlide")]
         public ActionResult deleteSlide(string filename)
         {
-            string path = @".\Data\slide\" + filename;
+            string path = "./Data/slide/" + filename;
             if(!System.IO.File.Exists(path))
                 return StatusCode(404, new Response{message = String.Format("File not found : \"{}\"", path)});
 
