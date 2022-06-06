@@ -263,26 +263,7 @@ namespace patyclub_server.Controllers
 
 
 
-            var result = resultEventMstList.Select(em => new{
-                em.id,
-                em.categoryId,
-                categoryName = _context.eventCategory.Where(x => x.id == em.categoryId).Select(x => x.categoryName).ToList().FirstOrDefault(),
-                em.eventTitle,
-                em.eventIntroduction,
-                em.signUpStDate,
-                em.signUpEdDate,
-                em.eventStDate,
-                em.eventEdDate,
-                owner = _context.eventPersonnel.Where(x => x.eventMstId == em.id && x.permission == "OWNER").Select(x => x.userAccount).ToList().FirstOrDefault(),
-                memberCount = _context.eventPersonnel.Where(x => x.permission != "WATCHER" && x.eventMstId == em.id).Count(),
-                memberLimit = em.personLimit,
-                statusDesc = em.status?.getCodeDesc(_context, "eventStatus"),
-                coverPath = _context.eventAppendix.Where(x => x.category == "P" && x.eventMstId == em.id).Select(x => x.appendixPath).ToList().FirstOrDefault(),
-                timeStatus = Convert.ToDateTime(em.eventStDate).CompareTo(DateTime.Now) > 0?"comingSoon":
-                                Convert.ToDateTime(em.eventEdDate).CompareTo(DateTime.Now) < 0?"expired":"inProgress",
-                userPersonnel = logingUser != null?(_context.eventPersonnel.Where(x => x.eventMstId == em.id && x.userAccount == logingUser && x.permission != "WATCHER").Select(x => x.permission).ToList().FirstOrDefault()):"",
-                isWatcher = _context.eventPersonnel.Where(x => x.eventMstId == em.id && x.userAccount == logingUser && x.permission == "WATCHER").Any()
-            });
+            var result = _eventService.getEventCardInfo(_context, resultEventMstList, logingUser);
 
             if (args.sortBy != eventSortByEnums.non_sort){
                 // 套用排序

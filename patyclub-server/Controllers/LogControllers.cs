@@ -19,12 +19,14 @@ namespace patyclub_server.Controllers
 
         private readonly ILogger<LogController> _logger;
         private IConfiguration _configuration;
+        private EventService _eventService;
 
         public LogController(ILogger<LogController> logger, DBContext context, IConfiguration configuration)
         {
             _logger = logger;
             _context = context;
             _configuration = configuration;
+            _eventService = new EventService();
         }
 
         ///<summary>
@@ -72,9 +74,12 @@ namespace patyclub_server.Controllers
                         logDate = cl_distinct.Max(x => x.logDate),
                         }
                 )
+                join em in _context.eventMst on res.targetSeq equals em.id.ToString()
                 orderby res.logDate descending
-                select res
-            ).Take(10).ToList();
+                select em
+            ).Skip(1).Take(10).ToList();
+
+            _eventService.getEventCardInfo(_context, resultLog, account);
             return Ok(new Response {data = resultLog});
         }
 

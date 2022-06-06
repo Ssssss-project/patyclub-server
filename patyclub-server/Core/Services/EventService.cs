@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using patyclub_server.Entities;
 using System;
+using System.Linq;
+using patyclub_server.extendFunction;
 namespace patyclub_server.Core.Service
 {
     public class CateNode {
@@ -42,6 +44,51 @@ namespace patyclub_server.Core.Service
             if(currentCate.parentId != 0)
                 tmpList.AddRange(getSourceCateList(cateList, currentCate.parentId));
             return tmpList;
+        }
+
+        public class eventCardInfo{
+            public int id {get; set;}
+            public int categoryId {get; set;}
+            public string categoryName {get; set;}
+            public string eventTitle {get; set;}
+            public string eventIntroduction {get; set;}
+            public string signUpStDate {get; set;}
+            public string signUpEdDate {get; set;}
+            public string eventStDate {get; set;}
+            public string eventEdDate {get; set;}
+            public string owner {get; set;}
+            public int memberCount {get; set;}
+            public int memberLimit {get; set;}
+            public string statusDesc {get; set;}
+            public string coverPath {get; set;}
+            public string timeStatus {get; set;}
+            public string userPersonnel {get; set;}
+            public bool isWatcher {get; set;}
+        }
+
+        public List<eventCardInfo> getEventCardInfo(DBContext _context, List<EventMst> eventMst, string logingUser){
+            List<eventCardInfo> result =  eventMst.Select(em => new eventCardInfo{
+                id = em.id,
+                categoryId = em.categoryId,
+                categoryName = _context.eventCategory.Where(x => x.id == em.categoryId).Select(x => x.categoryName).ToList().FirstOrDefault(),
+                eventTitle = em.eventTitle,
+                eventIntroduction = em.eventIntroduction,
+                signUpStDate = em.signUpStDate,
+                signUpEdDate = em.signUpEdDate,
+                eventStDate = em.eventStDate,
+                eventEdDate = em.eventEdDate,
+                owner = _context.eventPersonnel.Where(x => x.eventMstId == em.id && x.permission == "OWNER").Select(x => x.userAccount).ToList().FirstOrDefault(),
+                memberCount = _context.eventPersonnel.Where(x => x.permission != "WATCHER" && x.eventMstId == em.id).Count(),
+                memberLimit = em.personLimit,
+                statusDesc = em.status?.getCodeDesc(_context, "eventStatus"),
+                coverPath = _context.eventAppendix.Where(x => x.category == "P" && x.eventMstId == em.id).Select(x => x.appendixPath).ToList().FirstOrDefault(),
+                timeStatus = Convert.ToDateTime(em.eventStDate).CompareTo(DateTime.Now) > 0?"comingSoon":
+                                Convert.ToDateTime(em.eventEdDate).CompareTo(DateTime.Now) < 0?"expired":"inProgress",
+                userPersonnel = logingUser != null?(_context.eventPersonnel.Where(x => x.eventMstId == em.id && x.userAccount == logingUser && x.permission != "WATCHER").Select(x => x.permission).ToList().FirstOrDefault()):"",
+                isWatcher = _context.eventPersonnel.Where(x => x.eventMstId == em.id && x.userAccount == logingUser && x.permission == "WATCHER").Any()
+            }).ToList();
+            
+            return result;
         }
     }
 }
