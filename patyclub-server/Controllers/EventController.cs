@@ -353,6 +353,55 @@ namespace patyclub_server.Controllers
 
             return Ok(new Response{message = "update event status success. eventId = " + args.eventId.ToString() + ", status = " + args.status});
         }
-    }
 
+        ///<summary>
+        ///新增審查意見
+        ///</summary>
+        [Authorize]
+        [HttpPost("createAuditLog")]
+        public ActionResult createAuditLog(createAuditLogArgs args){
+            string loginUserPermission = User.Claims.FirstOrDefault(a => a.Type == "permission").Value;
+            
+            if(!loginUserPermission.Contains("總管理")){
+                return StatusCode(401, "create Failed. Permission denied.");
+            }
+
+            EventAuditLog eventAuditLog = new EventAuditLog{
+                eventId = args.eventId,
+                auditSeq = args.auditSeq,
+                auditTarget = args.auditTarget.ToString(),
+                auditMessage = args.auditMessage,
+                createdDate = args.createdDate
+                };
+
+            if(_context.eventAuditLog.Where(ea => ea.eventId == args.eventId && ea.auditSeq == args.auditSeq && ea.auditTarget == args.auditTarget.ToString()).Any())
+                return StatusCode(500, new Response{message = "this event this seq this target have been include in database.."});
+
+            _context.eventAuditLog.Add(eventAuditLog);
+            _context.SaveChanges();
+
+            return Ok(new Response{message = "Add AuditLog success. eventId = " + args.eventId.ToString() + ", auditSeq = " + args.auditSeq + ", auditTarget = " + args.auditTarget});
+        }
+
+        ///<summary>
+        ///查詢審查意見
+        ///</summary>
+        [HttpGet("getAuditLog")]
+        public ActionResult getAuditLog(int eventId){
+            var result = _context.eventAuditLog.Where(ea => ea.eventId == eventId).ToList();
+            return Ok(new Response{data = result});
+        }
+
+        ///<summary>
+        ///刪除審查意見
+        ///</summary>
+        [HttpDelete("deleteAuditLog")]
+        public ActionResult deleteAuditLog(deleteAuditLogArgs args){
+            var target = _context.eventAuditLog.Where(ea => ea.eventId == args.eventId && ea.auditSeq == args.auditSeq && ea.auditTarget == args.auditTarget.ToString());
+            foreach (var t in target)
+                _context.eventAuditLog.Remove(t);
+            _context.SaveChanges();
+            return Ok(new Response{message = "Delete success."});
+        }
+    }
 }

@@ -20,3 +20,17 @@ public class updateEventStatusArgs{
     public int eventId{get; set;}
     public string status{get; set;}
 }
+
+public class createAuditLogArgs{
+    public int eventId { get; set; }
+    public int auditSeq { get; set; }
+    public eventAuditTargetEnums auditTarget { get; set; }
+    public string auditMessage { get; set; } 
+    public string createdDate { get; set; }
+}
+
+public class deleteAuditLogArgs{
+    public int eventId { get; set; }
+    public int auditSeq { get; set; }
+    public eventAuditTargetEnums auditTarget { get; set; }
+}

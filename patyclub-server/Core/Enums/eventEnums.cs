@@ -12,3 +12,19 @@ public enum eventPersonnelEnums{
     MEMBER,
     WATCHER
 }
+
+public enum eventAuditTargetEnums{
+    non_select,
+    categoryId,
+    eventTitle,
+    cost,
+    eventStDate,
+    eventEdDate,
+    signUpStDate,
+    signUpEdDate,
+    eventIntroduction,
+    eventDetail,
+    eventAttantion,
+    personLimit,
+    ageLimit
+}

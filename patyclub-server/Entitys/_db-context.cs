@@ -12,6 +12,7 @@ namespace patyclub_server.Entities
         public DbSet<ClientLog> clientLog { get; set; }
         public DbSet<EventMst> eventMst { get; set; }
         public DbSet<EventAppendix> eventAppendix { get; set; }
+        public DbSet<EventAuditLog> eventAuditLog { get; set; }
         public DbSet<EventCategory> eventCategory { get; set; }
         public DbSet<EventCollect> eventCollect { get; set; }
         public DbSet<EventPersonnel> eventPersonnel { get; set; }
@@ -41,6 +42,8 @@ namespace patyclub_server.Entities
                 .HasKey(table => new {table.userAccount, table.eventMstId});
             modelBuilder.Entity<EventPersonnel>()
                 .HasKey(table => new {table.userAccount, table.eventMstId, table.permission});
+            modelBuilder.Entity<EventAuditLog>()
+                .HasKey(table => new {table.eventId, table.auditSeq, table.auditTarget});
             modelBuilder.Entity<MappingEventTag>()
                 .HasKey(table => new {table.eventMstId, table.tagId});
             modelBuilder.Entity<MappingPermissionRole>()
@@ -82,6 +85,17 @@ namespace patyclub_server.Entities
                     new ClientLog {id = 8, userAccount = "adda", logCategory = "eventTouch", targetSeq = "3", logDate = "2021/12/5 13:12:44"},
                     new ClientLog {id = 9, userAccount = "adda", logCategory = "eventTouch", targetSeq = "1", logDate = "2021/12/1 15:32:12"},
                     new ClientLog {id = 10, userAccount = "adda", logCategory = "eventTouch", targetSeq = "3", logDate = "2021/12/2 18:42:31"}
+                );
+            modelBuilder.Entity<EventAuditLog>()
+                .HasData(
+                    new EventAuditLog {eventId = 1, auditSeq = 1, auditTarget = eventAuditTargetEnums.eventTitle.ToString(), auditMessage = "我是意見1" , createdDate = "2021/12/3 09:25:36"},
+                    new EventAuditLog {eventId = 1, auditSeq = 1, auditTarget = eventAuditTargetEnums.categoryId.ToString(), auditMessage = "我是意見2" , createdDate = "2021/12/3 09:22:36"},
+                    new EventAuditLog {eventId = 1, auditSeq = 1, auditTarget = eventAuditTargetEnums.eventStDate.ToString(), auditMessage = "我是意見3" , createdDate = "2021/12/3 09:21:36"},
+                    new EventAuditLog {eventId = 1, auditSeq = 1, auditTarget = eventAuditTargetEnums.eventIntroduction.ToString(), auditMessage = "我是意見4" , createdDate = "2021/12/3 09:26:36"},
+                    new EventAuditLog {eventId = 1, auditSeq = 1, auditTarget = eventAuditTargetEnums.cost.ToString(), auditMessage = "我是意見5" , createdDate = "2021/12/3 09:27:36"},
+                    new EventAuditLog {eventId = 1, auditSeq = 1, auditTarget = eventAuditTargetEnums.signUpStDate.ToString(), auditMessage = "我是意見6" , createdDate = "2021/12/3 09:28:36"},
+                    new EventAuditLog {eventId = 1, auditSeq = 2, auditTarget = eventAuditTargetEnums.eventTitle.ToString(), auditMessage = "我是意見11" , createdDate = "2021/12/4 09:23:36"},
+                    new EventAuditLog {eventId = 1, auditSeq = 2, auditTarget = eventAuditTargetEnums.eventAttantion.ToString(), auditMessage = "我是意見22" , createdDate = "2021/12/4 09:22:36"}
                 );
             modelBuilder.Entity<AutoCompleteList>()
                 .HasData(
