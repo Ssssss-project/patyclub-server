@@ -24,7 +24,7 @@ public enum eventAuditTargetEnums{
     signUpEdDate,
     eventIntroduction,
     eventDetail,
-    eventAttantion,
+    eventAttention,
     personLimit,
     ageLimit
 }

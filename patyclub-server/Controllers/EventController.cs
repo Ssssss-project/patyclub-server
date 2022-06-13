@@ -175,7 +175,7 @@ namespace patyclub_server.Controllers
                                     em.examinationPassedDate,
                                     em.eventIntroduction,
                                     em.eventDetail,
-                                    em.eventAttantion,
+                                    em.eventAttention,
                                     em.tag,
                                     em.eventTitle,
                                     owner = o?.userAccount ?? string.Empty,
@@ -207,7 +207,7 @@ namespace patyclub_server.Controllers
         /// 依條件篩選活動
         /// </summary>
         /// <remarks>
-        /// queryList: 查詢範圍「eventTitle, eventDetail, eventAttantion, eventIntroduction」
+        /// queryList: 查詢範圍「eventTitle, eventDetail, eventAttention, eventIntroduction」
         ///
         /// nonCompleteEvent: IF nonCompleteEvent is "Yes" then limit eventEdDate must large than now and eventEdDate must is valid date format
         ///
@@ -246,7 +246,7 @@ namespace patyclub_server.Controllers
                 {
                     resultEventMstList = resultEventMstList.Where(b => b.eventTitle.Contains(query) 
                                                                     || b.eventDetail.Contains(query)
-                                                                    || b.eventAttantion.Contains(query)
+                                                                    || b.eventAttention.Contains(query)
                                                                     || b.eventIntroduction.Contains(query)).ToList();
                 }
             }

@@ -95,7 +95,7 @@ namespace patyclub_server.Entities
                     new EventAuditLog {eventId = 1, auditSeq = 1, auditTarget = eventAuditTargetEnums.cost.ToString(), auditMessage = "我是意見5" , createdDate = "2021/12/3 09:27:36"},
                     new EventAuditLog {eventId = 1, auditSeq = 1, auditTarget = eventAuditTargetEnums.signUpStDate.ToString(), auditMessage = "我是意見6" , createdDate = "2021/12/3 09:28:36"},
                     new EventAuditLog {eventId = 1, auditSeq = 2, auditTarget = eventAuditTargetEnums.eventTitle.ToString(), auditMessage = "我是意見11" , createdDate = "2021/12/4 09:23:36"},
-                    new EventAuditLog {eventId = 1, auditSeq = 2, auditTarget = eventAuditTargetEnums.eventAttantion.ToString(), auditMessage = "我是意見22" , createdDate = "2021/12/4 09:22:36"}
+                    new EventAuditLog {eventId = 1, auditSeq = 2, auditTarget = eventAuditTargetEnums.eventAttention.ToString(), auditMessage = "我是意見22" , createdDate = "2021/12/4 09:22:36"}
                 );
             modelBuilder.Entity<AutoCompleteList>()
                 .HasData(
@@ -133,7 +133,7 @@ new EventMst {id = 1, categoryId = 3, status = "TEMP", cost = "1000", eventStDat
 10:45 稍來山/大雪山林道岔口
 11:30 27.3k登山口
 
-喝水800ml", eventAttantion = @"【行前準備】
+喝水800ml", eventAttention = @"【行前準備】
 
 1. 1500～2000cc 水
 
@@ -160,21 +160,21 @@ new EventMst {id = 1, categoryId = 3, status = "TEMP", cost = "1000", eventStDat
 12.衛生紙
 
 13.毛巾 （看個人非必要）", tag = "S", eventTitle = "爬爬爬爬爬山趣", personLimit = 10},
-new EventMst {id = 2, categoryId = 3, status = "TEMP", cost = "1000", eventStDate = "2021/12/05", eventEdDate = "2021/12/05", eventCreateDate = "2021/12/05", examinationPassedDate = "2021/12/05", eventIntroduction = @"", eventDetail = @"", eventAttantion = @"", tag = "S", eventTitle = "颱風天要幹嘛? 當然是去泛舟R!", personLimit = 6, ageLimit = ">15"},
-new EventMst {id = 3, categoryId = 2, status = "TEMP", cost = "1000", eventStDate = "2021/12/15", eventEdDate = "2021/12/17", eventCreateDate = "2021/12/01", examinationPassedDate = "2021/12/10", eventIntroduction = @"", eventDetail = @"", eventAttantion = @"", tag = "S", eventTitle = "SideProject Coding...", personLimit = 8, ageLimit = ">6"},
-new EventMst {id = 4, categoryId = 1, status = "TEMP", cost = "1000", eventStDate = "2021/12/18", eventEdDate = "2021/12/20", eventCreateDate = "2021/12/05", examinationPassedDate = "", eventIntroduction = @"", eventDetail = @"", eventAttantion = @"", tag = "S", eventTitle = "一日雙塔，騎起來~", ageLimit = ">15"},
-new EventMst {id = 5, categoryId = 4, status = "TEMP", cost = "1000", eventStDate = "2021/12/20", eventEdDate = "2021/12/20", eventCreateDate = "2021/12/01", examinationPassedDate = "2021/12/10", eventIntroduction = @"", eventDetail = @"", eventAttantion = @"", tag = "H", eventTitle = "JustDance跳跳跳!", ageLimit = ">18"},
+new EventMst {id = 2, categoryId = 3, status = "TEMP", cost = "1000", eventStDate = "2021/12/05", eventEdDate = "2021/12/05", eventCreateDate = "2021/12/05", examinationPassedDate = "2021/12/05", eventIntroduction = @"", eventDetail = @"", eventAttention = @"", tag = "S", eventTitle = "颱風天要幹嘛? 當然是去泛舟R!", personLimit = 6, ageLimit = ">15"},
+new EventMst {id = 3, categoryId = 2, status = "TEMP", cost = "1000", eventStDate = "2021/12/15", eventEdDate = "2021/12/17", eventCreateDate = "2021/12/01", examinationPassedDate = "2021/12/10", eventIntroduction = @"", eventDetail = @"", eventAttention = @"", tag = "S", eventTitle = "SideProject Coding...", personLimit = 8, ageLimit = ">6"},
+new EventMst {id = 4, categoryId = 1, status = "TEMP", cost = "1000", eventStDate = "2021/12/18", eventEdDate = "2021/12/20", eventCreateDate = "2021/12/05", examinationPassedDate = "", eventIntroduction = @"", eventDetail = @"", eventAttention = @"", tag = "S", eventTitle = "一日雙塔，騎起來~", ageLimit = ">15"},
+new EventMst {id = 5, categoryId = 4, status = "TEMP", cost = "1000", eventStDate = "2021/12/20", eventEdDate = "2021/12/20", eventCreateDate = "2021/12/01", examinationPassedDate = "2021/12/10", eventIntroduction = @"", eventDetail = @"", eventAttention = @"", tag = "H", eventTitle = "JustDance跳跳跳!", ageLimit = ">18"},
 new EventMst {id = 6, categoryId = 4, status = "TEMP", cost = "1000", eventStDate = "2021/12/15", eventEdDate = "2021/12/16", eventCreateDate = "2021/12/02", examinationPassedDate = "", eventIntroduction = @"銅牌一日上白金", eventDetail = @"今天晚上五點開打
-打到白金為止", eventAttantion = @"雷包勿來", tag = "", eventTitle = "APEX 爬分"},
-new EventMst {id = 7, categoryId = 4, status = "TEMP", cost = "1000", eventStDate = "2021/12/25", eventEdDate = "2021/12/26", eventCreateDate = "2021/12/01", examinationPassedDate = "2021/12/20", eventIntroduction = @"如題", eventDetail = @"打到大家都累為止", eventAttantion = @"for fun", tag = "", eventTitle = "LOL NG隨便打"},
+打到白金為止", eventAttention = @"雷包勿來", tag = "", eventTitle = "APEX 爬分"},
+new EventMst {id = 7, categoryId = 4, status = "TEMP", cost = "1000", eventStDate = "2021/12/25", eventEdDate = "2021/12/26", eventCreateDate = "2021/12/01", examinationPassedDate = "2021/12/20", eventIntroduction = @"如題", eventDetail = @"打到大家都累為止", eventAttention = @"for fun", tag = "", eventTitle = "LOL NG隨便打"},
 new EventMst {id = 8, categoryId = 4, status = "TEMP", cost = "1000", eventStDate = "2021/12/2", eventEdDate = "2021/12/5", eventCreateDate = "2021/12/05", examinationPassedDate = "", eventIntroduction = @"阿里山鄉位於臺灣嘉義縣東部，北鄰南投縣竹山鎮，東鄰南投縣信義鄉、高雄市桃源區，西鄰梅山鄉、竹崎鄉、番路鄉，南接大埔鄉與高雄市那瑪夏區，是嘉義縣面積最大、人口密度最低的鄉鎮，其面積約佔全縣的1/5，也是嘉義縣唯一的山地鄉。", eventDetail = @"記得攜帶個人所需物品
-天冷注意保暖", eventAttantion = @"要帶夠錢錢
+天冷注意保暖", eventAttention = @"要帶夠錢錢
 要帶水
 要帶健保卡", tag = "S", eventTitle = "阿里山郊遊趣"},
-new EventMst {id = 9, categoryId = 4, status = "TEMP", cost = "1000", eventStDate = "2021/12/3", eventEdDate = "2021/12/8", eventCreateDate = "2021/12/01", examinationPassedDate = "", eventIntroduction = @"", eventDetail = @"", eventAttantion = @"", tag = "", eventTitle = "不想想活動名-A4"},
-new EventMst {id = 10, categoryId = 4, status = "TEMP", cost = "1000", eventStDate = "2021/12/5", eventEdDate = "2021/12/5", eventCreateDate = "2021/12/02", examinationPassedDate = "2021/12/2", eventIntroduction = @"", eventDetail = @"", eventAttantion = @"", tag = "", eventTitle = "不想想活動名-A5"},
-new EventMst {id = 11, categoryId = 4, status = "TEMP", cost = "1000", eventStDate = "2021/12/9", eventEdDate = "2021/12/9", eventCreateDate = "2021/12/01", examinationPassedDate = "", eventIntroduction = @"", eventDetail = @"", eventAttantion = @"", tag = "S", eventTitle = "不想想活動名-A6"},
-new EventMst {id = 12, categoryId = 4, status = "TEMP", cost = "1000", eventStDate = "2021/12/8", eventEdDate = "2021/12/8", eventCreateDate = "2021/12/02", examinationPassedDate = "", eventIntroduction = @"", eventDetail = @"", eventAttantion = @"", tag = "", eventTitle = "不想想活動名-A7"}
+new EventMst {id = 9, categoryId = 4, status = "TEMP", cost = "1000", eventStDate = "2021/12/3", eventEdDate = "2021/12/8", eventCreateDate = "2021/12/01", examinationPassedDate = "", eventIntroduction = @"", eventDetail = @"", eventAttention = @"", tag = "", eventTitle = "不想想活動名-A4"},
+new EventMst {id = 10, categoryId = 4, status = "TEMP", cost = "1000", eventStDate = "2021/12/5", eventEdDate = "2021/12/5", eventCreateDate = "2021/12/02", examinationPassedDate = "2021/12/2", eventIntroduction = @"", eventDetail = @"", eventAttention = @"", tag = "", eventTitle = "不想想活動名-A5"},
+new EventMst {id = 11, categoryId = 4, status = "TEMP", cost = "1000", eventStDate = "2021/12/9", eventEdDate = "2021/12/9", eventCreateDate = "2021/12/01", examinationPassedDate = "", eventIntroduction = @"", eventDetail = @"", eventAttention = @"", tag = "S", eventTitle = "不想想活動名-A6"},
+new EventMst {id = 12, categoryId = 4, status = "TEMP", cost = "1000", eventStDate = "2021/12/8", eventEdDate = "2021/12/8", eventCreateDate = "2021/12/02", examinationPassedDate = "", eventIntroduction = @"", eventDetail = @"", eventAttention = @"", tag = "", eventTitle = "不想想活動名-A7"}
 
                 );
             modelBuilder.Entity<EventAppendix>()

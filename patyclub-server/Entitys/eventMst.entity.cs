@@ -47,8 +47,8 @@ namespace patyclub_server.Entities
     [Column("eventDetail")] //活動細項
     public string eventDetail { get; set; }
 
-    [Column("eventAttantion")] //活動注意事項
-    public string eventAttantion { get; set; }
+    [Column("eventAttention")] //活動注意事項
+    public string eventAttention { get; set; }
 
     [Column("tag")] //活動標籤
     public string tag { get; set; }
