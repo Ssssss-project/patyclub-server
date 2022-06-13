@@ -79,8 +79,8 @@ namespace patyclub_server.Controllers
                 select em
             ).Skip(1).Take(10).ToList();
 
-            _eventService.getEventCardInfo(_context, resultLog, account);
-            return Ok(new Response {data = resultLog});
+
+            return Ok(new Response {data = _eventService.getEventCardInfo(_context, resultLog, account)});
         }
 
 
