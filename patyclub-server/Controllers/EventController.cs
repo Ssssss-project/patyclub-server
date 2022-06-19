@@ -7,6 +7,8 @@ using patyclub_server.extendFunction;
 using System.Collections.Generic;
 using System.Linq;
 using System;
+using System.Threading.Tasks;
+using System.IO;
 
 
 namespace patyclub_server.Controllers
@@ -402,6 +404,45 @@ namespace patyclub_server.Controllers
                 _context.eventAuditLog.Remove(t);
             _context.SaveChanges();
             return Ok(new Response{message = "Delete success."});
+        }
+
+        ///<summary>
+        ///檔案上傳
+        ///</summary>
+        [HttpPost("dataUpload")]
+        public async Task<IActionResult> dataUpload()
+        {
+            var files = this.Request.Form.Files;
+            long size = files.Sum(f => f.Length);   // 統計所有檔案的大小
+            var filepath = Directory.GetCurrentDirectory() + "\\Data";  // 儲存檔案的路徑
+
+            foreach (var item in files)
+            {
+                if (item.Length > 0)        // 檔案大小 0 才上傳
+                {
+                    var thispath = filepath + "\\" + item.FileName;     // 當前上傳檔案應存放的位置
+
+                    if (System.IO.File.Exists(thispath) == true)        // 如果檔案已經存在,跳過此檔案的上傳
+                    {
+                        Console.WriteLine("\r\n檔案已存在:" + thispath.ToString());
+                        continue;
+                    }
+
+                    // 上傳檔案
+                    using (var stream = new FileStream(thispath, FileMode.Create))      
+                    {
+                        try
+                        {
+                            await item.CopyToAsync(stream);     
+                        }
+                        catch (Exception ex)        
+                        {
+                            Console.WriteLine(ex);
+                        }
+                    }
+                }
+            }
+            return Ok();
         }
     }
 }
