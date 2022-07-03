@@ -58,5 +58,8 @@ namespace patyclub_server.Entities
 
     [Column("ageLimit")] //年齡限制
     public string ageLimit { get; set; }
+
+    [Column("auditCnt")] //審查次數
+    public int auditCnt { get; set; }
   }
 }
