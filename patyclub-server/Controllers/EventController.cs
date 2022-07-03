@@ -234,6 +234,8 @@ namespace patyclub_server.Controllers
                 
             if (args.TAG != ""  && args.TAG != null) 
                 resultEventMstList = resultEventMstList.Where(b => b.tag == args.TAG).ToList();
+            if (args.status != ""  && args.status != null) 
+                resultEventMstList = resultEventMstList.Where(b => b.status == args.status).ToList();
             if (args.nonCompleteEvent == YesNoEnums.Yes)
                 resultEventMstList = resultEventMstList.Where(b => {
                     if (!_coreService.isDate(b.eventEdDate))
