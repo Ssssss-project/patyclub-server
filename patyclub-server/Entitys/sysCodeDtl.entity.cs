@@ -23,5 +23,8 @@ namespace patyclub_server.Entities
     [Column("orderSeq")] // 順序
     public int orderSeq {get; set;}
 
+    [Column("enable")] // 是否啟用
+    public int enable {get; set;}
+
   }
 }
